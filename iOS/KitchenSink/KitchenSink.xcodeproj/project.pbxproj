@@ -1,0 +1,887 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EC3DF58313FD809500433131 /* ChuteLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC3DF53B13FD809500433131 /* ChuteLoginViewController.xib */; };
+		EC3DF58513FD809500433131 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF54213FD809500433131 /* ASIAuthenticationDialog.m */; };
+		EC3DF58613FD809500433131 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF54513FD809500433131 /* ASIDataCompressor.m */; };
+		EC3DF58713FD809500433131 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF54713FD809500433131 /* ASIDataDecompressor.m */; };
+		EC3DF58813FD809500433131 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF54913FD809500433131 /* ASIDownloadCache.m */; };
+		EC3DF58913FD809500433131 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF54B13FD809500433131 /* ASIFormDataRequest.m */; };
+		EC3DF58A13FD809500433131 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF54D13FD809500433131 /* ASIHTTPRequest.m */; };
+		EC3DF58B13FD809500433131 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF55113FD809500433131 /* ASIInputStream.m */; };
+		EC3DF58C13FD809500433131 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF55313FD809500433131 /* ASINetworkQueue.m */; };
+		EC3DF58D13FD809500433131 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF55713FD809500433131 /* Reachability.m */; };
+		EC3DF58E13FD809500433131 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF55A13FD809500433131 /* NSData+Base64.m */; };
+		EC3DF58F13FD809500433131 /* NSDictionary+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF55C13FD809500433131 /* NSDictionary+QueryString.m */; };
+		EC3DF59013FD809500433131 /* NSString+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF55E13FD809500433131 /* NSString+QueryString.m */; };
+		EC3DF59113FD809500433131 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF56113FD809500433131 /* KeychainItemWrapper.m */; };
+		EC3DF59213FD809500433131 /* NSObject+KVOBlockBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF56413FD809500433131 /* NSObject+KVOBlockBinding.m */; };
+		EC3DF59313FD809500433131 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF56713FD809500433131 /* MBProgressHUD.m */; };
+		EC3DF59413FD809500433131 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF56B13FD809500433131 /* NSObject+SBJson.m */; };
+		EC3DF59513FD809500433131 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF56E13FD809500433131 /* SBJsonParser.m */; };
+		EC3DF59613FD809500433131 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57013FD809500433131 /* SBJsonStreamParser.m */; };
+		EC3DF59713FD809500433131 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57213FD809500433131 /* SBJsonStreamParserAccumulator.m */; };
+		EC3DF59813FD809500433131 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57413FD809500433131 /* SBJsonStreamParserAdapter.m */; };
+		EC3DF59913FD809500433131 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57613FD809500433131 /* SBJsonStreamParserState.m */; };
+		EC3DF59A13FD809500433131 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57813FD809500433131 /* SBJsonStreamWriter.m */; };
+		EC3DF59B13FD809500433131 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57A13FD809500433131 /* SBJsonStreamWriterAccumulator.m */; };
+		EC3DF59C13FD809500433131 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57C13FD809500433131 /* SBJsonStreamWriterState.m */; };
+		EC3DF59D13FD809500433131 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF57E13FD809500433131 /* SBJsonTokeniser.m */; };
+		EC3DF59E13FD809500433131 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF58013FD809500433131 /* SBJsonUTF8Stream.m */; };
+		EC3DF59F13FD809500433131 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = EC3DF58213FD809500433131 /* SBJsonWriter.m */; };
+		EC3DF5BF13FD8FA600433131 /* libChuteiOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC3DF5BE13FD8FA600433131 /* libChuteiOS.a */; };
+		EC46790613F012A900533435 /* CreateChuteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC46790413F012A900533435 /* CreateChuteViewController.m */; };
+		EC46790913F012DC00533435 /* CreateChuteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC46790813F012DC00533435 /* CreateChuteViewController.xib */; };
+		EC46790E13F0132C00533435 /* ListChutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC46790C13F0132C00533435 /* ListChutesViewController.m */; };
+		EC46791113F0134000533435 /* ListChutesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC46791013F0134000533435 /* ListChutesViewController.xib */; };
+		EC5B647D13F0019100EBA5A1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5B647C13F0019100EBA5A1 /* main.m */; };
+		EC5B648113F0019100EBA5A1 /* KitchenSinkAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5B648013F0019100EBA5A1 /* KitchenSinkAppDelegate.m */; };
+		EC5B64A713F0023A00EBA5A1 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649513F0022700EBA5A1 /* AssetsLibrary.framework */; };
+		EC5B64A813F0023A00EBA5A1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649613F0022700EBA5A1 /* CFNetwork.framework */; };
+		EC5B64A913F0023A00EBA5A1 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649713F0022700EBA5A1 /* CoreFoundation.framework */; };
+		EC5B64AA13F0023A00EBA5A1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649813F0022800EBA5A1 /* Foundation.framework */; };
+		EC5B64AB13F0023A00EBA5A1 /* libz.1.2.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649913F0022800EBA5A1 /* libz.1.2.3.dylib */; };
+		EC5B64AC13F0023A00EBA5A1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649A13F0022800EBA5A1 /* MobileCoreServices.framework */; };
+		EC5B64AD13F0023A00EBA5A1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649B13F0022800EBA5A1 /* Security.framework */; };
+		EC5B64AE13F0023A00EBA5A1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649C13F0022800EBA5A1 /* SystemConfiguration.framework */; };
+		EC5B64AF13F0023A00EBA5A1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B649D13F0022800EBA5A1 /* UIKit.framework */; };
+		EC5B652C13F002AD00EBA5A1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5B652A13F002A600EBA5A1 /* CoreGraphics.framework */; };
+		EC5B653013F0043300EBA5A1 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5B652E13F0043300EBA5A1 /* RootViewController.m */; };
+		EC5B653813F0045A00EBA5A1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EC5B653313F0045A00EBA5A1 /* InfoPlist.strings */; };
+		EC5B653913F0045A00EBA5A1 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC5B653513F0045A00EBA5A1 /* MainWindow.xib */; };
+		EC5B653A13F0045A00EBA5A1 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC5B653713F0045A00EBA5A1 /* RootViewController.xib */; };
+		EC5B653F13F006FC00EBA5A1 /* ChuteBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5B653D13F006FC00EBA5A1 /* ChuteBaseViewController.m */; };
+		EC5B654413F0070C00EBA5A1 /* PhotosBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5B654213F0070C00EBA5A1 /* PhotosBaseViewController.m */; };
+		EC5B654913F0071E00EBA5A1 /* BundlesBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC5B654713F0071E00EBA5A1 /* BundlesBaseViewController.m */; };
+		EC5B654E13F0073A00EBA5A1 /* BundlesBaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC5B654B13F0073A00EBA5A1 /* BundlesBaseViewController.xib */; };
+		EC5B654F13F0073A00EBA5A1 /* PhotosBaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC5B654C13F0073A00EBA5A1 /* PhotosBaseViewController.xib */; };
+		EC5B655013F0073A00EBA5A1 /* ChuteBaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC5B654D13F0073A00EBA5A1 /* ChuteBaseViewController.xib */; };
+		EC762DDC13F182390081E77E /* UIBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DDB13F182390081E77E /* UIBaseViewController.m */; };
+		EC762E0313F184760081E77E /* AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DE213F184760081E77E /* AQGridView.m */; };
+		EC762E0413F184760081E77E /* AQGridViewAnimatorItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DE413F184760081E77E /* AQGridViewAnimatorItem.m */; };
+		EC762E0513F184760081E77E /* AQGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DE713F184760081E77E /* AQGridViewCell.m */; };
+		EC762E0613F184760081E77E /* AQGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DE913F184760081E77E /* AQGridViewController.m */; };
+		EC762E0713F184760081E77E /* AQGridViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DEB13F184760081E77E /* AQGridViewData.m */; };
+		EC762E0813F184760081E77E /* AQGridViewUpdateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DED13F184760081E77E /* AQGridViewUpdateInfo.m */; };
+		EC762E0913F184760081E77E /* AQGridViewUpdateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DEF13F184760081E77E /* AQGridViewUpdateItem.m */; };
+		EC762E0A13F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DF113F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.m */; };
+		EC762E0B13F184760081E77E /* NSIndexSet+AQIsSetContiguous.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DF313F184760081E77E /* NSIndexSet+AQIsSetContiguous.m */; };
+		EC762E0C13F184760081E77E /* UIColor+AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DF513F184760081E77E /* UIColor+AQGridView.m */; };
+		EC762E0D13F184760081E77E /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DF813F184760081E77E /* SDImageCache.m */; };
+		EC762E0E13F184760081E77E /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DFC13F184760081E77E /* SDWebImageDownloader.m */; };
+		EC762E0F13F184760081E77E /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762DFF13F184760081E77E /* SDWebImageManager.m */; };
+		EC762E1013F184760081E77E /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762E0213F184760081E77E /* UIImageView+WebCache.m */; };
+		EC762E1813F185460081E77E /* AssetsGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC762E1613F185460081E77E /* AssetsGridViewController.m */; };
+		EC762E1B13F1855C0081E77E /* AssetsGridViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC762E1A13F1855C0081E77E /* AssetsGridViewController.xib */; };
+		EC762E1E13F1867A0081E77E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC762E1C13F186700081E77E /* QuartzCore.framework */; };
+		ECBDAAAE13F7F777003153F1 /* ImageScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBDAAAD13F7F777003153F1 /* ImageScroller.m */; };
+		ECBDAAB213F7F7C9003153F1 /* PhotoViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = ECBDAAB013F7F7C9003153F1 /* PhotoViewer.m */; };
+		ECBDAAB513F7F7DC003153F1 /* PhotoViewer.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECBDAAB413F7F7DC003153F1 /* PhotoViewer.xib */; };
+		ECBDAABF13F7FB7D003153F1 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = ECBDAABE13F7FB7D003153F1 /* placeholder.png */; };
+		ECE1C60B13F6671500173383 /* PhotosGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECE1C60913F6671500173383 /* PhotosGridViewController.m */; };
+		ECE1C60E13F6672D00173383 /* PhotosGridViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECE1C60D13F6672D00173383 /* PhotosGridViewController.xib */; };
+		ECE1C61113F667FB00173383 /* ImageGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ECE1C61013F667FB00173383 /* ImageGridViewCell.m */; };
+		ECE1C61513F66CE100173383 /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE1C61313F66CE100173383 /* checkmark.png */; };
+		ECE1C61613F66CE100173383 /* checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ECE1C61413F66CE100173383 /* checkmark@2x.png */; };
+		ECE1C61A13F6EC7200173383 /* SelectChuteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ECE1C61813F6EC7100173383 /* SelectChuteViewController.m */; };
+		ECE1C61D13F6EC8900173383 /* SelectChuteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECE1C61C13F6EC8900173383 /* SelectChuteViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EC3DF53513FD809500433131 /* ChuteAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteAPI.h; sourceTree = "<group>"; };
+		EC3DF53613FD809500433131 /* ChuteAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteAsset.h; sourceTree = "<group>"; };
+		EC3DF53713FD809500433131 /* ChuteAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteAssetManager.h; sourceTree = "<group>"; };
+		EC3DF53813FD809500433131 /* ChuteAssetUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteAssetUploader.h; sourceTree = "<group>"; };
+		EC3DF53913FD809500433131 /* ChuteConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteConstants.h; sourceTree = "<group>"; };
+		EC3DF53A13FD809500433131 /* ChuteLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteLoginViewController.h; sourceTree = "<group>"; };
+		EC3DF53B13FD809500433131 /* ChuteLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChuteLoginViewController.xib; sourceTree = "<group>"; };
+		EC3DF53C13FD809500433131 /* ChuteSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteSDK.h; sourceTree = "<group>"; };
+		EC3DF53D13FD809500433131 /* ChuteUIBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteUIBaseViewController.h; sourceTree = "<group>"; };
+		EC3DF54113FD809500433131 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
+		EC3DF54213FD809500433131 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
+		EC3DF54313FD809500433131 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
+		EC3DF54413FD809500433131 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
+		EC3DF54513FD809500433131 /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
+		EC3DF54613FD809500433131 /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
+		EC3DF54713FD809500433131 /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
+		EC3DF54813FD809500433131 /* ASIDownloadCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDownloadCache.h; sourceTree = "<group>"; };
+		EC3DF54913FD809500433131 /* ASIDownloadCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDownloadCache.m; sourceTree = "<group>"; };
+		EC3DF54A13FD809500433131 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIFormDataRequest.h; sourceTree = "<group>"; };
+		EC3DF54B13FD809500433131 /* ASIFormDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIFormDataRequest.m; sourceTree = "<group>"; };
+		EC3DF54C13FD809500433131 /* ASIHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequest.h; sourceTree = "<group>"; };
+		EC3DF54D13FD809500433131 /* ASIHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIHTTPRequest.m; sourceTree = "<group>"; };
+		EC3DF54E13FD809500433131 /* ASIHTTPRequestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestConfig.h; sourceTree = "<group>"; };
+		EC3DF54F13FD809500433131 /* ASIHTTPRequestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestDelegate.h; sourceTree = "<group>"; };
+		EC3DF55013FD809500433131 /* ASIInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIInputStream.h; sourceTree = "<group>"; };
+		EC3DF55113FD809500433131 /* ASIInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIInputStream.m; sourceTree = "<group>"; };
+		EC3DF55213FD809500433131 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINetworkQueue.h; sourceTree = "<group>"; };
+		EC3DF55313FD809500433131 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASINetworkQueue.m; sourceTree = "<group>"; };
+		EC3DF55413FD809500433131 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = "<group>"; };
+		EC3DF55613FD809500433131 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		EC3DF55713FD809500433131 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		EC3DF55913FD809500433131 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		EC3DF55A13FD809500433131 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		EC3DF55B13FD809500433131 /* NSDictionary+QueryString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+QueryString.h"; sourceTree = "<group>"; };
+		EC3DF55C13FD809500433131 /* NSDictionary+QueryString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QueryString.m"; sourceTree = "<group>"; };
+		EC3DF55D13FD809500433131 /* NSString+QueryString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+QueryString.h"; sourceTree = "<group>"; };
+		EC3DF55E13FD809500433131 /* NSString+QueryString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+QueryString.m"; sourceTree = "<group>"; };
+		EC3DF56013FD809500433131 /* KeychainItemWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainItemWrapper.h; sourceTree = "<group>"; };
+		EC3DF56113FD809500433131 /* KeychainItemWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainItemWrapper.m; sourceTree = "<group>"; };
+		EC3DF56313FD809500433131 /* NSObject+KVOBlockBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+KVOBlockBinding.h"; sourceTree = "<group>"; };
+		EC3DF56413FD809500433131 /* NSObject+KVOBlockBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+KVOBlockBinding.m"; sourceTree = "<group>"; };
+		EC3DF56613FD809500433131 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		EC3DF56713FD809500433131 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		EC3DF56913FD809500433131 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		EC3DF56A13FD809500433131 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
+		EC3DF56B13FD809500433131 /* NSObject+SBJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJson.m"; sourceTree = "<group>"; };
+		EC3DF56C13FD809500433131 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
+		EC3DF56D13FD809500433131 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		EC3DF56E13FD809500433131 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		EC3DF56F13FD809500433131 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParser.h; sourceTree = "<group>"; };
+		EC3DF57013FD809500433131 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParser.m; sourceTree = "<group>"; };
+		EC3DF57113FD809500433131 /* SBJsonStreamParserAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAccumulator.h; sourceTree = "<group>"; };
+		EC3DF57213FD809500433131 /* SBJsonStreamParserAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAccumulator.m; sourceTree = "<group>"; };
+		EC3DF57313FD809500433131 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
+		EC3DF57413FD809500433131 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
+		EC3DF57513FD809500433131 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserState.h; sourceTree = "<group>"; };
+		EC3DF57613FD809500433131 /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserState.m; sourceTree = "<group>"; };
+		EC3DF57713FD809500433131 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriter.h; sourceTree = "<group>"; };
+		EC3DF57813FD809500433131 /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriter.m; sourceTree = "<group>"; };
+		EC3DF57913FD809500433131 /* SBJsonStreamWriterAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterAccumulator.h; sourceTree = "<group>"; };
+		EC3DF57A13FD809500433131 /* SBJsonStreamWriterAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterAccumulator.m; sourceTree = "<group>"; };
+		EC3DF57B13FD809500433131 /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterState.h; sourceTree = "<group>"; };
+		EC3DF57C13FD809500433131 /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterState.m; sourceTree = "<group>"; };
+		EC3DF57D13FD809500433131 /* SBJsonTokeniser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonTokeniser.h; sourceTree = "<group>"; };
+		EC3DF57E13FD809500433131 /* SBJsonTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonTokeniser.m; sourceTree = "<group>"; };
+		EC3DF57F13FD809500433131 /* SBJsonUTF8Stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonUTF8Stream.h; sourceTree = "<group>"; };
+		EC3DF58013FD809500433131 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
+		EC3DF58113FD809500433131 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		EC3DF58213FD809500433131 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		EC3DF5BE13FD8FA600433131 /* libChuteiOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libChuteiOS.a; sourceTree = "<group>"; };
+		EC46790313F012A900533435 /* CreateChuteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateChuteViewController.h; sourceTree = "<group>"; };
+		EC46790413F012A900533435 /* CreateChuteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateChuteViewController.m; sourceTree = "<group>"; };
+		EC46790813F012DC00533435 /* CreateChuteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateChuteViewController.xib; sourceTree = "<group>"; };
+		EC46790B13F0132C00533435 /* ListChutesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListChutesViewController.h; sourceTree = "<group>"; };
+		EC46790C13F0132C00533435 /* ListChutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListChutesViewController.m; sourceTree = "<group>"; };
+		EC46791013F0134000533435 /* ListChutesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListChutesViewController.xib; sourceTree = "<group>"; };
+		EC5B646C13F0019100EBA5A1 /* KitchenSink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KitchenSink.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC5B647813F0019100EBA5A1 /* KitchenSink-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KitchenSink-Info.plist"; sourceTree = "<group>"; };
+		EC5B647C13F0019100EBA5A1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EC5B647E13F0019100EBA5A1 /* KitchenSink-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KitchenSink-Prefix.pch"; sourceTree = "<group>"; };
+		EC5B647F13F0019100EBA5A1 /* KitchenSinkAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KitchenSinkAppDelegate.h; sourceTree = "<group>"; };
+		EC5B648013F0019100EBA5A1 /* KitchenSinkAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KitchenSinkAppDelegate.m; sourceTree = "<group>"; };
+		EC5B649513F0022700EBA5A1 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		EC5B649613F0022700EBA5A1 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EC5B649713F0022700EBA5A1 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		EC5B649813F0022800EBA5A1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EC5B649913F0022800EBA5A1 /* libz.1.2.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.3.dylib; path = usr/lib/libz.1.2.3.dylib; sourceTree = SDKROOT; };
+		EC5B649A13F0022800EBA5A1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		EC5B649B13F0022800EBA5A1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EC5B649C13F0022800EBA5A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		EC5B649D13F0022800EBA5A1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		EC5B652A13F002A600EBA5A1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EC5B652D13F0043300EBA5A1 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		EC5B652E13F0043300EBA5A1 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		EC5B653413F0045A00EBA5A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EC5B653613F0045A00EBA5A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		EC5B653713F0045A00EBA5A1 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		EC5B653C13F006FC00EBA5A1 /* ChuteBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChuteBaseViewController.h; sourceTree = "<group>"; };
+		EC5B653D13F006FC00EBA5A1 /* ChuteBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChuteBaseViewController.m; sourceTree = "<group>"; };
+		EC5B654113F0070C00EBA5A1 /* PhotosBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosBaseViewController.h; sourceTree = "<group>"; };
+		EC5B654213F0070C00EBA5A1 /* PhotosBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosBaseViewController.m; sourceTree = "<group>"; };
+		EC5B654613F0071E00EBA5A1 /* BundlesBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BundlesBaseViewController.h; sourceTree = "<group>"; };
+		EC5B654713F0071E00EBA5A1 /* BundlesBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BundlesBaseViewController.m; sourceTree = "<group>"; };
+		EC5B654B13F0073A00EBA5A1 /* BundlesBaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BundlesBaseViewController.xib; sourceTree = "<group>"; };
+		EC5B654C13F0073A00EBA5A1 /* PhotosBaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotosBaseViewController.xib; sourceTree = "<group>"; };
+		EC5B654D13F0073A00EBA5A1 /* ChuteBaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChuteBaseViewController.xib; sourceTree = "<group>"; };
+		EC762DDA13F182390081E77E /* UIBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBaseViewController.h; sourceTree = "<group>"; };
+		EC762DDB13F182390081E77E /* UIBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBaseViewController.m; sourceTree = "<group>"; };
+		EC762DDF13F184760081E77E /* AQGridView+CellLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AQGridView+CellLayout.h"; sourceTree = "<group>"; };
+		EC762DE013F184760081E77E /* AQGridView+CellLocationDelegation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AQGridView+CellLocationDelegation.h"; sourceTree = "<group>"; };
+		EC762DE113F184760081E77E /* AQGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridView.h; sourceTree = "<group>"; };
+		EC762DE213F184760081E77E /* AQGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridView.m; sourceTree = "<group>"; };
+		EC762DE313F184760081E77E /* AQGridViewAnimatorItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridViewAnimatorItem.h; sourceTree = "<group>"; };
+		EC762DE413F184760081E77E /* AQGridViewAnimatorItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridViewAnimatorItem.m; sourceTree = "<group>"; };
+		EC762DE513F184760081E77E /* AQGridViewCell+AQGridViewCellPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AQGridViewCell+AQGridViewCellPrivate.h"; sourceTree = "<group>"; };
+		EC762DE613F184760081E77E /* AQGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridViewCell.h; sourceTree = "<group>"; };
+		EC762DE713F184760081E77E /* AQGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridViewCell.m; sourceTree = "<group>"; };
+		EC762DE813F184760081E77E /* AQGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridViewController.h; sourceTree = "<group>"; };
+		EC762DE913F184760081E77E /* AQGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridViewController.m; sourceTree = "<group>"; };
+		EC762DEA13F184760081E77E /* AQGridViewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridViewData.h; sourceTree = "<group>"; };
+		EC762DEB13F184760081E77E /* AQGridViewData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridViewData.m; sourceTree = "<group>"; };
+		EC762DEC13F184760081E77E /* AQGridViewUpdateInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridViewUpdateInfo.h; sourceTree = "<group>"; };
+		EC762DED13F184760081E77E /* AQGridViewUpdateInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridViewUpdateInfo.m; sourceTree = "<group>"; };
+		EC762DEE13F184760081E77E /* AQGridViewUpdateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AQGridViewUpdateItem.h; sourceTree = "<group>"; };
+		EC762DEF13F184760081E77E /* AQGridViewUpdateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AQGridViewUpdateItem.m; sourceTree = "<group>"; };
+		EC762DF013F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+AQIndexesOutsideSet.h"; sourceTree = "<group>"; };
+		EC762DF113F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+AQIndexesOutsideSet.m"; sourceTree = "<group>"; };
+		EC762DF213F184760081E77E /* NSIndexSet+AQIsSetContiguous.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+AQIsSetContiguous.h"; sourceTree = "<group>"; };
+		EC762DF313F184760081E77E /* NSIndexSet+AQIsSetContiguous.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+AQIsSetContiguous.m"; sourceTree = "<group>"; };
+		EC762DF413F184760081E77E /* UIColor+AQGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+AQGridView.h"; sourceTree = "<group>"; };
+		EC762DF513F184760081E77E /* UIColor+AQGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+AQGridView.m"; sourceTree = "<group>"; };
+		EC762DF713F184760081E77E /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
+		EC762DF813F184760081E77E /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
+		EC762DF913F184760081E77E /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
+		EC762DFA13F184760081E77E /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageCompat.h; sourceTree = "<group>"; };
+		EC762DFB13F184760081E77E /* SDWebImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDownloader.h; sourceTree = "<group>"; };
+		EC762DFC13F184760081E77E /* SDWebImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDownloader.m; sourceTree = "<group>"; };
+		EC762DFD13F184760081E77E /* SDWebImageDownloaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDownloaderDelegate.h; sourceTree = "<group>"; };
+		EC762DFE13F184760081E77E /* SDWebImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageManager.h; sourceTree = "<group>"; };
+		EC762DFF13F184760081E77E /* SDWebImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageManager.m; sourceTree = "<group>"; };
+		EC762E0013F184760081E77E /* SDWebImageManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageManagerDelegate.h; sourceTree = "<group>"; };
+		EC762E0113F184760081E77E /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
+		EC762E0213F184760081E77E /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		EC762E1513F185460081E77E /* AssetsGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsGridViewController.h; sourceTree = "<group>"; };
+		EC762E1613F185460081E77E /* AssetsGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsGridViewController.m; sourceTree = "<group>"; };
+		EC762E1A13F1855C0081E77E /* AssetsGridViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssetsGridViewController.xib; sourceTree = "<group>"; };
+		EC762E1C13F186700081E77E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		ECBDAAAC13F7F777003153F1 /* ImageScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScroller.h; sourceTree = "<group>"; };
+		ECBDAAAD13F7F777003153F1 /* ImageScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageScroller.m; sourceTree = "<group>"; };
+		ECBDAAAF13F7F7C9003153F1 /* PhotoViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewer.h; sourceTree = "<group>"; };
+		ECBDAAB013F7F7C9003153F1 /* PhotoViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewer.m; sourceTree = "<group>"; };
+		ECBDAAB413F7F7DC003153F1 /* PhotoViewer.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoViewer.xib; sourceTree = "<group>"; };
+		ECBDAABE13F7FB7D003153F1 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		ECE1C60813F6671500173383 /* PhotosGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosGridViewController.h; sourceTree = "<group>"; };
+		ECE1C60913F6671500173383 /* PhotosGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosGridViewController.m; sourceTree = "<group>"; };
+		ECE1C60D13F6672D00173383 /* PhotosGridViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotosGridViewController.xib; sourceTree = "<group>"; };
+		ECE1C60F13F667FB00173383 /* ImageGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageGridViewCell.h; sourceTree = "<group>"; };
+		ECE1C61013F667FB00173383 /* ImageGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageGridViewCell.m; sourceTree = "<group>"; };
+		ECE1C61313F66CE100173383 /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
+		ECE1C61413F66CE100173383 /* checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark@2x.png"; sourceTree = "<group>"; };
+		ECE1C61713F6EC7100173383 /* SelectChuteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectChuteViewController.h; sourceTree = "<group>"; };
+		ECE1C61813F6EC7100173383 /* SelectChuteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectChuteViewController.m; sourceTree = "<group>"; };
+		ECE1C61C13F6EC8900173383 /* SelectChuteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectChuteViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EC5B646913F0019100EBA5A1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC762E1E13F1867A0081E77E /* QuartzCore.framework in Frameworks */,
+				EC5B64A713F0023A00EBA5A1 /* AssetsLibrary.framework in Frameworks */,
+				EC5B64A813F0023A00EBA5A1 /* CFNetwork.framework in Frameworks */,
+				EC5B64A913F0023A00EBA5A1 /* CoreFoundation.framework in Frameworks */,
+				EC5B64AA13F0023A00EBA5A1 /* Foundation.framework in Frameworks */,
+				EC5B64AB13F0023A00EBA5A1 /* libz.1.2.3.dylib in Frameworks */,
+				EC5B64AC13F0023A00EBA5A1 /* MobileCoreServices.framework in Frameworks */,
+				EC5B652C13F002AD00EBA5A1 /* CoreGraphics.framework in Frameworks */,
+				EC5B64AD13F0023A00EBA5A1 /* Security.framework in Frameworks */,
+				EC5B64AE13F0023A00EBA5A1 /* SystemConfiguration.framework in Frameworks */,
+				EC5B64AF13F0023A00EBA5A1 /* UIKit.framework in Frameworks */,
+				EC3DF5BF13FD8FA600433131 /* libChuteiOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EC3DF53413FD809500433131 /* Chute */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF5BE13FD8FA600433131 /* libChuteiOS.a */,
+				EC3DF53513FD809500433131 /* ChuteAPI.h */,
+				EC3DF53613FD809500433131 /* ChuteAsset.h */,
+				EC3DF53713FD809500433131 /* ChuteAssetManager.h */,
+				EC3DF53813FD809500433131 /* ChuteAssetUploader.h */,
+				EC3DF53913FD809500433131 /* ChuteConstants.h */,
+				EC3DF53A13FD809500433131 /* ChuteLoginViewController.h */,
+				EC3DF53B13FD809500433131 /* ChuteLoginViewController.xib */,
+				EC3DF53C13FD809500433131 /* ChuteSDK.h */,
+				EC3DF53D13FD809500433131 /* ChuteUIBaseViewController.h */,
+				EC3DF53F13FD809500433131 /* Vendor */,
+			);
+			name = Chute;
+			path = ../Chute;
+			sourceTree = "<group>";
+		};
+		EC3DF53F13FD809500433131 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF54013FD809500433131 /* ASIHttpRequest */,
+				EC3DF55813FD809500433131 /* Extras */,
+				EC3DF55F13FD809500433131 /* Keychain */,
+				EC3DF56213FD809500433131 /* KVOBlockBinding */,
+				EC3DF56513FD809500433131 /* MBProgressHUD */,
+				EC3DF56813FD809500433131 /* SBJson */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		EC3DF54013FD809500433131 /* ASIHttpRequest */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF54113FD809500433131 /* ASIAuthenticationDialog.h */,
+				EC3DF54213FD809500433131 /* ASIAuthenticationDialog.m */,
+				EC3DF54313FD809500433131 /* ASICacheDelegate.h */,
+				EC3DF54413FD809500433131 /* ASIDataCompressor.h */,
+				EC3DF54513FD809500433131 /* ASIDataCompressor.m */,
+				EC3DF54613FD809500433131 /* ASIDataDecompressor.h */,
+				EC3DF54713FD809500433131 /* ASIDataDecompressor.m */,
+				EC3DF54813FD809500433131 /* ASIDownloadCache.h */,
+				EC3DF54913FD809500433131 /* ASIDownloadCache.m */,
+				EC3DF54A13FD809500433131 /* ASIFormDataRequest.h */,
+				EC3DF54B13FD809500433131 /* ASIFormDataRequest.m */,
+				EC3DF54C13FD809500433131 /* ASIHTTPRequest.h */,
+				EC3DF54D13FD809500433131 /* ASIHTTPRequest.m */,
+				EC3DF54E13FD809500433131 /* ASIHTTPRequestConfig.h */,
+				EC3DF54F13FD809500433131 /* ASIHTTPRequestDelegate.h */,
+				EC3DF55013FD809500433131 /* ASIInputStream.h */,
+				EC3DF55113FD809500433131 /* ASIInputStream.m */,
+				EC3DF55213FD809500433131 /* ASINetworkQueue.h */,
+				EC3DF55313FD809500433131 /* ASINetworkQueue.m */,
+				EC3DF55413FD809500433131 /* ASIProgressDelegate.h */,
+				EC3DF55513FD809500433131 /* Reachability */,
+			);
+			path = ASIHttpRequest;
+			sourceTree = "<group>";
+		};
+		EC3DF55513FD809500433131 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF55613FD809500433131 /* Reachability.h */,
+				EC3DF55713FD809500433131 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		EC3DF55813FD809500433131 /* Extras */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF55913FD809500433131 /* NSData+Base64.h */,
+				EC3DF55A13FD809500433131 /* NSData+Base64.m */,
+				EC3DF55B13FD809500433131 /* NSDictionary+QueryString.h */,
+				EC3DF55C13FD809500433131 /* NSDictionary+QueryString.m */,
+				EC3DF55D13FD809500433131 /* NSString+QueryString.h */,
+				EC3DF55E13FD809500433131 /* NSString+QueryString.m */,
+			);
+			path = Extras;
+			sourceTree = "<group>";
+		};
+		EC3DF55F13FD809500433131 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF56013FD809500433131 /* KeychainItemWrapper.h */,
+				EC3DF56113FD809500433131 /* KeychainItemWrapper.m */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		EC3DF56213FD809500433131 /* KVOBlockBinding */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF56313FD809500433131 /* NSObject+KVOBlockBinding.h */,
+				EC3DF56413FD809500433131 /* NSObject+KVOBlockBinding.m */,
+			);
+			path = KVOBlockBinding;
+			sourceTree = "<group>";
+		};
+		EC3DF56513FD809500433131 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF56613FD809500433131 /* MBProgressHUD.h */,
+				EC3DF56713FD809500433131 /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		EC3DF56813FD809500433131 /* SBJson */ = {
+			isa = PBXGroup;
+			children = (
+				EC3DF56913FD809500433131 /* JSON.h */,
+				EC3DF56A13FD809500433131 /* NSObject+SBJson.h */,
+				EC3DF56B13FD809500433131 /* NSObject+SBJson.m */,
+				EC3DF56C13FD809500433131 /* SBJson.h */,
+				EC3DF56D13FD809500433131 /* SBJsonParser.h */,
+				EC3DF56E13FD809500433131 /* SBJsonParser.m */,
+				EC3DF56F13FD809500433131 /* SBJsonStreamParser.h */,
+				EC3DF57013FD809500433131 /* SBJsonStreamParser.m */,
+				EC3DF57113FD809500433131 /* SBJsonStreamParserAccumulator.h */,
+				EC3DF57213FD809500433131 /* SBJsonStreamParserAccumulator.m */,
+				EC3DF57313FD809500433131 /* SBJsonStreamParserAdapter.h */,
+				EC3DF57413FD809500433131 /* SBJsonStreamParserAdapter.m */,
+				EC3DF57513FD809500433131 /* SBJsonStreamParserState.h */,
+				EC3DF57613FD809500433131 /* SBJsonStreamParserState.m */,
+				EC3DF57713FD809500433131 /* SBJsonStreamWriter.h */,
+				EC3DF57813FD809500433131 /* SBJsonStreamWriter.m */,
+				EC3DF57913FD809500433131 /* SBJsonStreamWriterAccumulator.h */,
+				EC3DF57A13FD809500433131 /* SBJsonStreamWriterAccumulator.m */,
+				EC3DF57B13FD809500433131 /* SBJsonStreamWriterState.h */,
+				EC3DF57C13FD809500433131 /* SBJsonStreamWriterState.m */,
+				EC3DF57D13FD809500433131 /* SBJsonTokeniser.h */,
+				EC3DF57E13FD809500433131 /* SBJsonTokeniser.m */,
+				EC3DF57F13FD809500433131 /* SBJsonUTF8Stream.h */,
+				EC3DF58013FD809500433131 /* SBJsonUTF8Stream.m */,
+				EC3DF58113FD809500433131 /* SBJsonWriter.h */,
+				EC3DF58213FD809500433131 /* SBJsonWriter.m */,
+			);
+			path = SBJson;
+			sourceTree = "<group>";
+		};
+		EC46790A13F0130C00533435 /* Chutes */ = {
+			isa = PBXGroup;
+			children = (
+				ECBDAAAC13F7F777003153F1 /* ImageScroller.h */,
+				ECBDAAAD13F7F777003153F1 /* ImageScroller.m */,
+				ECBDAAAF13F7F7C9003153F1 /* PhotoViewer.h */,
+				ECBDAAB013F7F7C9003153F1 /* PhotoViewer.m */,
+				EC46790313F012A900533435 /* CreateChuteViewController.h */,
+				EC46790413F012A900533435 /* CreateChuteViewController.m */,
+				EC5B653C13F006FC00EBA5A1 /* ChuteBaseViewController.h */,
+				EC5B653D13F006FC00EBA5A1 /* ChuteBaseViewController.m */,
+				EC46790B13F0132C00533435 /* ListChutesViewController.h */,
+				EC46790C13F0132C00533435 /* ListChutesViewController.m */,
+				EC762E1513F185460081E77E /* AssetsGridViewController.h */,
+				EC762E1613F185460081E77E /* AssetsGridViewController.m */,
+			);
+			name = Chutes;
+			sourceTree = "<group>";
+		};
+		EC5B646113F0019100EBA5A1 = {
+			isa = PBXGroup;
+			children = (
+				EC3DF53413FD809500433131 /* Chute */,
+				EC5B647613F0019100EBA5A1 /* KitchenSink */,
+				EC5B646F13F0019100EBA5A1 /* Frameworks */,
+				EC5B646D13F0019100EBA5A1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EC5B646D13F0019100EBA5A1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC5B646C13F0019100EBA5A1 /* KitchenSink.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC5B646F13F0019100EBA5A1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EC762E1C13F186700081E77E /* QuartzCore.framework */,
+				EC5B652A13F002A600EBA5A1 /* CoreGraphics.framework */,
+				EC5B649513F0022700EBA5A1 /* AssetsLibrary.framework */,
+				EC5B649613F0022700EBA5A1 /* CFNetwork.framework */,
+				EC5B649713F0022700EBA5A1 /* CoreFoundation.framework */,
+				EC5B649813F0022800EBA5A1 /* Foundation.framework */,
+				EC5B649913F0022800EBA5A1 /* libz.1.2.3.dylib */,
+				EC5B649A13F0022800EBA5A1 /* MobileCoreServices.framework */,
+				EC5B649B13F0022800EBA5A1 /* Security.framework */,
+				EC5B649C13F0022800EBA5A1 /* SystemConfiguration.framework */,
+				EC5B649D13F0022800EBA5A1 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EC5B647613F0019100EBA5A1 /* KitchenSink */ = {
+			isa = PBXGroup;
+			children = (
+				ECE1C61213F66CE100173383 /* Resources */,
+				EC762DDD13F184760081E77E /* Vendor */,
+				EC5B653213F0045A00EBA5A1 /* XIB */,
+				EC5B653B13F006E100EBA5A1 /* Controllers */,
+				EC5B647F13F0019100EBA5A1 /* KitchenSinkAppDelegate.h */,
+				EC5B648013F0019100EBA5A1 /* KitchenSinkAppDelegate.m */,
+				EC5B647713F0019100EBA5A1 /* Supporting Files */,
+				EC5B652D13F0043300EBA5A1 /* RootViewController.h */,
+				EC5B652E13F0043300EBA5A1 /* RootViewController.m */,
+				EC762DDA13F182390081E77E /* UIBaseViewController.h */,
+				EC762DDB13F182390081E77E /* UIBaseViewController.m */,
+			);
+			path = KitchenSink;
+			sourceTree = "<group>";
+		};
+		EC5B647713F0019100EBA5A1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EC5B647813F0019100EBA5A1 /* KitchenSink-Info.plist */,
+				EC5B647C13F0019100EBA5A1 /* main.m */,
+				EC5B647E13F0019100EBA5A1 /* KitchenSink-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EC5B653213F0045A00EBA5A1 /* XIB */ = {
+			isa = PBXGroup;
+			children = (
+				EC762E1A13F1855C0081E77E /* AssetsGridViewController.xib */,
+				EC46790813F012DC00533435 /* CreateChuteViewController.xib */,
+				EC5B654B13F0073A00EBA5A1 /* BundlesBaseViewController.xib */,
+				ECE1C60D13F6672D00173383 /* PhotosGridViewController.xib */,
+				EC5B654C13F0073A00EBA5A1 /* PhotosBaseViewController.xib */,
+				EC5B654D13F0073A00EBA5A1 /* ChuteBaseViewController.xib */,
+				EC5B653313F0045A00EBA5A1 /* InfoPlist.strings */,
+				EC5B653513F0045A00EBA5A1 /* MainWindow.xib */,
+				EC5B653713F0045A00EBA5A1 /* RootViewController.xib */,
+				EC46791013F0134000533435 /* ListChutesViewController.xib */,
+				ECE1C61C13F6EC8900173383 /* SelectChuteViewController.xib */,
+				ECBDAAB413F7F7DC003153F1 /* PhotoViewer.xib */,
+			);
+			path = XIB;
+			sourceTree = "<group>";
+		};
+		EC5B653B13F006E100EBA5A1 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				ECE1C60713F6668900173383 /* Bundles */,
+				ECE1C60513F6667900173383 /* Photos */,
+				EC46790A13F0130C00533435 /* Chutes */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		EC762DDD13F184760081E77E /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				EC762DDE13F184760081E77E /* AQGridView */,
+				EC762DF613F184760081E77E /* SDWebImage */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		EC762DDE13F184760081E77E /* AQGridView */ = {
+			isa = PBXGroup;
+			children = (
+				EC762DDF13F184760081E77E /* AQGridView+CellLayout.h */,
+				EC762DE013F184760081E77E /* AQGridView+CellLocationDelegation.h */,
+				EC762DE113F184760081E77E /* AQGridView.h */,
+				EC762DE213F184760081E77E /* AQGridView.m */,
+				EC762DE313F184760081E77E /* AQGridViewAnimatorItem.h */,
+				EC762DE413F184760081E77E /* AQGridViewAnimatorItem.m */,
+				EC762DE513F184760081E77E /* AQGridViewCell+AQGridViewCellPrivate.h */,
+				EC762DE613F184760081E77E /* AQGridViewCell.h */,
+				EC762DE713F184760081E77E /* AQGridViewCell.m */,
+				EC762DE813F184760081E77E /* AQGridViewController.h */,
+				EC762DE913F184760081E77E /* AQGridViewController.m */,
+				EC762DEA13F184760081E77E /* AQGridViewData.h */,
+				EC762DEB13F184760081E77E /* AQGridViewData.m */,
+				EC762DEC13F184760081E77E /* AQGridViewUpdateInfo.h */,
+				EC762DED13F184760081E77E /* AQGridViewUpdateInfo.m */,
+				EC762DEE13F184760081E77E /* AQGridViewUpdateItem.h */,
+				EC762DEF13F184760081E77E /* AQGridViewUpdateItem.m */,
+				EC762DF013F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.h */,
+				EC762DF113F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.m */,
+				EC762DF213F184760081E77E /* NSIndexSet+AQIsSetContiguous.h */,
+				EC762DF313F184760081E77E /* NSIndexSet+AQIsSetContiguous.m */,
+				EC762DF413F184760081E77E /* UIColor+AQGridView.h */,
+				EC762DF513F184760081E77E /* UIColor+AQGridView.m */,
+			);
+			path = AQGridView;
+			sourceTree = "<group>";
+		};
+		EC762DF613F184760081E77E /* SDWebImage */ = {
+			isa = PBXGroup;
+			children = (
+				EC762DF713F184760081E77E /* SDImageCache.h */,
+				EC762DF813F184760081E77E /* SDImageCache.m */,
+				EC762DF913F184760081E77E /* SDImageCacheDelegate.h */,
+				EC762DFA13F184760081E77E /* SDWebImageCompat.h */,
+				EC762DFB13F184760081E77E /* SDWebImageDownloader.h */,
+				EC762DFC13F184760081E77E /* SDWebImageDownloader.m */,
+				EC762DFD13F184760081E77E /* SDWebImageDownloaderDelegate.h */,
+				EC762DFE13F184760081E77E /* SDWebImageManager.h */,
+				EC762DFF13F184760081E77E /* SDWebImageManager.m */,
+				EC762E0013F184760081E77E /* SDWebImageManagerDelegate.h */,
+				EC762E0113F184760081E77E /* UIImageView+WebCache.h */,
+				EC762E0213F184760081E77E /* UIImageView+WebCache.m */,
+			);
+			path = SDWebImage;
+			sourceTree = "<group>";
+		};
+		ECE1C60513F6667900173383 /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				EC5B654113F0070C00EBA5A1 /* PhotosBaseViewController.h */,
+				EC5B654213F0070C00EBA5A1 /* PhotosBaseViewController.m */,
+				ECE1C60813F6671500173383 /* PhotosGridViewController.h */,
+				ECE1C60913F6671500173383 /* PhotosGridViewController.m */,
+				ECE1C60F13F667FB00173383 /* ImageGridViewCell.h */,
+				ECE1C61013F667FB00173383 /* ImageGridViewCell.m */,
+				ECE1C61713F6EC7100173383 /* SelectChuteViewController.h */,
+				ECE1C61813F6EC7100173383 /* SelectChuteViewController.m */,
+			);
+			name = Photos;
+			sourceTree = "<group>";
+		};
+		ECE1C60713F6668900173383 /* Bundles */ = {
+			isa = PBXGroup;
+			children = (
+				EC5B654613F0071E00EBA5A1 /* BundlesBaseViewController.h */,
+				EC5B654713F0071E00EBA5A1 /* BundlesBaseViewController.m */,
+			);
+			name = Bundles;
+			sourceTree = "<group>";
+		};
+		ECE1C61213F66CE100173383 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ECBDAABE13F7FB7D003153F1 /* placeholder.png */,
+				ECE1C61313F66CE100173383 /* checkmark.png */,
+				ECE1C61413F66CE100173383 /* checkmark@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EC5B646B13F0019100EBA5A1 /* KitchenSink */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC5B648D13F0019100EBA5A1 /* Build configuration list for PBXNativeTarget "KitchenSink" */;
+			buildPhases = (
+				EC5B646813F0019100EBA5A1 /* Sources */,
+				EC5B646913F0019100EBA5A1 /* Frameworks */,
+				EC5B646A13F0019100EBA5A1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KitchenSink;
+			productName = KitchenSink;
+			productReference = EC5B646C13F0019100EBA5A1 /* KitchenSink.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EC5B646313F0019100EBA5A1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = NA;
+			};
+			buildConfigurationList = EC5B646613F0019100EBA5A1 /* Build configuration list for PBXProject "KitchenSink" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EC5B646113F0019100EBA5A1;
+			productRefGroup = EC5B646D13F0019100EBA5A1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EC5B646B13F0019100EBA5A1 /* KitchenSink */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EC5B646A13F0019100EBA5A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC5B653813F0045A00EBA5A1 /* InfoPlist.strings in Resources */,
+				EC5B653913F0045A00EBA5A1 /* MainWindow.xib in Resources */,
+				EC5B653A13F0045A00EBA5A1 /* RootViewController.xib in Resources */,
+				EC5B654E13F0073A00EBA5A1 /* BundlesBaseViewController.xib in Resources */,
+				EC5B654F13F0073A00EBA5A1 /* PhotosBaseViewController.xib in Resources */,
+				EC5B655013F0073A00EBA5A1 /* ChuteBaseViewController.xib in Resources */,
+				EC46790913F012DC00533435 /* CreateChuteViewController.xib in Resources */,
+				EC46791113F0134000533435 /* ListChutesViewController.xib in Resources */,
+				EC762E1B13F1855C0081E77E /* AssetsGridViewController.xib in Resources */,
+				ECE1C60E13F6672D00173383 /* PhotosGridViewController.xib in Resources */,
+				ECE1C61513F66CE100173383 /* checkmark.png in Resources */,
+				ECE1C61613F66CE100173383 /* checkmark@2x.png in Resources */,
+				ECE1C61D13F6EC8900173383 /* SelectChuteViewController.xib in Resources */,
+				ECBDAAB513F7F7DC003153F1 /* PhotoViewer.xib in Resources */,
+				ECBDAABF13F7FB7D003153F1 /* placeholder.png in Resources */,
+				EC3DF58313FD809500433131 /* ChuteLoginViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EC5B646813F0019100EBA5A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC5B647D13F0019100EBA5A1 /* main.m in Sources */,
+				EC5B648113F0019100EBA5A1 /* KitchenSinkAppDelegate.m in Sources */,
+				EC5B653013F0043300EBA5A1 /* RootViewController.m in Sources */,
+				EC5B653F13F006FC00EBA5A1 /* ChuteBaseViewController.m in Sources */,
+				EC5B654413F0070C00EBA5A1 /* PhotosBaseViewController.m in Sources */,
+				EC5B654913F0071E00EBA5A1 /* BundlesBaseViewController.m in Sources */,
+				EC46790613F012A900533435 /* CreateChuteViewController.m in Sources */,
+				EC46790E13F0132C00533435 /* ListChutesViewController.m in Sources */,
+				EC762DDC13F182390081E77E /* UIBaseViewController.m in Sources */,
+				EC762E0313F184760081E77E /* AQGridView.m in Sources */,
+				EC762E0413F184760081E77E /* AQGridViewAnimatorItem.m in Sources */,
+				EC762E0513F184760081E77E /* AQGridViewCell.m in Sources */,
+				EC762E0613F184760081E77E /* AQGridViewController.m in Sources */,
+				EC762E0713F184760081E77E /* AQGridViewData.m in Sources */,
+				EC762E0813F184760081E77E /* AQGridViewUpdateInfo.m in Sources */,
+				EC762E0913F184760081E77E /* AQGridViewUpdateItem.m in Sources */,
+				EC762E0A13F184760081E77E /* NSIndexSet+AQIndexesOutsideSet.m in Sources */,
+				EC762E0B13F184760081E77E /* NSIndexSet+AQIsSetContiguous.m in Sources */,
+				EC762E0C13F184760081E77E /* UIColor+AQGridView.m in Sources */,
+				EC762E0D13F184760081E77E /* SDImageCache.m in Sources */,
+				EC762E0E13F184760081E77E /* SDWebImageDownloader.m in Sources */,
+				EC762E0F13F184760081E77E /* SDWebImageManager.m in Sources */,
+				EC762E1013F184760081E77E /* UIImageView+WebCache.m in Sources */,
+				EC762E1813F185460081E77E /* AssetsGridViewController.m in Sources */,
+				ECE1C60B13F6671500173383 /* PhotosGridViewController.m in Sources */,
+				ECE1C61113F667FB00173383 /* ImageGridViewCell.m in Sources */,
+				ECE1C61A13F6EC7200173383 /* SelectChuteViewController.m in Sources */,
+				ECBDAAAE13F7F777003153F1 /* ImageScroller.m in Sources */,
+				ECBDAAB213F7F7C9003153F1 /* PhotoViewer.m in Sources */,
+				EC3DF58513FD809500433131 /* ASIAuthenticationDialog.m in Sources */,
+				EC3DF58613FD809500433131 /* ASIDataCompressor.m in Sources */,
+				EC3DF58713FD809500433131 /* ASIDataDecompressor.m in Sources */,
+				EC3DF58813FD809500433131 /* ASIDownloadCache.m in Sources */,
+				EC3DF58913FD809500433131 /* ASIFormDataRequest.m in Sources */,
+				EC3DF58A13FD809500433131 /* ASIHTTPRequest.m in Sources */,
+				EC3DF58B13FD809500433131 /* ASIInputStream.m in Sources */,
+				EC3DF58C13FD809500433131 /* ASINetworkQueue.m in Sources */,
+				EC3DF58D13FD809500433131 /* Reachability.m in Sources */,
+				EC3DF58E13FD809500433131 /* NSData+Base64.m in Sources */,
+				EC3DF58F13FD809500433131 /* NSDictionary+QueryString.m in Sources */,
+				EC3DF59013FD809500433131 /* NSString+QueryString.m in Sources */,
+				EC3DF59113FD809500433131 /* KeychainItemWrapper.m in Sources */,
+				EC3DF59213FD809500433131 /* NSObject+KVOBlockBinding.m in Sources */,
+				EC3DF59313FD809500433131 /* MBProgressHUD.m in Sources */,
+				EC3DF59413FD809500433131 /* NSObject+SBJson.m in Sources */,
+				EC3DF59513FD809500433131 /* SBJsonParser.m in Sources */,
+				EC3DF59613FD809500433131 /* SBJsonStreamParser.m in Sources */,
+				EC3DF59713FD809500433131 /* SBJsonStreamParserAccumulator.m in Sources */,
+				EC3DF59813FD809500433131 /* SBJsonStreamParserAdapter.m in Sources */,
+				EC3DF59913FD809500433131 /* SBJsonStreamParserState.m in Sources */,
+				EC3DF59A13FD809500433131 /* SBJsonStreamWriter.m in Sources */,
+				EC3DF59B13FD809500433131 /* SBJsonStreamWriterAccumulator.m in Sources */,
+				EC3DF59C13FD809500433131 /* SBJsonStreamWriterState.m in Sources */,
+				EC3DF59D13FD809500433131 /* SBJsonTokeniser.m in Sources */,
+				EC3DF59E13FD809500433131 /* SBJsonUTF8Stream.m in Sources */,
+				EC3DF59F13FD809500433131 /* SBJsonWriter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		EC5B653313F0045A00EBA5A1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EC5B653413F0045A00EBA5A1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EC5B653513F0045A00EBA5A1 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EC5B653613F0045A00EBA5A1 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EC5B648B13F0019100EBA5A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		EC5B648C13F0019100EBA5A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EC5B648E13F0019100EBA5A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "KitchenSink/KitchenSink-Prefix.pch";
+				INFOPLIST_FILE = "KitchenSink/KitchenSink-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../Chute\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		EC5B648F13F0019100EBA5A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "KitchenSink/KitchenSink-Prefix.pch";
+				INFOPLIST_FILE = "KitchenSink/KitchenSink-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../Chute\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EC5B646613F0019100EBA5A1 /* Build configuration list for PBXProject "KitchenSink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC5B648B13F0019100EBA5A1 /* Debug */,
+				EC5B648C13F0019100EBA5A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EC5B648D13F0019100EBA5A1 /* Build configuration list for PBXNativeTarget "KitchenSink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC5B648E13F0019100EBA5A1 /* Debug */,
+				EC5B648F13F0019100EBA5A1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EC5B646313F0019100EBA5A1 /* Project object */;
+}
