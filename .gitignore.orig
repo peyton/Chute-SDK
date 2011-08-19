@@ -1,0 +1,8 @@
+<<<<<<< HEAD
+
+bin/
+gen/
+*.class
+=======
+.DS_Store
+>>>>>>> d7ad5adb74335ef3661c301cebb721715373adf1
