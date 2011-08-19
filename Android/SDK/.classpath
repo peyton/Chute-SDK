@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="src" path="ChuteLibrary_src"/>
+	<classpathentry exported="true" kind="lib" path="libs/chuteapiv1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
