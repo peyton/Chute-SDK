@@ -56,11 +56,6 @@ typedef enum {
 - (void)getAssetsForChuteId:(NSUInteger)chuteId
                    response:(void (^)(NSArray *))aResponseBlock 
                    andError:(ErrorBlock)anErrorBlock;
-/*
- - (void)getChutesForResponse:(void (^)(id))aResponseBlock
- andError:(void (^)(NSError *))anErrorBlock;
- 
-*/
 
 //Post Data
 - (void)createChute:(NSString *)name 
