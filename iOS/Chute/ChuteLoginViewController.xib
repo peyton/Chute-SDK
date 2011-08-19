@@ -50,7 +50,6 @@
 						<string key="NSFrame">{{49, 373}, {222, 47}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -140,7 +139,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="898993186">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -154,8 +153,6 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{5, 5}, {300, 440}}</string>
 								<reference key="NSSuperview" ref="159899538"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -167,7 +164,6 @@
 						</object>
 						<string key="NSFrameSize">{310, 450}</string>
 						<reference key="NSSuperview" ref="898993186"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="572267887"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -177,8 +173,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{310, 450}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="159899538"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -362,16 +356,8 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">ChuteBaseViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ChuteBaseViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">ChuteLoginViewController</string>
-					<string key="superclassName">ChuteBaseViewController</string>
+					<string key="superclassName">ChuteUIBaseViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<string key="NS.key.0">login</string>
 						<string key="NS.object.0">id</string>
@@ -425,6 +411,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/ChuteLoginViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ChuteUIBaseViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ChuteUIBaseViewController.h</string>
 					</object>
 				</object>
 			</object>
