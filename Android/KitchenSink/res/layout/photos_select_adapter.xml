@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:padding="1dp"
+  android:layout_height="wrap_content"
+  android:layout_width="wrap_content"
+  android:layout_gravity="center">
+  <ImageView
+    android:id="@+id/imageViewThumb"
+    android:layout_height="80dp"
+    android:layout_width="80dp"
+    android:scaleType="centerCrop"></ImageView>
+  <ImageView
+    android:layout_alignBaseline="@+id/imageViewThumb"
+    android:layout_alignRight="@+id/imageViewThumb"
+    android:layout_alignBottom="@+id/imageViewThumb"
+    android:id="@+id/imageTick"
+    android:background="@drawable/checkbox_photos"
+    android:layout_height="20dp"
+    android:layout_width="20dp"
+    android:visibility="gone">
+  </ImageView>
+</RelativeLayout>

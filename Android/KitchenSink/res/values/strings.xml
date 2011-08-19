@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">ChuteKitchenSink</string>
+  <!--Global strings -->
+  <string name="cancel">Cancel</string>
+  <string name="ok">OK</string>
+  <string name="success">Success</string>
+  <string name="fail">Failed</string>
+  <!-- API -->
+  <!--Chute Create -->
+  <string name="create_chute_name_text">Chute Name:</string>
+  <string name="create_chute_name_hint">Name Here</string>
+  <string name="create_chute_just_me">Just Me</string>
+  <string name="create_chute_friends">Friends</string>
+  <string name="create_chute_anyone">Anyone</string>
+  <string name="create_chute_who_can_join">Who Can Join This Chute?</string>
+  <string name="create_chute_allow_members">Allow members to add photos</string>
+  <string name="create_chute_allow_invite">Allow members to invite new members</string>
+  <string name="create_chute_button_save">Save</string>
+  <string name="create_chute_button_cancel">Cancel</string>
+  <string name="create_chute_toast_chute_name">Input Chute Name</string>
+  <!-- Chutes API -->
+  <string name="api_dialog_create_chute">Creating chute..</string>
+  <string name="api_dialog_delete_chute_progress_message">Deleting Chute</string>
+  <string name="api_dialog_leave_chute_progress_message">Leaving Chute</string>
+  <string name="api_dialog_join_chute_progress_message">Joining Selected Chutes, Please Wait</string>
+  <string name="api_dialog_make_chute_progress_message">Saving chute...</string>
+  
+</resources>

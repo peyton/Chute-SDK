@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.chute.examples.kitchensink"
+  android:versionCode="1"
+  android:versionName="1.0">
+  <uses-sdk android:minSdkVersion="7" />
+  <application
+    android:theme="@android:style/Theme.NoTitleBar"
+    android:icon="@drawable/icon"
+    android:label="@string/app_name">
+    <activity
+      android:name=".ChuteKitchenSinkActivity"
+      android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name=".activities.CreateChuteActivity"></activity>
+    <activity android:name=".activities.BrowseChuteActivity"></activity>
+    <activity android:name=".activities.ViewBundleActivity"></activity>
+    <activity android:name=".activities.CreateBundleActivity"></activity>
+    <provider
+      android:authorities="com.chute.examples.kitchensink.ChuteProvider"
+      android:name=".db.ChuteProvider"></provider>
+    <service android:name=".offline.services.OfflineBufferSubmitService"></service>
+    <receiver android:name=".offline.services.ConnectivityBroadcastReceiver">
+      <intent-filter>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
+        <category android:name="android.intent.category.DEFAULT"></category>
+      </intent-filter>
+    </receiver>
+    <activity android:name=".activities.AuthenticationActivity"></activity>
+    <activity android:name=".activities.BrowseAssetsActivity"></activity>
+    <service android:name=".services.ListAndStoreSampleImagesService"></service>
+    <activity android:name=".activities.PhotoSelectorActivity"></activity>
+    <service android:name=".services.UploadImagesService"></service>
+    <activity
+      android:name=".activities.UploadImageActivity"
+      android:configChanges="keyboard|orientation"></activity>
+    <activity
+      android:name=".activities.PickChuteActivity"
+      android:configChanges="keyboard|orientation"></activity>
+    <activity android:name=".activities.CreateParcelActivity" android:configChanges="keyboard|orientation"></activity>
+  </application>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+  <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+</manifest>
