@@ -57,6 +57,17 @@ typedef enum {
                    response:(void (^)(NSArray *))aResponseBlock 
                    andError:(ErrorBlock)anErrorBlock;
 
+- (void)getMetaDataforChuteId:(NSString *)Id 
+                     response:(ResponseBlock)aResponseBlock 
+                     andError:(ErrorBlock)anErrorBlock;
+
+- (void)getMetaDataforAssetId:(NSString *)Id 
+                     response:(ResponseBlock)aResponseBlock 
+                     andError:(ErrorBlock)anErrorBlock;
+
+- (void)getMyMetaDataWithResponse:(ResponseBlock)aResponseBlock
+                         andError:(ErrorBlock)anErrorBlock;
+
 //Post Data
 - (void)createChute:(NSString *)name 
          withParent:(NSUInteger)parentId
@@ -65,6 +76,20 @@ typedef enum {
        andAddPhotos:(NSUInteger)addPhotos
         andResponse:(ResponseBlock)responseBlock 
            andError:(ErrorBlock)errorBlock;
+
+- (void)setMetaData:(NSDictionary *)dictionary
+         forChuteId:(NSString *)Id 
+           response:(ResponseBlock)aResponseBlock 
+           andError:(ErrorBlock)anErrorBlock;
+
+- (void)setMetaData:(NSDictionary *)dictionary
+         forAssetId:(NSString *)Id 
+           response:(ResponseBlock)aResponseBlock 
+           andError:(ErrorBlock)anErrorBlock;
+
+- (void)setMyMetaData:(NSDictionary *)dictionary
+         WithResponse:(ResponseBlock)aResponseBlock
+             andError:(ErrorBlock)anErrorBlock;
 
 //Helper methods for Asset Uploader
 - (void)initThumbnail:(UIImage *)thumbnail
