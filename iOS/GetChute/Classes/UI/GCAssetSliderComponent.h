@@ -15,6 +15,7 @@
     IBOutlet UIScrollView *objectSlider;
     NSInteger currentPage;
 }
+@property (nonatomic, readonly) NSInteger currentPage;
 @property (nonatomic, retain) NSArray *objects;
 @property (nonatomic, retain) NSMutableArray *sliderObjects;
 

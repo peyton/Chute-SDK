@@ -10,7 +10,7 @@
 #import "GCAsset.h"
 
 @implementation GCAssetSliderComponent
-@synthesize objects, sliderObjects;
+@synthesize objects, sliderObjects, currentPage;
 
 - (CGRect)rectForPage:(NSInteger)page{
     CGRect imageRect = CGRectMake((objectSlider.frame.size.width*(page-1)), 0, objectSlider.frame.size.width, objectSlider.frame.size.height);

@@ -44,7 +44,7 @@
 }
 
 - (id) data {
-    if([data objectForKey:@"data"])
+    if([data respondsToSelector:@selector(objectForKey:)] && [data objectForKey:@"data"])
         return [data objectForKey:@"data"];
     else
         return data;
