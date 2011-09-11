@@ -12,5 +12,4 @@
 - (IBAction)chute:(id)sender;
 - (IBAction)photos:(id)sender;
 - (IBAction)bundles:(id)sender;
-- (IBAction)sync:(id)sender;
 @end
