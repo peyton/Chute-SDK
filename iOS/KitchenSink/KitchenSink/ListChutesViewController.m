@@ -15,14 +15,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if ([[[data objectAtIndex:indexPath.row] objectForKey:@"assets_count"] intValue] == 0) {
+    GCChute *_chute = [data objectAtIndex:indexPath.row];
+    
+    if ([_chute assetsCount] == 0) {
         [self quickAlertWithTitle:@"No photos" message:@"No photos are present in this Chute." button:@"Okay"];
         return;
     }
     
     AssetsGridViewController *assetsGridViewController = [[AssetsGridViewController alloc] init];
-    [assetsGridViewController setTitle:[[data objectAtIndex:indexPath.row] objectForKey:@"name"]];
-    [assetsGridViewController setChuteId:[[[data objectAtIndex:indexPath.row] objectForKey:@"id"] intValue]];
+    [assetsGridViewController setTitle:[_chute name]];
+    [assetsGridViewController setChute:_chute];
     [self.navigationController pushViewController:assetsGridViewController animated:YES];
     [assetsGridViewController release];
 }
@@ -39,8 +41,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     }
     
-    cell.textLabel.text         = [[data objectAtIndex:indexPath.row] objectForKey:@"name"];
-    cell.detailTextLabel.text   = [NSString stringWithFormat:@"%d", [[[data objectAtIndex:indexPath.row] objectForKey:@"assets_count"] intValue]];
+    GCChute *_chute = [data objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text         = [_chute name];
+    cell.detailTextLabel.text   = [NSString stringWithFormat:@"%d", [_chute assetsCount]];
     return cell;
 }
 
@@ -67,16 +71,20 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [[ChuteAPI shared] getMyChutesWithResponse:^(NSArray *arr) {
-        if (data) {
-            [data release], data = nil;
+    
+    [GCChute allInBackgroundWithCompletion:^(GCResponse *response) {
+        if ([response isSuccessful]) {
+            if (data) {
+                [data release], data = nil;
+            }
+            data = [[response object] retain];
+            [chuteList reloadData];
         }
-        data = [arr retain];
-        [chuteList reloadData];
-    } andError:^(NSError *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!" message:[[response error] localizedDescription] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
     }];
 }
 

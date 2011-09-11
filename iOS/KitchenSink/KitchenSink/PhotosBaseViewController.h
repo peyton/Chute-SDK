@@ -9,7 +9,5 @@
 #import "UIBaseViewController.h"
 
 @interface PhotosBaseViewController : UIBaseViewController
-- (IBAction)showSingleImageSelector:(id)sender;
 - (IBAction)showMultipleImageSelector:(id)sender;
-
 @end

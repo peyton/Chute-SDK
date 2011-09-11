@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSArray *photos;
 @property (nonatomic, assign) NSUInteger chuteId;
+@property (nonatomic, retain) GCChute *chute;
 
 - (void)showPhotoViewer:(id) sender;
 

@@ -1,5 +1,5 @@
 //
-//  ChuteConstants.h
+//  GCConstants.h
 //
 //  Copyright 2011 NA. All rights reserved.
 //
@@ -9,20 +9,10 @@
 // 0 - Facebook
 // 1 - Evernote
 // 2 - Chute
+// 3 - Twitter
+// 4 - Foursquare
 
-#define kSERVICE 0
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef DEBUG
-#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define DLog(...)
-#endif
-
-#define ALog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-
-#define IS_NULL(x)	((nil == x) || ([x isEqual: [NSNull null]]))
+#define kSERVICE 3
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -39,8 +29,12 @@
 #define kDEVICE_OS          [[UIDevice currentDevice] systemName]
 #define kDEVICE_VERSION     [[UIDevice currentDevice] systemVersion]
 
+//#error Please remove this line after changing the client id and client secret
 #define kOAuthRedirectURL               @"http://getchute.com/oauth/callback"
 #define kOAuthRedirectRelativeURL       @"/oauth/callback"
-#define kOAuthClientID                  @"4e44f307f3e3bd09ac000001"
-#define kOAuthClientSecret              @"d6a9f6b219291ded44e763c22599e0d9f8daeef668898d088ab870d60911f642"
+#define kOAuthClientID                  @"4e6a2cc4f3e3bd0bcb000001"
+#define kOAuthClientSecret              @"a744516290995009e2aaaf308085cc4e07a6b53057f4e90e8f108df6b8becd4b"
+
+#define kOAuthPermissions               @"resources profile manage_resources all_resources services"
+
 #define kOAuthTokenURL                  @"http://developer.getchute.com/oauth/access_token"

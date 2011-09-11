@@ -15,7 +15,8 @@
 #pragma mark GridView
 
 - (void) gridView:(AQGridView *) gridView toggleCellForIndex: (NSUInteger) index {
-    [[assets objectAtIndex:index] toggle];
+    GCAsset *asset = [assets objectAtIndex:index];
+    asset.selected = !asset.selected;
     ImageGridViewCell *cell = (ImageGridViewCell *)[gridView cellForItemAtIndex:index];
     [cell setChecked:[[assets objectAtIndex:index] selected]];
 }
@@ -75,7 +76,7 @@
 - (void)next {
     
     NSMutableArray *_selectedAssets = [[NSMutableArray alloc] init];
-    for (ChuteAsset *asset in assets) {
+    for (GCAsset *asset in assets) {
         if ([asset selected]) {
             [_selectedAssets addObject:asset];
         }
@@ -102,7 +103,8 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[[ChuteAssetManager shared] uploadingAssets] count];
+    //return [[[ChuteAssetManager shared] uploadingAssets] count];
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -154,25 +156,25 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    for (ChuteAsset *_asset in assets) {
+    for (GCAsset *_asset in assets) {
         _asset.selected = NO;
     }
     [_gridView reloadData];
     
-    [uploadsTableView setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
-    [uploadsTableView scrollsToTop];
+//    [uploadsTableView setTransform:CGAffineTransformMakeRotation(-M_PI_2)];
+//    [uploadsTableView scrollsToTop];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"uploadsUpdated" object:nil queue:nil usingBlock:^(NSNotification *notification) {
-        
-        if ([[[ChuteAssetManager shared] uploadingAssets] count] > 0) {
-            [self showUploadsTableView];
-        }
-        else {
-            [self hideUploadsTableView];
-        }
-        
-        [uploadsTableView reloadData];
-    }];
+//    [[NSNotificationCenter defaultCenter] addObserverForName:@"uploadsUpdated" object:nil queue:nil usingBlock:^(NSNotification *notification) {
+//        
+//        if ([[[ChuteAssetManager shared] uploadingAssets] count] > 0) {
+//            [self showUploadsTableView];
+//        }
+//        else {
+//            [self hideUploadsTableView];
+//        }
+//        
+//        [uploadsTableView reloadData];
+//    }];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(next)];
 }
@@ -181,19 +183,18 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [[ChuteAssetManager shared] loadAssetsCompletionBlock:^(void) {
+    [[GCAccount sharedManager] loadAssetsCompletionBlock:^(void) {
         if (assets) {
             [assets release], assets = nil;
         }
         
-        assets = [[NSMutableArray alloc] initWithArray:[[ChuteAssetManager shared] assetsArray]];
-        
+        assets = [[NSMutableArray alloc] initWithArray:[[GCAccount sharedManager] assetsArray]];
         assetViews = [[NSMutableArray alloc] init];
         
-        for (id obj in assets) {
+        for (GCAsset *obj in assets) {
             [assetViews addObject:[[obj thumbnail] retain]];
         }
-        [_gridView reloadData]; 
+        [_gridView reloadData];
     }];
 }
 

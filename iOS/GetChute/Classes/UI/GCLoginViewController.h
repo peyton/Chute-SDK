@@ -4,11 +4,11 @@
 //  Copyright 2011 NA. All rights reserved.
 //
 
-#import "ChuteUIBaseViewController.h"
+#import "GCUIBaseViewController.h"
 
-#define SERVICES_ARRAY [NSArray arrayWithObjects:@"facebook", @"evernote", @"chute", nil]
+#define SERVICES_ARRAY [NSArray arrayWithObjects:@"facebook", @"evernote", @"chute", @"twitter", @"foursquare", nil]
 
-@interface ChuteLoginViewController : ChuteUIBaseViewController <UIWebViewDelegate> {
+@interface GCLoginViewController : GCUIBaseViewController <UIWebViewDelegate> {
     IBOutlet UIButton *loginButton;
 }
 

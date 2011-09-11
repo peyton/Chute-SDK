@@ -13,5 +13,5 @@
     #import <Foundation/Foundation.h>
 #endif
 
-#import "ChuteSDK.h"
+#import "GetChute.h"
 #import "UIImageView+WebCache.h"

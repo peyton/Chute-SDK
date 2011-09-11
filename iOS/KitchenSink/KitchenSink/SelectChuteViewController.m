@@ -10,21 +10,21 @@
 
 @implementation SelectChuteViewController
 @synthesize chuteList;
-@synthesize selectedChutesIndex;
+@synthesize selectedChutes;
 @synthesize selectedAssets;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    id obj = [data objectAtIndex:indexPath.row];
+    GCChute *obj = [data objectAtIndex:indexPath.row];
     
-    if ([selectedChutesIndex indexOfObject:[obj objectForKey:@"id"]] != NSNotFound) {
+    if ([selectedChutes indexOfObject:obj] != NSNotFound) {
         cell.accessoryType  = UITableViewCellAccessoryNone;
-        [selectedChutesIndex removeObject:[obj objectForKey:@"id"]];
+        [selectedChutes removeObject:obj];
     }
     else {
         cell.accessoryType  = UITableViewCellAccessoryCheckmark;
-        [selectedChutesIndex addObject:[obj objectForKey:@"id"]];
+        [selectedChutes addObject:obj];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -42,16 +42,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     
-    id obj = [data objectAtIndex:indexPath.row];
+    GCChute *obj = [data objectAtIndex:indexPath.row];
     
-    if ([selectedChutesIndex indexOfObject:[obj objectForKey:@"id"]] != NSNotFound) {
+    if ([selectedChutes indexOfObject:obj] != NSNotFound) {
         cell.accessoryType  = UITableViewCellAccessoryCheckmark;
     }
     else {
         cell.accessoryType  = UITableViewCellAccessoryNone;
     }
     
-    cell.textLabel.text = [obj objectForKey:@"name"];
+    cell.textLabel.text = [obj name];
     return cell;
 }
 
@@ -73,8 +73,16 @@
 }
 
 - (void) next {
-    [[ChuteAPI shared] startUploadingAssets:selectedAssets forChutes:selectedChutesIndex];
-    [self quickAlertWithTitle:@"Uploading" message:@"The file(s) are being uploaded to our servers." button:@"Okay"];
+    
+    //[[ChuteAPI shared] startUploadingAssets:selectedAssets forChutes:selectedChutesIndex];
+    
+    GCParcel *parcel = [GCParcel objectWithAssets:selectedAssets andChutes:selectedChutes];
+    [[GCUploader sharedUploader] addParcel:parcel];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uploading" message:@"The file(s) are being uploaded to our servers." delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -89,26 +97,29 @@
 {
     [super viewDidLoad];
     
-    self.selectedChutesIndex = [[NSMutableArray alloc] init];
+    self.selectedChutes = [[NSMutableArray alloc] init];
     
     // Do any additional setup after loading the view from its nib.
-    [[ChuteAPI shared] getMyChutesWithResponse:^(NSArray *arr) {
-        if (data) {
-            [data release], data = nil;
+    [GCChute allInBackgroundWithCompletion:^(GCResponse *response) {
+        if ([response isSuccessful]) {
+            if (data) {
+                [data release], data = nil;
+            }
+            data = [[response object] retain];
+            [chuteList reloadData];
         }
-        data = [arr retain];
-        [chuteList reloadData];
-    } andError:^(NSError *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-        [alert show];
-        [alert release];
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error!" message:[[response error] localizedDescription] delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+        }
     }];
 }
 
 - (void)viewDidUnload
 {
     [self setChuteList:nil];
-    [self.selectedChutesIndex release];
+    [self.selectedChutes release];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

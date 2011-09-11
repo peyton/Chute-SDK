@@ -14,7 +14,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *chuteList;
-@property (nonatomic, retain) NSMutableArray *selectedChutesIndex;
+@property (nonatomic, retain) NSMutableArray *selectedChutes;
 
 @property (nonatomic, retain) NSArray *selectedAssets;
 

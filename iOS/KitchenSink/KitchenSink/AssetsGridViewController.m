@@ -12,6 +12,7 @@
 @implementation AssetsGridViewController
 @synthesize photos;
 @synthesize chuteId;
+@synthesize chute;
 
 - (void) gridView:(AQGridView *)gridView didDeselectItemAtIndex:(NSUInteger)index {
     [self gridView:gridView didSelectItemAtIndex:index];
@@ -54,8 +55,8 @@
         _imageView.center = cell.contentView.center;
     }
     
- 	id photo = [photos objectAtIndex:index];
-    NSString *_photoURL = [[NSString alloc] initWithFormat:@"%@/75x75", [photo objectForKey:@"url"]];
+ 	GCAsset *photo = [photos objectAtIndex:index];
+    NSString *_photoURL = [photo urlStringForImageWithWidth:75 andHeight:75];
     
     //960x540
     
@@ -70,23 +71,13 @@
 
 - (void)dealloc
 {
+    [chute release];
     [photos release];
     [super dealloc];
 }
 
 - (void)showPhotoViewer:(id) sender {
-    /*
-    NotePhotoViewer *notePhotoView = [[NotePhotoViewer alloc] init];
-    self.navigationItem.backBarButtonItem =[[[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                             style: UIBarButtonItemStyleBordered
-                                                                            target:nil
-                                                                            action:nil] autorelease];
-    [notePhotoView setTitle:[self title]];
-    [notePhotoView setPhotos:photos];
-    [self.navigationController pushViewController:notePhotoView animated:YES];
     
-    [notePhotoView release];
-     */
 }
 
 #pragma mark - View lifecycle
@@ -98,16 +89,17 @@
     
     __block typeof(self) bself = self;
     
-    [[ChuteAPI shared] getAssetsForChuteId:chuteId response:^(NSArray *arr) {
-        if (bself.photos) {
-            [bself.photos release], bself.photos = nil;
+    [chute assetsInBackgroundWithCompletion:^(GCResponse *response) {
+        if ([response isSuccessful]) {
+            if (bself.photos) {
+                [bself.photos release], bself.photos = nil;
+            }
+            [bself setPhotos:[response object]];
+            [_gridView reloadData];
         }
-        [bself setPhotos:arr];
-        DLog(@"%@", arr);
-        DLog(@"%d", chuteId);
-        [_gridView reloadData];
-    } andError:^(NSError *error) {
-        [self quickAlertWithTitle:@"Error!" message:[error localizedDescription] button:@"Okay"];
+        else {
+            [self quickAlertWithTitle:@"Error!" message:[[response error] localizedDescription] button:@"Okay"];
+        }
     }];
 }
 

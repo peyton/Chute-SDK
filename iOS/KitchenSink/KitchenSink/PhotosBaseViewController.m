@@ -49,9 +49,6 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (IBAction)showSingleImageSelector:(id)sender {
-}
-
 - (IBAction)showMultipleImageSelector:(id)sender {
     PhotosGridViewController *photosGridViewController = [[PhotosGridViewController alloc] init];
     [self.navigationController pushViewController:photosGridViewController animated:YES];
