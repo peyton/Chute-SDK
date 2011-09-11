@@ -95,10 +95,11 @@
 
 -(UIView*) viewForPage:(NSInteger)page{
     GCAsset *asset = [objects objectAtIndex:page];
-    UIScrollView *view = [[[UIScrollView alloc] initWithFrame:objectSlider.frame] autorelease];
-    UIImageView *image = [[[UIImageView alloc] initWithFrame:objectSlider.frame] autorelease];
+    CGRect rect = CGRectMake(0, 0, objectSlider.frame.size.width, objectSlider.frame.size.height);
+    UIScrollView *view = [[[UIScrollView alloc] initWithFrame:rect] autorelease];
+    UIImageView *image = [[[UIImageView alloc] initWithFrame:rect] autorelease];
     [image setContentMode:UIViewContentModeScaleAspectFit];
-    [asset imageForWidth:view.frame.size.width andHeight:view.frame.size.height inBackgroundWithCompletion:^(UIImage *tempImage){
+    [asset imageForWidth:rect.size.width andHeight:rect.size.height inBackgroundWithCompletion:^(UIImage *tempImage){
         [image setImage:tempImage];
         [view addSubview:image];
     }];

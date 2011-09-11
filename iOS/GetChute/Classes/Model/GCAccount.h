@@ -13,6 +13,7 @@
 #import "NSDictionary+QueryString.h"
 #import "GCAsset.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "GCParcel.h"
 
 //Notification which is fired whenever the Account Status is changed
 NSString * const GCAccountStatusChanged;

@@ -7,6 +7,8 @@
 
 #import "GCResource.h"
 
+NSString * const GCParcelFinishedUploading;
+
 typedef enum {
     GCParcelStatusNew = 0,
     GCParcelStatusUploading = 1,

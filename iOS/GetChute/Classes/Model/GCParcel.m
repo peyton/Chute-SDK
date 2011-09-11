@@ -9,6 +9,8 @@
 #import "GCAsset.h"
 #import "GCChute.h"
 
+NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
+
 @implementation GCParcel
 
 @synthesize status;
@@ -25,6 +27,7 @@
     
     if ([assets count] == 0) {
         [self setStatus:GCParcelStatusDone];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GCParcelFinishedUploading object:self];
         if (delegate && [delegate respondsToSelector:completionSelector]) {
             [delegate performSelector:completionSelector];
         }
@@ -42,7 +45,7 @@
     //Get all Chute IDs
     NSMutableArray *_chuteIDs = [[NSMutableArray alloc] init];
     for (GCChute *_chute in chutes) {
-        [_chuteIDs addObject:[NSString stringWithFormat:@"%d",[_chute objectID]]];
+        [_chuteIDs addObject:[NSString stringWithFormat:@"%@",[_chute objectID]]];
     }
     
     //Make Parameters to be sent across with the request
@@ -65,7 +68,7 @@
 }
 
 - (GCResponse *) tokenForAsset:(GCAsset *) anAsset {
-    NSString *_path = [[NSString alloc] initWithFormat:@"%@/uploads/%d/token", API_URL, [anAsset objectID]];
+    NSString *_path = [[NSString alloc] initWithFormat:@"%@/uploads/%@/token", API_URL, [anAsset objectID]];
     GCRequest *gcRequest = [[GCRequest alloc] init];
     GCResponse *response = [[gcRequest getRequestWithPath:_path] retain];
     [gcRequest release];
@@ -101,7 +104,7 @@
 }
 
 - (GCResponse *) completionRequestForAsset:(GCAsset *) anAsset {
-    NSString *_path = [[NSString alloc] initWithFormat:@"%@/uploads/%d/complete", API_URL, [anAsset objectID]];
+    NSString *_path = [[NSString alloc] initWithFormat:@"%@/uploads/%@/complete", API_URL, [anAsset objectID]];
     GCRequest *gcRequest = [[GCRequest alloc] init];
     GCResponse *response = [[gcRequest getRequestWithPath:_path] retain];
     
