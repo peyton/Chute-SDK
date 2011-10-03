@@ -5,26 +5,30 @@
 //  Copyright 2011 NA. All rights reserved.
 //
 
-#import "GCResource.h"
-
 NSString * const GCParcelFinishedUploading;
 
 typedef enum {
     GCParcelStatusNew = 0,
     GCParcelStatusUploading = 1,
-    GCParcelStatusDone
+    GCParcelStatusDone,
+    GCParcelStatusFailed
 } GCParcelStatus;
 
 @interface GCParcel : GCResource
 
+@property (nonatomic, assign) NSUInteger assetCount;
+@property (nonatomic, assign) NSUInteger completedAssetCount;
+
 @property (nonatomic, assign) GCParcelStatus status;
 @property (nonatomic, retain) NSMutableArray *assets;
 @property (nonatomic, readonly) NSArray *chutes;
+@property (nonatomic, retain) NSDictionary *postMetaData;
 
 @property (nonatomic, assign) id<NSObject> delegate;
 @property (nonatomic, assign) SEL completionSelector;
 
 + (id) objectWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes;
++ (id) objectWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes andMetaData:(NSDictionary*)_metaData;
 - (void) startUploadWithTarget:(id)_target andSelector:(SEL)_selector;
 
 @end

@@ -6,14 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GCRequest.h"
-#import "SBJson.h"
-#import "GCConstants.h"
-#import "ASIHTTPRequest.h"
-#import "NSDictionary+QueryString.h"
-#import "GCAsset.h"
-#import <AssetsLibrary/AssetsLibrary.h>
-#import "GCParcel.h"
 
 //Notification which is fired whenever the Account Status is changed
 NSString * const GCAccountStatusChanged;
@@ -29,11 +21,18 @@ typedef enum {
     GCAccountStatus accountStatus;
     NSString *_accessToken;
     NSMutableArray *assetsArray;
+    
+    NSMutableArray *heartedAssets;
+    
+    NSMutableArray *_accounts;
 }
 
 @property (nonatomic) GCAccountStatus accountStatus;
 @property (nonatomic, retain) NSString *accessToken;
 @property (nonatomic, retain) NSMutableArray *assetsArray;
+@property (nonatomic, retain) NSMutableArray *heartedAssets;
+
+@property (nonatomic, retain) NSMutableArray *accounts;
 
 + (GCAccount *)sharedManager;
 
@@ -55,5 +54,9 @@ typedef enum {
 
 - (GCResponse *) getInboxParcels;
 - (void) getInboxParcelsInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock;
+
+- (void) loadHeartedAssets;
+
+- (void) loadAccounts;
 
 @end

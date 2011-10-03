@@ -5,6 +5,7 @@
 //  Copyright 2011 NA. All rights reserved.
 //
 
+#import "GCResource.h"
 #import "GCChute.h"
 #import "GCAsset.h"
 #import "GCUser.h"
@@ -22,6 +23,7 @@
 @synthesize moderatePhotos;
 
 @synthesize name;
+@synthesize password;
 
 @synthesize permissionAddComments;
 @synthesize permissionAddMembers;
@@ -109,9 +111,18 @@
 }
 
 - (BOOL) join{
+    return [self joinWithPassword:@""];
+}
+
+- (void) joinInBackgroundWithBOOLCompletion:(GCBoolBlock) aResponseBlock{
+    DO_IN_BACKGROUND_BOOL([self join], aResponseBlock);
+}
+
+- (BOOL) joinWithPassword:(NSString *) _password {
     if(!self.objectID)
         return NO;
-    NSString *_path             = [[NSString alloc] initWithFormat:@"%@%@/%@/join", API_URL, [[self class] elementName], [self objectID]];
+    
+    NSString *_path             = [[NSString alloc] initWithFormat:@"%@%@/%@/join?password=%@", API_URL, [[self class] elementName], [self objectID], _password];
     
     GCRequest *gcRequest        = [[GCRequest alloc] init];
     GCResponse *response        = [gcRequest getRequestWithPath:_path];
@@ -121,8 +132,28 @@
     return _response;
 }
 
-- (void) joinInBackgroundWithBOOLCompletion:(GCBoolBlock) aResponseBlock{
-    DO_IN_BACKGROUND_BOOL([self join], aResponseBlock);
+- (void) joinWithPassword:(NSString *) _password inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock {
+    DO_IN_BACKGROUND_BOOL([self joinWithPassword:_password], aBoolBlock);
+}
+
+- (BOOL) setEventID:(NSString*)eventID forEventType:(NSString*)eventType{
+    if(!self.objectID)
+        return NO;
+    
+    NSString *_path             = [[NSString alloc] initWithFormat:@"%@%@/%@/events", API_URL, [[self class] elementName], [self objectID]];
+    NSMutableDictionary *_params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                    eventID, @"event[account_id]",
+                                    eventType, @"event[event_type]", nil];
+    
+    GCRequest *gcRequest        = [[GCRequest alloc] init];
+    GCResponse *response        = [gcRequest postRequestWithPath:_path andParams:_params];
+    BOOL _response              = [response isSuccessful];
+    [gcRequest release];
+    [_path release];
+    return _response;
+}
+- (void) setEventID:(NSString*)eventID forEventType:(NSString*)eventType inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock{
+    DO_IN_BACKGROUND_BOOL([self setEventID:eventID forEventType:eventType], aBoolBlock);
 }
 
 #pragma mark - Accessors Override
@@ -178,6 +209,22 @@
     [aName retain];
     [self setObject:aName forKey:@"name"];
     [aName release];
+}
+
+- (NSString *)password
+{
+    return [[[self objectForKey:@"password"] retain] autorelease]; 
+}
+- (void)setPassword:(NSString *)aPassword
+{
+    [aPassword retain];
+    if ([[aPassword stringByReplacingOccurrencesOfString:@" " withString:@""] length] > 0) {
+        [self setObject:aPassword forKey:@"password"];
+    }
+    else {
+        [self setObject:nil forKey:@"password"];
+    }
+    [aPassword release];
 }
 
 - (GCPermissionType)permissionAddComments
@@ -285,5 +332,18 @@
     DO_IN_BACKGROUND([self allPublic], aResponseBlock);
 }
 
+- (GCResponse *) save {
+    if ([self permissionView] == GCPermissionTypePassword) {
+        if (IS_NULL([self password])) {
+            GCResponse *response = [[[GCResponse alloc] init] autorelease];
+            NSMutableDictionary *_errorDetail = [[NSMutableDictionary alloc] init];
+            [_errorDetail setValue:@"Permission Type is set to Password but password is missing." forKey:NSLocalizedDescriptionKey];
+            [response setError:[GCError errorWithDomain:@"GCError" code:000 userInfo:_errorDetail]];
+            [_errorDetail release];
+            return response;
+        }
+    }
+    return [super save];
+}
 
 @end

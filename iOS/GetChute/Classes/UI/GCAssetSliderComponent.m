@@ -10,7 +10,7 @@
 #import "GCAsset.h"
 
 @implementation GCAssetSliderComponent
-@synthesize objects, sliderObjects, currentPage;
+@synthesize objects, sliderObjects, currentPage, objectSlider;
 
 - (CGRect)rectForPage:(NSInteger)page{
     CGRect imageRect = CGRectMake((objectSlider.frame.size.width*(page-1)), 0, objectSlider.frame.size.width, objectSlider.frame.size.height);
@@ -99,10 +99,10 @@
     UIScrollView *view = [[[UIScrollView alloc] initWithFrame:rect] autorelease];
     UIImageView *image = [[[UIImageView alloc] initWithFrame:rect] autorelease];
     [image setContentMode:UIViewContentModeScaleAspectFit];
-    [asset imageForWidth:rect.size.width andHeight:rect.size.height inBackgroundWithCompletion:^(UIImage *tempImage){
-        [image setImage:tempImage];
-        [view addSubview:image];
-    }];
+    [view addSubview:image];
+    
+    [image setImageWithURL:[NSURL URLWithString:[asset urlStringForImageWithWidth:320 andHeight:480]]];
+    
     image.autoresizingMask = ( UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     [view setMinimumZoomScale:1];
     [view setMaximumZoomScale:2.5];
@@ -176,6 +176,9 @@
 
 - (void)dealloc
 {
+    [sliderObjects release];
+    [objectSlider release];
+    [objects release];
     [super dealloc];
 }
 

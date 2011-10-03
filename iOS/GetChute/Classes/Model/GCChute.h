@@ -5,13 +5,12 @@
 //  Copyright 2011 NA. All rights reserved.
 //
 
-#import "GCResource.h"
-
 typedef enum {
     GCPermissionTypePrivate = 0,
     GCPermissionTypeMembers,
     GCPermissionTypePublic,
-    GCPermissionTypeFriends
+    GCPermissionTypeFriends,
+    GCPermissionTypePassword
 } GCPermissionType;
 
 @interface GCChute : GCResource
@@ -25,6 +24,7 @@ typedef enum {
 @property (nonatomic, assign) GCPermissionType moderatePhotos;
 
 @property (nonatomic, assign) NSString *name;
+@property (nonatomic, assign) NSString *password;
 
 @property (nonatomic, assign) GCPermissionType permissionAddComments;
 @property (nonatomic, assign) GCPermissionType permissionAddMembers;
@@ -51,6 +51,12 @@ typedef enum {
 
 - (BOOL) join;
 - (void) joinInBackgroundWithBOOLCompletion:(GCBoolBlock) aResponseBlock;
+
+- (BOOL) joinWithPassword:(NSString *) _password;
+- (void) joinWithPassword:(NSString *) _password inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock;
+
+- (BOOL) setEventID:(NSString*)eventID forEventType:(NSString*)eventType;
+- (void) setEventID:(NSString*)eventID forEventType:(NSString*)eventType inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock;
 
 + (GCResponse *)allPublic;
 + (void)allPublicInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock;

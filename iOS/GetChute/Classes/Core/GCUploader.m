@@ -9,6 +9,9 @@
 
 static GCUploader *sharedUploader = nil;
 
+NSString * const GCUploaderProgressChanged = @"GCUploaderProgressChanged";
+NSString * const GCUploaderFinished = @"GCUploaderFinished";
+
 @interface GCUploader()
 - (void) processQueue;
 @end
@@ -16,18 +19,44 @@ static GCUploader *sharedUploader = nil;
 @implementation GCUploader
 
 @synthesize queue;
+@synthesize progress;
+
+- (void) updateProgress:(NSNotification *) notification {
+    float total = 0.0;
+    int totalAssets = 0;
+    for (GCParcel *_parcel in queue) {
+        totalAssets += [_parcel assetCount];
+        if (_parcel == [queue objectAtIndex:0]) {
+            //calculate asset progress
+            for (GCAsset *_asset in [_parcel assets]) {
+                total += [_asset progress]; 
+            }
+            total += [_parcel completedAssetCount];
+        }
+    }
+    [self setProgress:total/totalAssets];
+}
+
+- (void) setProgress:(CGFloat)aProgress {
+    progress = aProgress;
+    [[NSNotificationCenter defaultCenter] postNotificationName:GCUploaderProgressChanged object:nil];
+}
 
 - (void) parcelCompleted {
-    DLog(@"Parcel Completed");
     if ([self.queue count] > 0) {
         [self.queue removeObjectAtIndex:0];
     }
+    
+    if ([[self queue] count] == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GCUploaderFinished object:nil];
+    }
+    
     [self processQueue];
 }
 
 - (void) processQueue {
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        if ([self.queue count] > 0) {
+        if ([[self queue] count] > 0) {
             GCParcel *_parcel = [self.queue objectAtIndex:0];
             [_parcel startUploadWithTarget:self andSelector:@selector(parcelCompleted)];
         }
@@ -67,6 +96,7 @@ static GCUploader *sharedUploader = nil;
     self = [super init];
     if (self) {
         self.queue = [[NSMutableArray alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgress:) name:GCAssetProgressChanged object:nil];
     }
     return self;
 }

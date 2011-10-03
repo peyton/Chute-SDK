@@ -7,20 +7,21 @@
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
-#import "SBJson.h"
-#import "GCConstants.h"
-#import "ASIHTTPRequest.h"
 #import "NSDictionary+QueryString.h"
-#import "GCAccount.h"
+
+@class MBProgressHUD;
 
 @interface GCUIBaseViewController : UIViewController <UIAlertViewDelegate> {
     MBProgressHUD *HUD;
     NSUInteger HUDCount;
     
+    UIAlertView *_alert;
     void (^alertCompletionBlock)(void);
     void (^alertCancelBlock)(void);
 }
+
+- (void) setAlertCompletionBlock:(void (^)(void)) completionBlock;
+- (void) setAlertCancelBlock:(void (^)(void)) cancelBlock;
 
 - (void) showHUD;
 - (void) showHUDWithTitle:(NSString *) title andOpacity:(CGFloat) opacity;

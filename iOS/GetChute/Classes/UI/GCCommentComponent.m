@@ -189,4 +189,11 @@
 	return 65;
 }
 
+- (void) dealloc {
+    [comments release];
+    [asset release];
+    [chute release];
+    [super dealloc];
+}
+
 @end

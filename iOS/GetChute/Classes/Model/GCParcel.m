@@ -5,6 +5,7 @@
 //  Copyright 2011 NA. All rights reserved.
 //
 
+#import "GCResource.h"
 #import "GCParcel.h"
 #import "GCAsset.h"
 #import "GCChute.h"
@@ -16,9 +17,13 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
 @synthesize status;
 @synthesize assets;
 @synthesize chutes;
+@synthesize postMetaData;
 
 @synthesize delegate;
 @synthesize completionSelector;
+
+@synthesize assetCount;
+@synthesize completedAssetCount;
 
 - (void) removeAsset:(GCAsset *)_asset {
     if ([assets indexOfObject:_asset] != NSNotFound) {
@@ -49,10 +54,13 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
     }
     
     //Make Parameters to be sent across with the request
-    NSDictionary *params    = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [_assetsUniqueDescription JSONRepresentation], @"files", 
-                               [_chuteIDs JSONRepresentation], @"chutes", 
-                               nil];
+    NSMutableDictionary *params    = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                      [_assetsUniqueDescription JSONRepresentation], @"files", 
+                                      [_chuteIDs JSONRepresentation], @"chutes", 
+                                      nil];
+    
+    if(self.postMetaData)
+        [params setObject:[self.postMetaData JSONRepresentation] forKey:@"metadata"];
     
     [_chuteIDs release];
     [_assetsUniqueDescription release];
@@ -60,7 +68,7 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
     NSString *_path = [[NSString alloc] initWithFormat:@"%@%@", API_URL, @"parcels"];
     
     GCRequest *gcRequest = [[GCRequest alloc] init];
-    GCResponse *response = [[gcRequest postRequestWithPath:_path andParams:(NSMutableDictionary *)params] retain];
+    GCResponse *response = [[gcRequest postRequestWithPath:_path andParams:params] retain];
     
     [gcRequest release];
     [_path release];
@@ -88,6 +96,7 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
 	[request addRequestHeader:@"Authorization" value:[_token objectForKey:@"signature"]];
 	[request addRequestHeader:@"Content-Type" value:[_token objectForKey:@"content_type"]];
     [request addRequestHeader:@"x-amz-acl" value:@"public-read"];
+    [request setTimeOutSeconds:300];
     [request startSynchronous];
     GCResponse *_result = [[GCResponse alloc] initWithRequest:request];
     
@@ -138,9 +147,12 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
         }
     }
     
-    for (id obj in assetsToRemove) {
+    for (GCAsset *obj in assetsToRemove) {
+        assetCount--; 
         [self removeAsset:obj];
     }
+    
+    completedAssetCount = 0;
     
     [assetsToRemove release];
     [assetUrls release];
@@ -156,9 +168,16 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
     //Remove assets which are already uploaded.
     [self removeUploadedAssets];
     
+    dispatch_queue_t queue;
+    queue = dispatch_queue_create("com.sharedRoll.queue", NULL);
+    
     //Start loop of assets
     for (GCAsset *_asset in assets) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
+        if ([_asset status] == GCAssetStateFinished) {
+            continue;
+        }
+        
+        dispatch_async(queue, ^(void) {
             [_asset setStatus:GCAssetStateGettingToken];
             
             //Generate New token for each asset
@@ -190,6 +209,7 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
 
 - (void) updateUploadQueue:(NSNotification *) notification {
     if ([[notification object] status] == GCAssetStateFinished) {
+        completedAssetCount ++;
         [self removeAsset:[notification object]];
     }
 }
@@ -198,6 +218,7 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
     [self setDelegate:_target];
     [self setCompletionSelector:_selector];
     [self setStatus:GCParcelStatusUploading];
+    [self setAssetCount:[assets count]];
     [self performSelector:@selector(startUpload) withObject:nil afterDelay:0.1f];
 }
 
@@ -207,13 +228,22 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
         assets = [[NSMutableArray arrayWithArray:_assets] retain];
         chutes = [[NSArray arrayWithArray:_chutes] retain];
         [self setStatus:GCParcelStatusNew];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUploadQueue:) name:GCAssetStatusChanged object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUploadQueue:) name:GCAssetUploadComplete object:nil];
     }
     return self;
 }
 
 + (id) objectWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes {
     return [[[self alloc] initWithAssets:_assets andChutes:_chutes] autorelease];
+}
+
+
++ (id) objectWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes andMetaData:(NSDictionary*)_metaData{
+    id parcel = [[[self alloc] initWithAssets:_assets andChutes:_chutes] autorelease];
+    if(parcel){
+        [parcel setPostMetaData:_metaData];
+    }
+    return parcel;
 }
 
 + (id) objectWithDictionary:(NSDictionary *) dictionary {
@@ -243,6 +273,10 @@ NSString * const GCParcelFinishedUploading   = @"GCParcelFinishedUploading";
     }
     [self setStatus:GCParcelStatusDone];
     return self;
+}
+
++ (NSString *)elementName {
+    return @"parcels";
 }
 
 - (void) dealloc {

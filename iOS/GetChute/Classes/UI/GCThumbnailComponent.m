@@ -205,4 +205,8 @@
     return view;
 }
 
+- (void) dealloc {
+    [objects release];
+    [super dealloc];
+}
 @end

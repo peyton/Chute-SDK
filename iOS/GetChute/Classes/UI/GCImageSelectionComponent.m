@@ -79,6 +79,8 @@
 
 -(void)dealloc{
     [selected release];
+    [images release];
+    [selectedIndicator release];
     [super dealloc];
 }
 

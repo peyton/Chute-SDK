@@ -11,6 +11,7 @@
 
 NSString * const GCAssetStatusChanged   = @"GCAssetStatusChanged";
 NSString * const GCAssetProgressChanged = @"GCAssetProgressChanged";
+NSString * const GCAssetUploadComplete = @"GCAssetUploadComplete";
 
 @implementation GCAsset
 
@@ -21,7 +22,36 @@ NSString * const GCAssetProgressChanged = @"GCAssetProgressChanged";
 @synthesize status;
 @synthesize parentID;
 
+- (BOOL) isHearted {
+    if ([[[GCAccount sharedManager] heartedAssets] indexOfObject:self] == NSNotFound) {
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - Heart Method
+- (BOOL) toggleHeart {
+    if ([self isHearted]) {
+        //unheart
+        GCResponse *response = [self unheart];
+        if ([response isSuccessful]) {
+            [[[GCAccount sharedManager] heartedAssets] removeObject:self];
+        }
+    }
+    else {
+        //heart
+        GCResponse *response = [self heart];
+        if ([response isSuccessful]) {
+            [[[GCAccount sharedManager] heartedAssets] addObject:self];
+        }
+    }
+    return [self isHearted];
+}
+
+- (void) toggleHeartInBackgroundWithCompletion:(GCBoolBlock) aBoolBlock {
+    DO_IN_BACKGROUND_BOOL([self toggleHeart], aBoolBlock);
+}
+
 - (GCResponse *) heart {
     NSString *_path              = [[NSString alloc] initWithFormat:@"%@%@/%@/heart", API_URL, [[self class] elementName], [self objectID]];
     GCRequest *gcRequest         = [[GCRequest alloc] init];
@@ -124,11 +154,15 @@ NSString * const GCAssetProgressChanged = @"GCAssetProgressChanged";
 
 - (void) setProgress:(CGFloat)aProgress {
     progress = aProgress;
-    DLog(@"%f", progress*100);
     [[NSNotificationCenter defaultCenter] postNotificationName:GCAssetProgressChanged object:self];
 }
 
 - (void) setStatus:(GCAssetStatus)aStatus {
+    if (status == GCAssetStateCompleting && aStatus == GCAssetStateFinished) {
+        status = aStatus;
+        [[NSNotificationCenter defaultCenter] postNotificationName:GCAssetUploadComplete object:self];
+    }
+    
     status = aStatus;
     [[NSNotificationCenter defaultCenter] postNotificationName:GCAssetStatusChanged object:self];
 }
@@ -167,6 +201,12 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock {
     DO_IN_BACKGROUND([self imageForWidth:width andHeight:height], aResponseBlock);
 }
 
+- (NSDate*)createdAt{
+    if(self.alAsset){
+        return [self.alAsset valueForProperty:ALAssetPropertyDate];
+    }
+    return [super createdAt];
+}
 
 #pragma mark - Memory Management
 - (id) init {
@@ -194,6 +234,17 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock {
 #pragma mark - Super Class Methods
 + (NSString *)elementName {
     return @"assets";
+}
+
+- (BOOL) isEqual:(id)object {
+    if (IS_NULL([self objectID]) && IS_NULL([object objectID])) {
+        return [super isEqual:object];
+    }
+    
+    if ([[self objectID] intValue] == [[object objectID] intValue]) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

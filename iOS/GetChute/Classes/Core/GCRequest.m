@@ -18,6 +18,7 @@
             kUDID, @"x-device-identifier",
             kDEVICE_OS, @"x-device-os",
             kDEVICE_VERSION, @"x-device-version",
+            kOAuthClientID, @"x-client_id",
             [NSString stringWithFormat:@"OAuth %@", [[GCAccount sharedManager] accessToken]], @"Authorization",
             nil];
 }
@@ -32,8 +33,8 @@
 }
 
 - (GCResponse *)postRequestWithPath:(NSString *)path
-                        andParams:(NSMutableDictionary *)params
-                        andMethod:(NSString *)method {
+                          andParams:(NSMutableDictionary *)params
+                          andMethod:(NSString *)method {
     
     ASIFormDataRequest *_request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:path]];
     [_request setRequestHeaders:[self headers]];
@@ -47,6 +48,7 @@
             [_request setPostValue:[params objectForKey:key] forKey:key];
         }
     }
+    [_request setTimeOutSeconds:300.0];
     [_request setRequestMethod:method];
     [_request startSynchronous];
     
@@ -55,17 +57,17 @@
 }
 
 - (GCResponse *)postRequestWithPath:(NSString *)path
-                        andParams:(NSMutableDictionary *)params {
+                          andParams:(NSMutableDictionary *)params {
     return [self postRequestWithPath:path andParams:params andMethod:@"POST"];
 }
 
 - (GCResponse *)putRequestWithPath:(NSString *)path
-               andParams:(NSMutableDictionary *)params {
+                         andParams:(NSMutableDictionary *)params {
     return [self postRequestWithPath:path andParams:params andMethod:@"PUT"];
 }
 
 - (GCResponse *)deleteRequestWithPath:(NSString *)path
-                  andParams:(NSMutableDictionary *)params {
+                            andParams:(NSMutableDictionary *)params {
     return [self postRequestWithPath:path andParams:params andMethod:@"DELETE"];
 }
 

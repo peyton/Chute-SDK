@@ -6,6 +6,15 @@
 //
 
 #import "GCAccount.h"
+#import "GCRequest.h"
+#import "SBJson.h"
+#import "GCConstants.h"
+#import "ASIHTTPRequest.h"
+#import "NSDictionary+QueryString.h"
+#import "GCAsset.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+#import "GCParcel.h"
+#import "GCChute.h"
 
 NSString * const GCAccountStatusChanged = @"GCAccountStatusChanged";
 static GCAccount *sharedAccountManager = nil;
@@ -15,6 +24,38 @@ static GCAccount *sharedAccountManager = nil;
 @synthesize accountStatus;
 @synthesize accessToken;
 @synthesize assetsArray;
+@synthesize heartedAssets;
+
+- (void) loadAccounts {
+    NSString *_path = [[NSString alloc] initWithFormat:@"%@/accounts", API_URL];
+    GCRequest *gcRequest = [[GCRequest alloc] init];
+    
+    GCResponse *response = [[gcRequest getRequestWithPath:_path] retain];
+    
+    if ([response isSuccessful]) {
+        
+        NSMutableArray *_data = [[NSMutableArray alloc] init];
+        
+        for (NSDictionary *_dic in [response data]) {
+            NSMutableDictionary *_obj = [[NSMutableDictionary alloc] init];
+            
+            [_obj setObject:[_dic objectForKey:@"access_key"] forKey:@"access_key"];
+            [_obj setObject:[_dic objectForKey:@"type"] forKey:@"type"];
+            [_obj setObject:[_dic objectForKey:@"uid"] forKey:@"uid"];
+            [_obj setObject:[_dic objectForKey:@"id"] forKey:@"accountID"];
+            
+            [_data addObject:_obj];
+            [_obj release];
+        }
+        
+        [self setAccounts:_data];
+        [_data release];
+    }
+    
+    [response release];
+    [gcRequest release];
+    [_path release];
+}
 
 #pragma mark - Load Assets
 
@@ -62,6 +103,27 @@ static GCAccount *sharedAccountManager = nil;
     [self loadAssetsCompletionBlock:nil];
 }
 
+#pragma mark - Accounts
+
+- (void) setAccounts:(NSMutableArray *)aAccounts {
+    if (_accounts) {
+        [_accounts release], _accounts = nil;
+    }
+    
+    _accounts = [aAccounts retain];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:_accounts forKey:@"accounts"];
+    [prefs synchronize];
+}
+
+- (NSMutableArray *) accounts {
+    if (_accounts == nil) {
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        _accounts = [[prefs objectForKey:@"accounts"] retain];
+    }
+    return _accounts;
+}
+
 #pragma mark - Access Token
 
 - (void) setAccessToken:(NSString *)accessTkn {
@@ -100,6 +162,10 @@ static GCAccount *sharedAccountManager = nil;
 - (void) setAccountStatus:(GCAccountStatus)_accountStatus {
     accountStatus = _accountStatus;
     [[NSNotificationCenter defaultCenter] postNotificationName:GCAccountStatusChanged object:self];
+    
+    if (_accountStatus == GCAccountLoggedIn) {
+        [self loadHeartedAssets];
+    }
 }
 
 - (void) verifyAuthorizationWithAccessCode:(NSString *) accessCode 
@@ -147,6 +213,7 @@ static GCAccount *sharedAccountManager = nil;
                 errorBlock([response error]);
             }
             else {
+                [self loadAccounts];
                 [self setUserId:[[[response object] valueForKey:@"id"] intValue]];
                 [self setAccountStatus:GCAccountLoggedIn];
                 successBlock();
@@ -240,6 +307,23 @@ static GCAccount *sharedAccountManager = nil;
 
 - (void) getInboxParcelsInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock {
     DO_IN_BACKGROUND([self getInboxParcels], aResponseBlock);
+}
+
+- (void) loadHeartedAssets {
+    if (heartedAssets) {
+        [heartedAssets release], heartedAssets = nil;
+        
+    }
+    
+    //heartedAssets = [[NSMutableArray alloc] init];
+    
+    [GCChute findByShortcut:@"heart" inBackgroundWithCompletion:^(GCResponse *response) {
+        if ([response isSuccessful]) {
+            [[response object] assetsInBackgroundWithCompletion:^(GCResponse *response) {
+                [self setHeartedAssets:[response object]]; 
+            }];
+        }
+    }];
 }
 
 #pragma mark - Methods for Singleton class

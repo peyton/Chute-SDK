@@ -55,7 +55,7 @@
     [authView setCenter:self.view.center];
     [authView setTransform:t1];
     [authView setAlpha:0.0f];
-    [self.view addSubview:authView];
+    [self.view.window addSubview:authView];
     
     [UIView animateWithDuration:0.2f animations:^{
         [authView setAlpha:1.0f];
@@ -113,6 +113,9 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self hideHUD];
+    
+    if (error.code == NSURLErrorCancelled) return; 
+    
     if (![[error localizedDescription] isEqualToString:@"Frame load interrupted"]) {
         [self quickAlertViewWithTitle:@"Error" message:[error localizedDescription] button:@"Reload" completionBlock:^(void) {
             [authWebView reload]; 
