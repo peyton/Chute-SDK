@@ -1,7 +1,7 @@
 //
 //  LoginViewController.m
 //
-//  Copyright 2011 NA. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 
 #import "GCLoginViewController.h"

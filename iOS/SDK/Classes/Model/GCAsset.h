@@ -2,7 +2,7 @@
 //  GCAsset.h
 //
 //  Created by Brandon Coston on 8/31/11.
-//  Copyright 2011 Chute. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 
 #import "GCResource.h"

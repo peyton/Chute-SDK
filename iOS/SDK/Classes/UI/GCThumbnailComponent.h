@@ -3,7 +3,7 @@
 //  ChuteSDKDevProject
 //
 //  Created by Brandon Coston on 8/30/11.
-//  Copyright 2011 Chute. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 //  Init and optionally set thumbsize and spacing size.  Thumbnails are square and spacing size is the distance between them.  If you don't specify these it defaults to 63 for thumbSize and 1 for spacing size.  You can also set thumbCountPerRow to specify the number of thumbnails per row, if you don't set this it will automatically figure out the max thumbnails per row.  Regardless of each of these settings the rows are automatically centered.
 

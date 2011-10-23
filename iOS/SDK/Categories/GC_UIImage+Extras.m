@@ -3,7 +3,7 @@
 //  KitchenSink
 //
 //  Created by Achal Aggarwal on 11/09/11.
-//  Copyright 2011 NA. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 
 #import "GC_UIImage+Extras.h"

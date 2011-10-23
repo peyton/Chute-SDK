@@ -2,7 +2,7 @@
 //  GCParcel.h
 //
 //  Created by Achal Aggarwal on 09/09/11.
-//  Copyright 2011 NA. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 
 NSString * const GCParcelFinishedUploading;

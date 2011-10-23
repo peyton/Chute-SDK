@@ -3,7 +3,7 @@
 //  realtyChute
 //
 //  Created by Brandon Coston on 9/03/11.
-//  Copyright 2011 Chute. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 
 #import "GCAssetSliderComponent.h"

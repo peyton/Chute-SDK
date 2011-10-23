@@ -3,7 +3,7 @@
 //  ChuteSDKDevProject
 //
 //  Created by Brandon Coston on 8/30/11.
-//  Copyright 2011 Chute. All rights reserved.
+//  Copyright 2011 Chute Corporation. All rights reserved.
 //
 
 #import "GCThumbnailComponent.h"
