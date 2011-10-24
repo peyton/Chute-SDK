@@ -1,7 +1,7 @@
 Setup
 ====
 
-First copy the SDK files into your project.  Find the GCConstants.h file located at GetChute/Classes/Core and enter your OAuth information.
+First copy the SDK files into your project.  Find the GCConstants.h file located at SDK/Classes/Core and enter your OAuth information.
 
 ``` Objective-C
     #define kOAuthRedirectURL               @"http://getchute.com/oauth/callback"
