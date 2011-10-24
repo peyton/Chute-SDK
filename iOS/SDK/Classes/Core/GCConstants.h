@@ -29,11 +29,11 @@
 #define kDEVICE_OS          [[UIDevice currentDevice] systemName]
 #define kDEVICE_VERSION     [[UIDevice currentDevice] systemVersion]
 
-//#error Please remove this line after changing the client id and client secret
-#define kOAuthRedirectURL               @"http://sharedroll.com/oauth/callback"
+//replace the following setting with your own client info
+#define kOAuthRedirectURL               @"http://getchute.com/oauth/callback"
 #define kOAuthRedirectRelativeURL       @"/oauth/callback"
-#define kOAuthClientID                  @"4e79ff9e32fc725e5b000001"
-#define kOAuthClientSecret              @"e8036d54e98682a3a2e02562cbc4f77bb922e8bb6cfd13264fe00b5e3b565693"
+#define kOAuthClientID                  @"PUT_CLIENT_ID_HERE"
+#define kOAuthClientSecret              @"PUT_CLIENT_SECRET_HERE"
 
 #define kOAuthPermissions               @"all_resources manage_resources profile resources"
 
