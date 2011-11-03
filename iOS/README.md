@@ -1,6 +1,8 @@
 Setup
 ====
 
+##Client Authentication
+
 First copy the SDK files into your project.  Find the GCConstants.h file located at SDK/Classes/Core and enter your OAuth information.
 
 ``` Objective-C
@@ -14,7 +16,21 @@ First copy the SDK files into your project.  Find the GCConstants.h file located
     #define kOAuthTokenURL                  @"http://getchute.com/oauth/access_token"
 ```
 
-  You can also adjust which service your users will use to sign in.
+##Login
+
+You need a logged in user to use the SDK.  You can have a single user account for all aspects of the app if you are just displaying images and have limited social interctions or you can have indivdual users log in to their own accounts.
+
+###Single User Account
+
+Having a single user account used by all versions of the app is the easiest to set up.  You can simply save your authentication key to GCAccount in 'application:didFinishLaunchingWithOptions:' in your app's delegte file.  You do this by adding the line
+
+``` Objective-C
+    [[GCAccount sharedManager] setAccessToken:@"USER_ACCESS_TOKEN"];
+```
+
+###User Login
+
+If you have users login to an account you must first determine which service you want to use.  You set this in the GCConstants file.  There are several popular services to choose from.
   
 ``` Objective-C
     // Set which service is to be used
@@ -26,6 +42,23 @@ First copy the SDK files into your project.  Find the GCConstants.h file located
 
     #define kSERVICE 0
 ```
+
+Then you must present the login view.  This is provided for you but has a blank customizable UI. When you want your user to login you call GCLoginViewController's `+(void)presentInController:(UIViewController *)controller`.  You want to pass in the view controller that will be used to display the login view.  This method automatically checks whether or not a user is already logged in and only displays the login scren if needed.  To login from the current view controller you would call the method like this
+
+``` Objective-C
+    [loginViewController presentInController:self];
+```
+
+###Logout
+
+If you want your user to be able to log out you simply call
+
+``` Objective-C
+    [[GCAccount sharedManager] reset];
+```
+
+
+
   
 At this point your application will be ready to use the Chute SDK.  Simply `#import "GetChute.h"` in any classes that will be accessing the SDK.
 
