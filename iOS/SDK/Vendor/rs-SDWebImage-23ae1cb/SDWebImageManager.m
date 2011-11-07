@@ -146,6 +146,7 @@ static SDWebImageManager *instance;
     // Remove one instance of delegate from the array,
     // not all of them (as |removeObjectIdenticalTo:| would)
     // in case multiple requests are issued.
+    if([cacheDelegates count] > idx)
     [cacheDelegates removeObjectAtIndex:idx];
 }
 

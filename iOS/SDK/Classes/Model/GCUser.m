@@ -36,4 +36,26 @@
     [anAvatarURL release];
 }
 
+
+
+- (BOOL) isEqual:(id)object {
+    if (IS_NULL([self objectID]) && IS_NULL([object objectID])) {
+        return [super isEqual:object];
+    }
+    if (IS_NULL([self objectID]) || IS_NULL([object objectID])) {
+        return NO;
+    }
+    
+    if ([[self objectID] intValue] == [[object objectID] intValue]) {
+        return YES;
+    }
+    return NO;
+}
+
+-(NSUInteger)hash{
+    if(IS_NULL([self objectID]))
+        return [super hash];
+    return [[self objectID] hash];
+}
+
 @end
