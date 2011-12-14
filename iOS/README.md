@@ -4,6 +4,7 @@ Setup
 ##Frameworks
 
 You must link the following libraries in your project to use the SDK
+
 * AssetsLibrary
 * CFNetwork
 * EventKit
