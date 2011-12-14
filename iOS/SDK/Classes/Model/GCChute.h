@@ -55,10 +55,16 @@ typedef enum {
 - (BOOL) joinWithPassword:(NSString *) _password;
 - (void) joinWithPassword:(NSString *) _password inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock;
 
+- (BOOL) leave;
+- (void) leaveInBackgroundWithBOOLCompletion:(GCBoolBlock) aResponseBlock;
+
 - (BOOL) setEventID:(NSString*)eventID forEventType:(NSString*)eventType;
 - (void) setEventID:(NSString*)eventID forEventType:(NSString*)eventType inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock;
 
 + (GCResponse *)allPublic;
 + (void)allPublicInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock;
+
++ (GCResponse *)allFriends;
++ (void)allFriendsInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock;
 
 @end

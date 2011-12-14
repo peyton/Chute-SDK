@@ -14,6 +14,7 @@
 @synthesize rawResponse;
 @synthesize data;
 @synthesize statusCode;
+@synthesize requestURL;
 
 - (BOOL) isSuccessful {
     if (IS_NULL([self error])) {
@@ -56,6 +57,7 @@
     if (self) {   
         [self setStatusCode:[request responseStatusCode]];
         [self setError:(GCError *)[request error]];
+        [self setRequestURL:[[request originalURL] absoluteString]];
         
         if ([request responseStatusCode] >= 300) {
             NSMutableDictionary *_errorDetail = [[NSMutableDictionary alloc] init];
@@ -81,6 +83,7 @@
     [rawResponse release];
     [object release];
     [error release];
+    [requestURL release];
     [super dealloc];
 }
 

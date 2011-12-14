@@ -38,14 +38,15 @@
     
     ASIFormDataRequest *_request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:path]];
     [_request setRequestHeaders:[self headers]];
-    
-    if ([params objectForKey:@"raw"]) {
-        [_request setPostBody:[params objectForKey:@"raw"]];
-    }
-    else {
-        [_request setPostBody:nil];
-        for (id key in [params allKeys]) {
-            [_request setPostValue:[params objectForKey:key] forKey:key];
+    if(params){
+        if ([params objectForKey:@"raw"]) {
+            [_request setPostBody:[params objectForKey:@"raw"]];
+        }
+        else {
+            [_request setPostBody:nil];
+            for (id key in [params allKeys]) {
+                [_request setPostValue:[params objectForKey:key] forKey:key];
+            }
         }
     }
     [_request setTimeOutSeconds:300.0];

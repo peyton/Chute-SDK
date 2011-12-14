@@ -18,15 +18,32 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
 
 @implementation GCUploader
 
-@synthesize queue;
+@synthesize queue = _queue;
 @synthesize progress;
+
+
+- (int) queueParcelCount{
+    if(self.queue)
+        return self.queue.count;
+    return 0;
+}
+- (int) queueAssetCount{
+    if(self.queue){
+        int i = 0;
+        for(GCParcel *parcel in self.queue){
+            i += parcel.assets.count;
+        }
+        return i;
+    }
+    return 0;
+}
 
 - (void) updateProgress:(NSNotification *) notification {
     float total = 0.0;
     int totalAssets = 0;
-    for (GCParcel *_parcel in queue) {
+    for (GCParcel *_parcel in self.queue) {
         totalAssets += [_parcel assetCount];
-        if (_parcel == [queue objectAtIndex:0]) {
+        if (_parcel == [self.queue objectAtIndex:0]) {
             //calculate asset progress
             for (GCAsset *_asset in [_parcel assets]) {
                 total += [_asset progress]; 
@@ -50,7 +67,7 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
     if ([[self queue] count] == 0) {
         [[NSNotificationCenter defaultCenter] postNotificationName:GCUploaderFinished object:nil];
     }
-    
+    [self backupQueueToUserDefaults];
     [self processQueue];
 }
 
@@ -63,8 +80,31 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
     });
 }
 
+- (void) backupQueueToUserDefaults{
+    NSMutableArray *array = [NSMutableArray array];
+    for(GCParcel *parcel in self.queue){
+        NSDictionary *dictionary = [parcel dictionaryRepresentation];
+        if(dictionary){
+            [array addObject:dictionary];
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"GCUPLOADQUEUE"];
+}
+- (void) loadQueueFromUserDefaults{
+    NSArray *array = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"GCUPLOADQUEUE"]];
+    [self setQueue:[NSMutableArray array]];
+    for(NSDictionary *dictionary in array){
+        GCParcel *parcel = [[GCParcel alloc] initWithDictionaryRepresentation:dictionary];
+        [self.queue addObject:[parcel autorelease]];
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
+        [self processQueue];
+    });
+}
+
 - (void) addParcel:(GCParcel *) _parcel {
     [self.queue addObject:_parcel];
+    [self backupQueueToUserDefaults];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
         [self processQueue];
     });
@@ -72,6 +112,7 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
 
 - (void) removeParcel:(GCParcel *) _parcel {
     [self.queue removeObject:_parcel];
+    [self backupQueueToUserDefaults];
     [self processQueue];
 }
 
@@ -95,8 +136,9 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
 - (id) init {
     self = [super init];
     if (self) {
-        self.queue = [[NSMutableArray alloc] init];
+        [self setQueue:[NSMutableArray array]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgress:) name:GCAssetProgressChanged object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backupQueueToUserDefaults) name:GCAssetUploadComplete object:nil];
     }
     return self;
 }
@@ -127,7 +169,7 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
 }
 
 - (void) dealloc {
-    [self.queue release];
+    [_queue release];
     [super dealloc];
 }
 

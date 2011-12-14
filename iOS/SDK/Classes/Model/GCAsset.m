@@ -123,11 +123,22 @@ NSString * const GCAssetUploadComplete = @"GCAssetUploadComplete";
 }
 
 - (NSDictionary *) uniqueRepresentation {
-    ALAssetRepresentation *_representation = [[self alAsset] defaultRepresentation];
-    return [NSDictionary dictionaryWithObjectsAndKeys:[[_representation url] absoluteString], @"filename", 
-     [NSString stringWithFormat:@"%d", [_representation size]], @"size", 
-     [NSString stringWithFormat:@"%d", [_representation size]], @"md5", 
-     nil];
+    if([self alAsset]){
+        ALAssetRepresentation *_representation = [[self alAsset] defaultRepresentation];
+        if([self objectID]){
+            return [NSDictionary dictionaryWithObjectsAndKeys:[[_representation url] absoluteString], @"filename", 
+                    [NSString stringWithFormat:@"%d", [_representation size]], @"size", 
+                    [NSString stringWithFormat:@"%d", [_representation size]], @"md5",
+                    [self objectID], @"id",
+                    [NSNumber numberWithInt:[self status]], @"status",
+                    nil];
+        }
+        return [NSDictionary dictionaryWithObjectsAndKeys:[[_representation url] absoluteString], @"filename", 
+                [NSString stringWithFormat:@"%d", [_representation size]], @"size", 
+                [NSString stringWithFormat:@"%d", [_representation size]], @"md5", 
+                nil];
+    }
+    return nil;
 }
 
 - (NSString *) uniqueURL {
@@ -143,8 +154,7 @@ NSString * const GCAssetUploadComplete = @"GCAssetUploadComplete";
 #pragma mark - Accessors Override
 - (UIImage *) thumbnail {
     if ([self alAsset]) {
-            CGImageRef image = [[self alAsset] thumbnail];
-            return [UIImage imageWithCGImage:image];
+        return [UIImage imageWithCGImage:[[self alAsset] thumbnail]];
     }
     else if([self status] == GCAssetStateFinished) {
         return [self imageForWidth:75 andHeight:75];
@@ -220,7 +230,10 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock {
 - (id) initWithDictionary:(NSDictionary *) dictionary {
     self = [super initWithDictionary:dictionary];
     if (self) {
-        [self setStatus:GCAssetStateFinished];
+        if([dictionary objectForKey:@"status"])
+            [self setStatus:[[dictionary objectForKey:@"status"] intValue]];
+        else
+            [self setStatus:GCAssetStateFinished];
     }
     return self;
 }
@@ -238,7 +251,10 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock {
 
 - (BOOL) isEqual:(id)object {
     if (IS_NULL([self objectID]) && IS_NULL([object objectID])) {
-        return [super isEqual:object];
+        if([self alAsset] && [object alAsset])
+            return [[self alAsset] isEqual:[object alAsset]];
+        else
+            return [super isEqual:object];
     }
     if (IS_NULL([self objectID]) || IS_NULL([object objectID])) {
         return NO;
@@ -251,8 +267,12 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock {
 }
 
 -(NSUInteger)hash{
-    if(IS_NULL([self objectID]))
-        return [super hash];
+    if(IS_NULL([self objectID])){
+        if([self alAsset])
+            return [[self alAsset] hash];
+        else
+            return [super hash];
+    }
     return [[self objectID] hash];
 }
 

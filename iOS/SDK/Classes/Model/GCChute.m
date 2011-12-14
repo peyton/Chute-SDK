@@ -46,16 +46,18 @@
     GCRequest *gcRequest    = [[GCRequest alloc] init];
     GCResponse *_response   = [[gcRequest getRequestWithPath:_path] retain];
     
-    NSMutableArray *_assetsArray = [[NSMutableArray alloc] init];
-    for (NSDictionary *_dic in [_response data]) {
-        GCAsset *_asset = [[GCAsset objectWithDictionary:_dic] retain];
-        [_asset setParentID:[self objectID]];
-        [_assetsArray addObject:_asset];
-        [_asset release];
+    if([_response isSuccessful]){
+        NSMutableArray *_assetsArray = [[NSMutableArray alloc] init];
+        for (NSDictionary *_dic in [_response data]) {
+            GCAsset *_asset = [[GCAsset objectWithDictionary:_dic] retain];
+            [_asset setParentID:[self objectID]];
+            [_assetsArray addObject:_asset];
+            [_asset release];
+        }
+        
+        [_response setObject:_assetsArray];
+        [_assetsArray release];
     }
-    
-    [_response setObject:_assetsArray];
-    [_assetsArray release];
     
     [gcRequest release];
     [_path release];
@@ -134,6 +136,25 @@
 
 - (void) joinWithPassword:(NSString *) _password inBackgroundWithBOOLCompletion:(GCBoolBlock) aBoolBlock {
     DO_IN_BACKGROUND_BOOL([self joinWithPassword:_password], aBoolBlock);
+}
+
+
+- (BOOL) leave{
+    if(!self.objectID)
+        return NO;
+    
+    NSString *_path             = [[NSString alloc] initWithFormat:@"%@%@/%@/leave", API_URL, [[self class] elementName], [self objectID]];
+    
+    GCRequest *gcRequest        = [[GCRequest alloc] init];
+    GCResponse *response        = [gcRequest postRequestWithPath:_path andParams:NULL];
+    BOOL _response              = [response isSuccessful];
+    [gcRequest release];
+    [_path release];
+    return _response;
+}
+
+- (void) leaveInBackgroundWithBOOLCompletion:(GCBoolBlock) aResponseBlock{
+    DO_IN_BACKGROUND_BOOL([self leave], aResponseBlock);
 }
 
 - (BOOL) setEventID:(NSString*)eventID forEventType:(NSString*)eventType{
@@ -294,8 +315,9 @@
     NSMutableDictionary *_temp = [[[NSMutableDictionary alloc] init] autorelease];
     for (NSString *key in [[self content] allKeys]) {
         if ([key isEqualToString:@"user"])
-            continue;
-        [_temp setObject:[[self content] objectForKey:key] forKey:key];
+            [_temp setObject:[[[self content] objectForKey:@"user"] proxyForJson] forKey:@"user"];
+        else
+            [_temp setObject:[[self content] objectForKey:key] forKey:key];
     }
     return _temp;
 }
@@ -350,6 +372,28 @@
 
 + (void)allPublicInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock {      
     DO_IN_BACKGROUND([self allPublic], aResponseBlock);
+}
+
+#pragma mark - Friends Chutes
++ (GCResponse *)allFriends {
+    NSString *_path         = [[NSString alloc] initWithFormat:@"%@friends/%@", API_URL, [self elementName]];
+    GCRequest *gcRequest    = [[GCRequest alloc] init];
+    GCResponse *_response   = [[gcRequest getRequestWithPath:_path] retain];
+    
+    NSMutableArray *_result = [[NSMutableArray alloc] init];
+    for (NSDictionary *_dic in [_response object]) {
+        id _obj = [self objectWithDictionary:_dic];
+        [_result addObject:_obj];
+    }
+    [_response setObject:_result];
+    [_result release];
+    [gcRequest release];
+    [_path release];
+    return [_response autorelease];
+}
+
++ (void)allFriendsInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock {      
+    DO_IN_BACKGROUND([self allFriends], aResponseBlock);
 }
 
 - (GCResponse *) save {

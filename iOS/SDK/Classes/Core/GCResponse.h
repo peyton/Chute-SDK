@@ -18,6 +18,7 @@
 @property (nonatomic, retain) id object;
 @property (nonatomic, retain) id rawResponse;
 @property (nonatomic, retain) id data;
+@property (nonatomic, retain) NSString *requestURL;
 
 - (id) initWithRequest:(ASIHTTPRequest *) request;
 - (BOOL) isSuccessful;

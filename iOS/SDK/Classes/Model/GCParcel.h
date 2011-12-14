@@ -6,6 +6,8 @@
 //
 
 NSString * const GCParcelFinishedUploading;
+NSString * const GCParcelAssetsChanged;
+NSString * const GCParcelNoUploads;
 
 typedef enum {
     GCParcelStatusNew = 0,
@@ -30,5 +32,8 @@ typedef enum {
 + (id) objectWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes;
 + (id) objectWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes andMetaData:(NSDictionary*)_metaData;
 - (void) startUploadWithTarget:(id)_target andSelector:(SEL)_selector;
+
+- (NSDictionary*) dictionaryRepresentation;
+- (id) initWithDictionaryRepresentation:(NSDictionary*)representation;
 
 @end
