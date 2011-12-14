@@ -1,7 +1,7 @@
 //
 //  GCConstants.h
 //
-//  Copyright 2011 NA. All rights reserved.
+//  Copyright 2011 Chut Corporation. All rights reserved.
 //
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,9 +18,6 @@
 
 #define API_URL @"http://api.getchute.com/v1/"
 #define SERVER_URL @"http://getchute.com"
-
-#define kChutePathVerifyAssets          @"assets/verify"
-#define kChuteParcels                   @"parcels"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
