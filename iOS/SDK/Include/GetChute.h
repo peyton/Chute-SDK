@@ -27,7 +27,5 @@
 
 #pragma mark - UI
 
-#import "GCAssetSliderComponent.h"
 #import "GCLoginViewController.h"
-#import "GCThumbnailComponent.h"
 #import "GCUIBaseViewController.h"
