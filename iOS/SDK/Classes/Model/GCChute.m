@@ -314,8 +314,12 @@
 - (id)proxyForJson {
     NSMutableDictionary *_temp = [[[NSMutableDictionary alloc] init] autorelease];
     for (NSString *key in [[self content] allKeys]) {
-        if ([key isEqualToString:@"user"])
-            [_temp setObject:[[[self content] objectForKey:@"user"] proxyForJson] forKey:@"user"];
+        if ([key isEqualToString:@"user"]){
+            if([[[self content] objectForKey:@"user"] isKindOfClass:[GCUser class]])
+                [_temp setObject:[[[self content] objectForKey:@"user"] proxyForJson] forKey:@"user"];
+            else if([[[self content] objectForKey:@"user"] isKindOfClass:[NSDictionary class]])
+                [_temp setObject:[[self content] objectForKey:@"user"] forKey:@"user"];
+        }
         else
             [_temp setObject:[[self content] objectForKey:key] forKey:key];
     }

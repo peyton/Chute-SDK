@@ -72,7 +72,7 @@ static GCAccount *sharedAccountManager = nil;
             {
                 GCAsset *_asset = [[GCAsset alloc] init];
                 [_asset setAlAsset:result];
-                [assetsArray addObject:_asset];
+                [assetsArray insertObject:_asset atIndex:0];
                 [_asset release];
             }
         };
@@ -86,7 +86,7 @@ static GCAccount *sharedAccountManager = nil;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"DONE_LOADING_ASSETS" object:nil];
                 return;
             }
-            
+            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
             [group enumerateAssetsUsingBlock:assetEnumerator];
         };
         
