@@ -29,3 +29,7 @@
 
 #import "GCLoginViewController.h"
 #import "GCUIBaseViewController.h"
+
+#pragma mark - helper
+
+#import "UIImageView+WebCache.h"

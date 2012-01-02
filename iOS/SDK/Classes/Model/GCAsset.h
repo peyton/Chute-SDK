@@ -65,4 +65,6 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock;
 
 - (BOOL) isHearted;
 
+- (GCResponse*) verify;
+
 @end

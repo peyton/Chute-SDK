@@ -77,6 +77,15 @@ NSString * const GCAssetUploadComplete = @"GCAssetUploadComplete";
     DO_IN_BACKGROUND_BOOL_ERROR([self unheart], aBoolErrorBlock);
 }
 
+-(GCResponse*)verify{
+    NSString *_path              = [[NSString alloc] initWithFormat:@"%@%@/verify", API_URL, [[self class] elementName]];
+    GCRequest *gcRequest         = [[GCRequest alloc] init];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:[[NSArray arrayWithObject:[self uniqueRepresentation]] JSONRepresentation] forKey:@"files"];
+    GCResponse *_response        = [[gcRequest postRequestWithPath:_path andParams:params] retain];
+    [gcRequest release];
+    [_path release];
+    return [_response autorelease];}
+
 #pragma mark - Comment Methods
 
 - (GCResponse *) comments {
@@ -234,6 +243,10 @@ inBackgroundWithCompletion:(void (^)(UIImage *))aResponseBlock {
             [self setStatus:[[dictionary objectForKey:@"status"] intValue]];
         else
             [self setStatus:GCAssetStateFinished];
+        if(![self objectID]){
+            if([self objectForKey:@"asset_id"])
+                [self setObject:[self objectForKey:@"asset_id"] forKey:@"id"];
+        }
     }
     return self;
 }
