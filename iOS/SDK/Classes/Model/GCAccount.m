@@ -26,6 +26,10 @@ static GCAccount *sharedAccountManager = nil;
 @synthesize heartedAssets;
 @synthesize assetsLibrary;
 
+// Public: Retrives an array of dictionaries for each account from Chute service
+// and loads the array into accoutns object
+//
+// No return value.
 - (void) loadAccounts {
     NSString *_path = [[NSString alloc] initWithFormat:@"%@accounts", API_URL];
     GCRequest *gcRequest = [[GCRequest alloc] init];
@@ -59,6 +63,13 @@ static GCAccount *sharedAccountManager = nil;
 
 #pragma mark - Load Assets
 
+// Public: Loads an array of GCAssets from the Camera Roll of the device into assetsArray.
+// The array is in reverse chronological order, so the newest photos are first.
+// When done it runs aCompletionBlock.
+//
+// aCompletionBlock - A Block to be ran after the assets are done loading.
+//
+// No return value.
 - (void)loadAssetsCompletionBlock:(void (^)(void))aCompletionBlock {
         if (assetsArray) {
             [assetsArray release], assetsArray = nil;
@@ -100,16 +111,24 @@ static GCAccount *sharedAccountManager = nil;
             [temp release];
         }
         
-        
         [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:assetGroupEnumerator failureBlock:assetFailureBlock];
 }
 
+// Public: Same as loadAssetsCompletionBlock with a nil completion block.
+//
+// No return value.
 - (void)loadAssets {
     [self loadAssetsCompletionBlock:nil];
 }
 
 #pragma mark - Accounts
 
+// Public: retains an array of dictionaries representing accounts, saves it to the user defaults
+// and set's it to the accounts object
+//
+// aAccounts - the array of dictionary representations of accounts to set
+//
+// No return value.
 - (void) setAccounts:(NSMutableArray *)aAccounts {
     if (_accounts) {
         [_accounts release], _accounts = nil;
@@ -121,6 +140,10 @@ static GCAccount *sharedAccountManager = nil;
     [prefs synchronize];
 }
 
+// Public: Gets the value stored in accounts; loads it from
+// user defaults if it's nil.
+//
+// Returns the array of user's accounts
 - (NSMutableArray *) accounts {
     if (_accounts == nil) {
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -131,6 +154,11 @@ static GCAccount *sharedAccountManager = nil;
 
 #pragma mark - Access Token
 
+// Public: Set's the access token for the Chute API and saves it to user defaults.
+//
+// accessTkn - The access token to be saved
+//
+// No return value.
 - (void) setAccessToken:(NSString *)accessTkn {
     if (_accessToken) {
         [_accessToken release], _accessToken = nil;
@@ -141,6 +169,9 @@ static GCAccount *sharedAccountManager = nil;
     [prefs synchronize];
 }
 
+// Public: Get's the access token for the Chute API, loads from user defaults if it's nil
+//
+// Returns the access token.
 - (NSString *) accessToken {
     if (_accessToken == nil) {
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -151,12 +182,20 @@ static GCAccount *sharedAccountManager = nil;
 
 #pragma mark - User id
 
+// Public: saves the userId to user defaults
+//
+// userid - the id to save
+//
+// No return value
 - (void) setUserId:(NSString*) userId {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:userId forKey:@"user_id"];
     [prefs synchronize];
 }
 
+// Public: retrieve the saved user ID
+//
+// Returns the user ID saved in user defaults
 - (NSString*) userId {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     return [NSString stringWithFormat:@"%@",[prefs objectForKey:@"user_id"]];
@@ -164,6 +203,12 @@ static GCAccount *sharedAccountManager = nil;
 
 #pragma mark - Authorization Methods
 
+// Public: set the current account status.  Sends a notification that the status has changed
+// If the user has just logged in then it also loads the user's hearted assets.
+//
+// _accountStatus - the new account status to set
+//
+// No return value.
 - (void) setAccountStatus:(GCAccountStatus)_accountStatus {
     accountStatus = _accountStatus;
     [[NSNotificationCenter defaultCenter] postNotificationName:GCAccountStatusChanged object:self];
@@ -173,6 +218,15 @@ static GCAccount *sharedAccountManager = nil;
     }
 }
 
+// Public: Uses the Access code recieved during login to retrieve an access token.
+// Runs a block of code on success or failure.  Also updates the account status and
+// retrives the user's profile information.
+//
+// accessCode - the access code used to verify the user and retrive an access token
+// successBlock - a block of code tobe ran after successfully getting the access token
+// errorBock - A block of code to run if the request for an access token fails
+//
+// No return value.
 - (void) verifyAuthorizationWithAccessCode:(NSString *) accessCode 
                                    success:(GCBasicBlock)successBlock 
                                   andError:(GCErrorBlock)errorBlock {
@@ -234,6 +288,13 @@ static GCAccount *sharedAccountManager = nil;
 }
 
 #pragma mark - Get Profile Info
+
+// Public: Get's the profile inormation from the Chute service for the current user
+// then runs a response block.
+//
+// aResponseBlock - a block of code to run after the request for profile info is finished
+//
+// no return value
 - (void)getProfileInfoWithResponse:(GCResponseBlock)aResponseBlock {
     NSString *_path = [[NSString alloc] initWithFormat:@"%@me", API_URL];
     GCRequest *gcRequest = [[GCRequest alloc] init];
@@ -248,6 +309,9 @@ static GCAccount *sharedAccountManager = nil;
     [_path release];
 }
 
+// Public: logs out the user.  Clears the access token and user id.
+//
+// No return value
 - (void)reset {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:nil forKey:@"access_token"];
@@ -261,6 +325,10 @@ static GCAccount *sharedAccountManager = nil;
 
 #pragma mark - My Meta Data Methods
 
+// Public: Retrive all metadata for the current user
+// Makes the request from the calling thread.
+//
+// Returns a GCResponse that has either a metadata dictionary for it's data object, or has an error object.
 - (GCResponse *) getMyMetaData {
     NSString *_path              = [[NSString alloc] initWithFormat:@"%@me/meta", API_URL];
     GCRequest *gcRequest         = [[GCRequest alloc] init];
@@ -270,10 +338,22 @@ static GCAccount *sharedAccountManager = nil;
     return [_response autorelease];
 }
 
+// Public: Same as getMyMetadata except it makes the request on a background thread
+// and runs a response block after the request is completed
+//
+// aResponseBlock- a block of code to be executed after the request completes.
+//
+// No return value
 - (void) getMyMetaDataInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock {
     DO_IN_BACKGROUND([self getMyMetaData], aResponseBlock);
 }
 
+// Public: Sets a dictionary of key/value pairs to the current user's metadata.
+// if any of the keys exist already they're value will be overwritten with the new value.
+//
+// metaData - the dictionary to set to the user's metadata
+//
+// Returns a BOOL indicating if the metadata was successfully set or not
 - (BOOL) setMyMetaData:(NSDictionary *) metaData {
     NSMutableDictionary *_params = [[NSMutableDictionary alloc] init];
     [_params setValue:[[metaData JSONRepresentation] dataUsingEncoding:NSUTF8StringEncoding] forKey:@"raw"];
@@ -288,6 +368,12 @@ static GCAccount *sharedAccountManager = nil;
     return _response;
 }
 
+// Public: Same as setMyMetaData except it runs in the background and executes a block of code after completion.
+//
+// metaData - the dictionary to set to the user's metadata
+// aBoolBlock - a block of code to be ran after the request completes
+//
+// No return value
 - (void) setMyMetaData:(NSDictionary *) metaData inBackgroundWithCompletion:(GCBoolBlock) aBoolBlock {
     DO_IN_BACKGROUND_BOOL([self setMyMetaData:metaData], aBoolBlock);
 }
@@ -295,6 +381,10 @@ static GCAccount *sharedAccountManager = nil;
 
 #pragma mark - Get Inbox Parcels
 
+// Public: Retrieves the most recent parcels that have been added to the chutes the current user is subscribed to
+//
+// Returns a GCResponse that has an array of GCParcels set for it's object if the request successful
+// or an error object if the request failed
 - (GCResponse *) getInboxParcels {
     NSString *_path              = [[NSString alloc] initWithFormat:@"%@inbox/parcels", API_URL];
     GCRequest *gcRequest         = [[GCRequest alloc] init];
@@ -310,10 +400,18 @@ static GCAccount *sharedAccountManager = nil;
     return [_response autorelease];
 }
 
+// Public: Same as getInboxParcels except it runs in the background and executes a block of code on completion
+//
+// aResponseBlock- a block of code to be executed after the request completes.
+//
+// No return value
 - (void) getInboxParcelsInBackgroundWithCompletion:(GCResponseBlock) aResponseBlock {
     DO_IN_BACKGROUND([self getInboxParcels], aResponseBlock);
 }
 
+// Public: Retrives an array of the current user's hearted assets and stores them in heartedAssets
+//
+// No return value
 - (void) loadHeartedAssets {
     if (heartedAssets) {
         [heartedAssets release], heartedAssets = nil;
