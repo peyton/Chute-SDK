@@ -36,4 +36,6 @@ typedef enum {
 - (NSDictionary*) dictionaryRepresentation;
 - (id) initWithDictionaryRepresentation:(NSDictionary*)representation;
 
+- (GCResponse*)serverAssets;
+
 @end

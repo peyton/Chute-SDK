@@ -165,33 +165,78 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
 - (BOOL) uploadAssetToS3:(GCAsset *) anAsset withToken:(NSDictionary *) _token {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
-    NSMutableData *_imageData = [UIImageJPEGRepresentation([UIImage imageWithCGImage:[[anAsset.alAsset defaultRepresentation] fullResolutionImage] scale:1 orientation:[[anAsset.alAsset valueForProperty:ALAssetPropertyOrientation] intValue]], 1.0) mutableCopy];
-    
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_token objectForKey:@"upload_url"]]];
-    [request setUploadProgressDelegate:anAsset];
-	[request setRequestMethod:@"PUT"];
-    [request setPostBody:_imageData];
-    
-	[request addRequestHeader:@"Date" value:[_token objectForKey:@"date"]];
-	[request addRequestHeader:@"Authorization" value:[_token objectForKey:@"signature"]];
-	[request addRequestHeader:@"Content-Type" value:[_token objectForKey:@"content_type"]];
-    [request addRequestHeader:@"x-amz-acl" value:@"public-read"];
-    [request setTimeOutSeconds:300];
-    [request startSynchronous];
-    [_imageData release];
-    GCResponse *_result = [[GCResponse alloc] initWithRequest:request];
-    
-    BOOL _response = [_result isSuccessful];
-    [_result release];
-    [pool release];
-    
-    if (_response) {
-        [anAsset setStatus:GCAssetStateCompleting];
+    __block NSMutableData* _imageData = [UIImageJPEGRepresentation([UIImage imageWithCGImage:[[anAsset.alAsset defaultRepresentation] fullResolutionImage] scale:1 orientation:[[anAsset.alAsset valueForProperty:ALAssetPropertyOrientation] intValue]], 1.0) mutableCopy];
+    if(!_imageData && [anAsset objectID]){
+        NSString *assetURL = NULL;
+        for(NSDictionary *dict in [self objectForKey:@"uploads"]){
+            if([[NSString stringWithFormat:@"%@",[dict objectForKey:@"asset_id"]] isEqualToString:[anAsset objectID]])
+                assetURL = [NSString stringWithFormat:@"%@",[dict objectForKey:@"file_path"]];
+        }
+        if(![[GCAccount sharedManager] assetsLibrary]){
+            ALAssetsLibrary *temp = [[ALAssetsLibrary alloc] init];
+            [[GCAccount sharedManager] setAssetsLibrary:temp];
+            [temp release];
+        }
+        ALAssetsLibrary *library = [[GCAccount sharedManager] assetsLibrary];
+        __block BOOL _response;
+        [library assetForURL:[NSURL URLWithString:assetURL] resultBlock:^(ALAsset* _alasset){
+            _imageData = [UIImageJPEGRepresentation([UIImage imageWithCGImage:[[_alasset defaultRepresentation] fullResolutionImage] scale:1 orientation:[[anAsset.alAsset valueForProperty:ALAssetPropertyOrientation] intValue]], 1.0) mutableCopy];
+            
+            ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_token objectForKey:@"upload_url"]]];
+            [request setUploadProgressDelegate:anAsset];
+            [request setRequestMethod:@"PUT"];
+            [request setPostBody:_imageData];
+            
+            [request addRequestHeader:@"Date" value:[_token objectForKey:@"date"]];
+            [request addRequestHeader:@"Authorization" value:[_token objectForKey:@"signature"]];
+            [request addRequestHeader:@"Content-Type" value:[_token objectForKey:@"content_type"]];
+            [request addRequestHeader:@"x-amz-acl" value:@"public-read"];
+            [request setTimeOutSeconds:300];
+            [request startSynchronous];
+            GCResponse *_result = [[GCResponse alloc] initWithRequest:request];
+            
+            _response = [_result isSuccessful];
+            [_result release];
+            [_imageData release];
+            [pool release];
+            
+            if (_response) {
+                [anAsset setStatus:GCAssetStateCompleting];
+            }
+            else {
+                [anAsset setStatus:GCAssetStateUploadingToS3Failed];
+            }
+        } failureBlock:^(NSError* error){
+        }];
+        return _response;
+    }else{
+        
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_token objectForKey:@"upload_url"]]];
+        [request setUploadProgressDelegate:anAsset];
+        [request setRequestMethod:@"PUT"];
+        [request setPostBody:_imageData];
+        
+        [request addRequestHeader:@"Date" value:[_token objectForKey:@"date"]];
+        [request addRequestHeader:@"Authorization" value:[_token objectForKey:@"signature"]];
+        [request addRequestHeader:@"Content-Type" value:[_token objectForKey:@"content_type"]];
+        [request addRequestHeader:@"x-amz-acl" value:@"public-read"];
+        [request setTimeOutSeconds:300];
+        [request startSynchronous];
+        GCResponse *_result = [[GCResponse alloc] initWithRequest:request];
+        
+        BOOL _response = [_result isSuccessful];
+        [_result release];
+        [_imageData release];
+        [pool release];
+        
+        if (_response) {
+            [anAsset setStatus:GCAssetStateCompleting];
+        }
+        else {
+            [anAsset setStatus:GCAssetStateUploadingToS3Failed];
+        }
+        return _response;
     }
-    else {
-        [anAsset setStatus:GCAssetStateUploadingToS3Failed];
-    }
-    return _response;
 }
 
 - (GCResponse *) completionRequestForAsset:(GCAsset *) anAsset {
@@ -314,7 +359,28 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
     [self setDelegate:_target];
     [self setCompletionSelector:_selector];
     [self setStatus:GCParcelStatusUploading];
-    [self performSelector:@selector(startUpload) withObject:nil afterDelay:0.1f];
+    [self performSelector:@selector(startUpload)];
+}
+
+- (GCResponse*)serverAssets{
+    if(![self objectID]){
+        GCResponse *response = [[GCResponse alloc] init];
+        NSMutableDictionary *_errorDetail = [NSMutableDictionary dictionary];
+        [_errorDetail setValue:@"This parcel is missing an id." forKey:NSLocalizedDescriptionKey];
+        [response setError:[GCError errorWithDomain:@"GCError" code:401 userInfo:_errorDetail]];
+        return [response autorelease];
+    }
+    NSString *_path              = [[NSString alloc] initWithFormat:@"%@%@/%@/assets", API_URL, [[self class] elementName], [self objectID]];
+    GCRequest *gcRequest         = [[GCRequest alloc] init];
+    GCResponse *_response        = [[gcRequest getRequestWithPath:_path] retain];
+    NSMutableArray *_assets    = [[NSMutableArray alloc] init]; 
+    for (NSDictionary *_dic in [_response data]) {
+        [_assets addObject:[GCAsset objectWithDictionary:_dic]];
+    }
+    [_response setObject:_assets];
+    [gcRequest release];
+    [_path release];
+    return [_response autorelease];
 }
 
 - (id) initWithAssets:(NSArray *) _assets andChutes:(NSArray *) _chutes {
