@@ -17,6 +17,8 @@
 
 @synthesize authView;
 @synthesize authWebView;
+@synthesize blankBackground;
+
 
 +(void)presentInController:(UIViewController *)controller {
     [[GCAccount sharedManager] verifyAuthorizationWithAccessCode:nil success:^(void) {
@@ -27,17 +29,47 @@
     }];
 }
 
++(void)presentAuthForService:(NSString*)service inController:(UIViewController*)controller{
+    GCLoginViewController *loginController = [[GCLoginViewController alloc] init];
+    [loginController setView:[loginController blankBackground]];
+    [controller presentModalViewController:loginController animated:NO];
+    [loginController loginWithService:service];
+    [loginController release];
+}
+
 -(IBAction) login {
+    [self loginWithService:[SERVICES_ARRAY objectAtIndex:kSERVICE]];
+    /*
     NSDictionary *params = [NSMutableDictionary new];
     [params setValue:@"profile" forKey:@"scope"];
     [params setValue:@"web_server" forKey:@"type"];
     [params setValue:@"code" forKey:@"response_type"];
     [params setValue:kOAuthClientID forKey:@"client_id"];
-    [params setValue:kOAuthRedirectURL forKey:@"redirect_uri"];
+    [params setValue:kOAuthCallbackURL forKey:@"redirect_uri"];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/oauth/%@?%@", 
                                                                                SERVER_URL, 
                                                                                [SERVICES_ARRAY objectAtIndex:kSERVICE],
+                                                                               [params stringWithFormEncodedComponents]]]];
+    [authWebView sizeToFit];
+    [self showAuthViewCompletion:^(void) {
+        [authWebView loadRequest:request];
+    }];
+    [params release];
+     */
+}
+
+-(void) loginWithService:(NSString*)service{
+    NSDictionary *params = [NSMutableDictionary new];
+    [params setValue:@"profile" forKey:@"scope"];
+    [params setValue:@"web_server" forKey:@"type"];
+    [params setValue:@"code" forKey:@"response_type"];
+    [params setValue:kOAuthClientID forKey:@"client_id"];
+    [params setValue:kOAuthCallbackURL forKey:@"redirect_uri"];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/oauth/%@?%@", 
+                                                                               SERVER_URL,
+                                                                               service,
                                                                                [params stringWithFormEncodedComponents]]]];
     [authWebView sizeToFit];
     [self showAuthViewCompletion:^(void) {
@@ -88,7 +120,7 @@
 #pragma mark WebView Delegate Methods
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if ([[[request URL] path] isEqualToString:kOAuthRedirectRelativeURL]) {
+    if ([[[request URL] path] isEqualToString:kOAuthCallbackRelativeURL]) {
         NSString *_code = [[NSDictionary dictionaryWithFormEncodedString:[[request URL] query]] objectForKey:@"code"];
         
         [[GCAccount sharedManager] verifyAuthorizationWithAccessCode:_code success:^(void) {
@@ -131,6 +163,8 @@
 - (void)dealloc
 {
     [authView release];
+    [authWebView release];
+    [blankBackground release];
     [super dealloc];
 }
 

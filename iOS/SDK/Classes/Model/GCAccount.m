@@ -27,10 +27,12 @@ static GCAccount *sharedAccountManager = nil;
 @synthesize assetsLibrary;
 
 // Public: Retrives an array of dictionaries for each account from Chute service
-// and loads the array into accoutns object
+// and loads the array into accounts object
 //
 // No return value.
 - (void) loadAccounts {
+    if(![[GCAccount sharedManager] accessToken])
+        return;
     NSString *_path = [[NSString alloc] initWithFormat:@"%@accounts", API_URL];
     GCRequest *gcRequest = [[GCRequest alloc] init];
     
@@ -43,10 +45,20 @@ static GCAccount *sharedAccountManager = nil;
         for (NSDictionary *_dic in [response data]) {
             NSMutableDictionary *_obj = [[NSMutableDictionary alloc] init];
             
-            [_obj setObject:[_dic objectForKey:@"access_key"] forKey:@"access_key"];
-            [_obj setObject:[_dic objectForKey:@"type"] forKey:@"type"];
-            [_obj setObject:[_dic objectForKey:@"uid"] forKey:@"uid"];
-            [_obj setObject:[_dic objectForKey:@"id"] forKey:@"accountID"];
+            if([_dic objectForKey:@"access_key"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"access_key"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"access_key"]] forKey:@"access_key"];
+            if([_dic objectForKey:@"type"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"type"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"type"]] forKey:@"type"];
+            if([_dic objectForKey:@"uid"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"uid"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"uid"]] forKey:@"uid"];
+            if([_dic objectForKey:@"id"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"id"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"id"]] forKey:@"accountID"];
+            if([_dic objectForKey:@"name"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"name"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"name"]] forKey:@"name"];
+            if([_dic objectForKey:@"notifications_enabled"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"notifications_enabled"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"notifications_enabled"]] forKey:@"notifications_enabled"];
+            if([_dic objectForKey:@"status"] && ![[NSString stringWithFormat:@"%@",[_dic objectForKey:@"status"]] isEqualToString:@"<null>"])
+                [_obj setObject:[NSString stringWithFormat:@"%@",[_dic objectForKey:@"status"]] forKey:@"status"];
             
             [_data addObject:_obj];
             [_obj release];
@@ -59,6 +71,52 @@ static GCAccount *sharedAccountManager = nil;
     [response release];
     [gcRequest release];
     [_path release];
+}
+
+- (GCResponse*) albumsForAccount:(NSString*)accountID{
+    if(!accountID){
+        GCResponse *response = [[GCResponse alloc] init];
+        NSMutableDictionary *_errorDetail = [NSMutableDictionary dictionary];
+        [_errorDetail setValue:@"No account ID entered" forKey:NSLocalizedDescriptionKey];
+        [response setError:[GCError errorWithDomain:@"GCError" code:401 userInfo:_errorDetail]];
+        return [response autorelease];
+    }
+    NSString *_path = [[NSString alloc] initWithFormat:@"%@accounts/%@/objects", API_URL,accountID];
+    GCRequest *gcRequest = [[GCRequest alloc] init];
+    
+    GCResponse *response = [[gcRequest getRequestWithPath:_path] retain];
+    
+    if ([response isSuccessful]) {
+        [response setObject:[response data]];
+    }
+    return [response autorelease];
+}
+
+- (GCResponse*) photosForAccount:(NSString*)accountID andAlbum:(NSString*)albumID{
+    if(!accountID){
+        GCResponse *response = [[GCResponse alloc] init];
+        NSMutableDictionary *_errorDetail = [NSMutableDictionary dictionary];
+        [_errorDetail setValue:@"No account ID entered" forKey:NSLocalizedDescriptionKey];
+        [response setError:[GCError errorWithDomain:@"GCError" code:401 userInfo:_errorDetail]];
+        return [response autorelease];
+    }
+    if(!albumID){
+        GCResponse *response = [[GCResponse alloc] init];
+        NSMutableDictionary *_errorDetail = [NSMutableDictionary dictionary];
+        [_errorDetail setValue:@"No album ID entered" forKey:NSLocalizedDescriptionKey];
+        [response setError:[GCError errorWithDomain:@"GCError" code:401 userInfo:_errorDetail]];
+        return [response autorelease];
+    }
+
+    NSString *_path = [[NSString alloc] initWithFormat:@"%@accounts/%@/objects/%@", API_URL,accountID,albumID];
+    GCRequest *gcRequest = [[GCRequest alloc] init];
+    
+    GCResponse *response = [[gcRequest getRequestWithPath:_path] retain];
+    
+    if ([response isSuccessful]) {
+        [response setObject:[response data]];
+    }
+    return [response autorelease];
 }
 
 #pragma mark - Load Assets
@@ -218,6 +276,31 @@ static GCAccount *sharedAccountManager = nil;
     }
 }
 
+// Private: Combines the user account given by the info parameter with the current logged in user account.
+//
+// info - a dictionary representing the account to merge.  It is a dictionary with the new account's access token saved to the key access_token
+// aResponseBlock - a block of code to run after the merge is completed
+//
+// No return value.
+- (void)moveToExistingUserWithInfo:(NSMutableDictionary *)info 
+                      withResponse:(GCResponseBlock)aResponseBlock {
+    
+    NSString *_path = [[NSString alloc] initWithFormat:@"%@me/accounts/move", API_URL];
+    GCRequest *gcRequest = [[GCRequest alloc] init];
+    
+    [gcRequest postRequestInBackgroundWithPath:_path 
+                                     andParams:info
+                                  withResponse:^(GCResponse *response) {
+                                      if (aResponseBlock) {
+                                          aResponseBlock(response);
+                                      }
+                                  }];
+    
+    
+    [gcRequest release];
+    [_path release];
+}
+
 // Public: Uses the Access code recieved during login to retrieve an access token.
 // Runs a block of code on success or failure.  Also updates the account status and
 // retrives the user's profile information.
@@ -230,7 +313,7 @@ static GCAccount *sharedAccountManager = nil;
 - (void) verifyAuthorizationWithAccessCode:(NSString *) accessCode 
                                    success:(GCBasicBlock)successBlock 
                                   andError:(GCErrorBlock)errorBlock {
-    if ([self accessToken]) {
+    if ([self accessToken] && accessCode == nil) {
         [self setAccountStatus:GCAccountLoggedIn];
         successBlock();
         return;
@@ -243,7 +326,7 @@ static GCAccount *sharedAccountManager = nil;
     [params setValue:kOAuthClientID forKey:@"client_id"];
     [params setValue:kOAuthClientSecret forKey:@"client_secret"];
     [params setValue:@"authorization_code" forKey:@"grant_type"];
-    [params setValue:kOAuthRedirectURL forKey:@"redirect_uri"];
+    [params setValue:kOAuthCallbackURL forKey:@"redirect_uri"];
     
     if (accessCode == nil) {
         errorBlock(nil);
@@ -261,23 +344,37 @@ static GCAccount *sharedAccountManager = nil;
     
     [request setTimeOutSeconds:300.0];
     [request setCompletionBlock:^{
+        
         //save access code
         NSDictionary *_response = [[request responseString] JSONValue];
-        [self setAccessToken:[_response objectForKey:@"access_token"]];
         
-        //send request to save userid
-        [self getProfileInfoWithResponse:^(GCResponse *response) {
-            if ([response error]) {
-                [self setAccountStatus:GCAccountLoginFailed];
-                errorBlock([response error]);
-            }
-            else {
-                [self loadAccounts];
-                [self setUserId:[NSString stringWithFormat:@"%@",[[response object] valueForKey:@"id"]]];
+        // there is a existing token that exists, so just attach the new user to the old one
+        // this will move new user's accounts over to the old user
+        NSString *_existingToken = [[GCAccount sharedManager] accessToken];
+        
+        // new code by - gaurav
+        if (_existingToken) {
+            NSMutableDictionary *_info = [NSMutableDictionary dictionaryWithObject:[_response objectForKey:@"access_token"] forKey:@"access_token"];
+            [self moveToExistingUserWithInfo:_info withResponse:^(GCResponse *response) {
                 [self setAccountStatus:GCAccountLoggedIn];
                 successBlock();
-            }
-        }];
+            }];
+        } else {
+            [self setAccessToken:[_response objectForKey:@"access_token"]];
+            //send request to save userid
+            [self getProfileInfoWithResponse:^(GCResponse *response) {
+                if ([response error]) {
+                    [self setAccountStatus:GCAccountLoginFailed];
+                    errorBlock([response error]);
+                }
+                else {
+                    [self loadAccounts];
+                    [self setUserId:[NSString stringWithFormat:@"%@",[[response object] valueForKey:@"id"]]];
+                    [self setAccountStatus:GCAccountLoggedIn];
+                    successBlock();
+                }
+            }];
+        }
     }];
     
     [request setFailedBlock:^{

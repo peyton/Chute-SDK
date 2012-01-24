@@ -14,9 +14,12 @@
 
 @property (nonatomic, retain) IBOutlet UIView *authView;
 @property (nonatomic, retain) IBOutlet UIWebView *authWebView;
+@property (nonatomic, retain) IBOutlet UIView *blankBackground;
 
 -(IBAction) login;
+-(void) loginWithService:(NSString*)service;
 
 +(void)presentInController:(UIViewController *)controller;
++(void)presentAuthForService:(NSString*)service inController:(UIViewController*)controller;
 
 @end

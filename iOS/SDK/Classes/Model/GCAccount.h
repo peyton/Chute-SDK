@@ -67,4 +67,7 @@ typedef enum {
 
 - (void) loadAccounts;
 
+- (GCResponse*) albumsForAccount:(NSString*)accountID;
+- (GCResponse*) photosForAccount:(NSString*)accountID andAlbum:(NSString*)albumID;
+
 @end
