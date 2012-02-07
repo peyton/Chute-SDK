@@ -66,8 +66,11 @@ typedef enum {
 - (void) loadHeartedAssets;
 
 - (void) loadAccounts;
+-(void)loadAccountsInBackgroundWithCompletion:(void (^)(void))aCompletionBlock;
 
 - (GCResponse*) albumsForAccount:(NSString*)accountID;
+- (void) albumsForAccount:(NSString*)accountID inBackgroundWithResponse:(GCResponseBlock)aResponseBlock;
 - (GCResponse*) photosForAccount:(NSString*)accountID andAlbum:(NSString*)albumID;
+- (void) photosForAccount:(NSString*)accountID andAlbum:(NSString*)albumID inBackgroundWithResponse:(GCResponseBlock)aResponseBlock;
 
 @end

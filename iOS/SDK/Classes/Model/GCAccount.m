@@ -73,6 +73,23 @@ static GCAccount *sharedAccountManager = nil;
     [_path release];
 }
 
+// Public: Same as loadAccounts but runs in background and executes a completion block after
+// the accounts are done loading.
+//
+// aCompletionBlock - The block of code to run after loading the assets
+//
+// No return value.
+-(void)loadAccountsInBackgroundWithCompletion:(void (^)(void))aCompletionBlock{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
+        [self loadAccounts];
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            if (aCompletionBlock) {
+                aCompletionBlock();
+            }
+        });
+    });
+}
+
 - (GCResponse*) albumsForAccount:(NSString*)accountID{
     if(!accountID){
         GCResponse *response = [[GCResponse alloc] init];
@@ -90,6 +107,10 @@ static GCAccount *sharedAccountManager = nil;
         [response setObject:[response data]];
     }
     return [response autorelease];
+}
+
+-(void)albumsForAccount:(NSString *)accountID inBackgroundWithResponse:(GCResponseBlock)aResponseBlock{
+    DO_IN_BACKGROUND([self albumsForAccount:accountID], aResponseBlock);
 }
 
 - (GCResponse*) photosForAccount:(NSString*)accountID andAlbum:(NSString*)albumID{
@@ -117,6 +138,10 @@ static GCAccount *sharedAccountManager = nil;
         [response setObject:[response data]];
     }
     return [response autorelease];
+}
+
+-(void)photosForAccount:(NSString *)accountID andAlbum:(NSString *)albumID inBackgroundWithResponse:(GCResponseBlock)aResponseBlock{
+    DO_IN_BACKGROUND([self photosForAccount:accountID andAlbum:albumID], aResponseBlock);
 }
 
 #pragma mark - Load Assets
@@ -191,7 +216,12 @@ static GCAccount *sharedAccountManager = nil;
     if (_accounts) {
         [_accounts release], _accounts = nil;
     }
-    
+    if(!aAccounts){
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs setObject:nil forKey:@"accounts"];
+        [prefs synchronize];
+        return;
+    }
     _accounts = [aAccounts retain];
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:_accounts forKey:@"accounts"];
@@ -313,7 +343,7 @@ static GCAccount *sharedAccountManager = nil;
 - (void) verifyAuthorizationWithAccessCode:(NSString *) accessCode 
                                    success:(GCBasicBlock)successBlock 
                                   andError:(GCErrorBlock)errorBlock {
-    if ([self accessToken] && accessCode == nil) {
+    if ([self accessToken] && !accessCode) {
         [self setAccountStatus:GCAccountLoggedIn];
         successBlock();
         return;
@@ -413,11 +443,13 @@ static GCAccount *sharedAccountManager = nil;
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:nil forKey:@"access_token"];
     [prefs setObject:nil forKey:@"id"];
+    [prefs setObject:nil forKey:@"accounts"];
     [prefs synchronize];
     [ASIHTTPRequest setSessionCookies:nil];
     if (_accessToken) {
         [_accessToken release], _accessToken = nil;
     }
+    [self setAccounts:NULL];
 }
 
 #pragma mark - My Meta Data Methods
