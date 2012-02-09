@@ -33,8 +33,8 @@
 #define kDEVICE_VERSION     [[UIDevice currentDevice] systemVersion]
 
 //replace the following setting with your own client info
-#define kOAuthRedirectURL               @"http://getchute.com/oauth/callback"
-#define kOAuthRedirectRelativeURL       @"/oauth/callback"
+#define kOAuthCallbackURL               @"http://getchute.com/oauth/callback"
+#define kOAuthCallbackRelativeURL       @"/oauth/callback"
 #define kOAuthClientID                  @"PUT_CLIENT_ID_HERE"
 #define kOAuthClientSecret              @"PUT_CLIENT_SECRET_HERE"
 
