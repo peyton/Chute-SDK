@@ -15,7 +15,7 @@
 - (NSMutableDictionary *)headers{
     return [NSMutableDictionary dictionaryWithObjectsAndKeys:
             kDEVICE_NAME, @"x-device-name",
-            kUDID, @"x-device-identifier",
+//            kUDID, @"x-device-identifier",
             kDEVICE_OS, @"x-device-os",
             kDEVICE_VERSION, @"x-device-version",
             kOAuthAppID, @"x-client_id",

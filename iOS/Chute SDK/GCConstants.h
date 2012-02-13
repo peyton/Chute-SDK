@@ -27,7 +27,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define kUDID               [[UIDevice currentDevice] uniqueIdentifier]
+//#define kUDID               [[UIDevice currentDevice] uniqueIdentifier]
 #define kDEVICE_NAME        [[UIDevice currentDevice] name]
 #define kDEVICE_OS          [[UIDevice currentDevice] systemName]
 #define kDEVICE_VERSION     [[UIDevice currentDevice] systemVersion]

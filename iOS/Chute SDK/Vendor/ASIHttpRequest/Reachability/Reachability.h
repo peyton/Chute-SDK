@@ -134,6 +134,8 @@ extern NSString *const kInternetConnection;
 extern NSString *const kLocalWiFiConnection;
 extern NSString *const kReachabilityChangedNotification;
 
+struct sockaddr_in;
+
 @interface Reachability: NSObject {
 	
 @private
