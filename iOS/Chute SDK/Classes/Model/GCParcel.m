@@ -77,7 +77,7 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
                 };
                 
                 NSArray *pathParts = [filePath componentsSeparatedByString:@"://"];
-                NSString *assetURLString;
+                NSString *assetURLString = @"";
                 if([pathParts count] > 1)
                     assetURLString = filePath;
                 else{
@@ -378,6 +378,7 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
         [_assets addObject:[GCAsset objectWithDictionary:_dic]];
     }
     [_response setObject:_assets];
+    [_assets release];
     [gcRequest release];
     [_path release];
     return [_response autorelease];
@@ -430,6 +431,7 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
                         [asset setStatus:GCAssetStateNew];
                     [assets addObject:asset];
                 }
+                
             }
             else if ([key isEqualToString:@"chutes"]) {
                 NSMutableArray *array = [NSMutableArray array];

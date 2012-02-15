@@ -123,7 +123,7 @@
         [selectedSlider setContentSize: CGSizeMake((selectedSlider.frame.size.height-5)*[selected count]+5, selectedSlider.frame.size.height)];
         CGRect rect = CGRectMake(5, 5, selectedSlider.frame.size.height-10, selectedSlider.frame.size.height-6);
         for(GCAsset *asset in selected){
-            UIImageView *iv = [[UIImageView alloc] initWithFrame:rect];
+            UIImageView *iv = [[[UIImageView alloc] initWithFrame:rect] autorelease];
             [iv setImage:[asset thumbnail]];
             [iv setTag:[[self filteredImages] indexOfObject:asset]];
             [iv setUserInteractionEnabled:YES];
@@ -335,7 +335,7 @@
         [view addSubview:image];
         rect = CGRectMake((rect.origin.x+79), rect.origin.y, rect.size.width, rect.size.height);
     }
-    return view;
+    return [view autorelease];
 }
 
 @end

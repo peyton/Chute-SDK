@@ -23,7 +23,7 @@
             [vc setMessageBody:message isHTML:YES];
         if(subject)
             [vc setSubject:subject];
-        return vc;
+        return [vc autorelease];
     }
     return NULL;
 }
@@ -59,7 +59,7 @@
 +(EKEvent*)eventNamed:(NSString*)eventName afterEventStartDate:(NSDate*)start beforeEventEndDate:(NSDate*)end{
     if(!eventName)
         return NULL;
-    EKEventStore *store = [[EKEventStore alloc] init];
+    EKEventStore *store = [[[EKEventStore alloc] init] autorelease];
     if(!start){
         CFGregorianDate gregorianStartDate;
         CFGregorianUnits startUnits = {0, 0, -30, 0, 0, 0};
@@ -72,6 +72,7 @@
         gregorianStartDate.second = 0;
         start =
         [NSDate dateWithTimeIntervalSinceReferenceDate:CFGregorianDateGetAbsoluteTime(gregorianStartDate, timeZone)];
+        CFRelease(timeZone);
     }
     if(!end){
         CFGregorianDate gregorianEndDate;
@@ -85,6 +86,7 @@
         gregorianEndDate.second = 0;
         end =
         [NSDate dateWithTimeIntervalSinceReferenceDate:CFGregorianDateGetAbsoluteTime(gregorianEndDate, timeZone)];
+        CFRelease(timeZone);
     }
     NSPredicate *predicate = [store predicateForEventsWithStartDate:start endDate:end calendars:nil];
     NSArray *array = [store eventsMatchingPredicate:predicate];
