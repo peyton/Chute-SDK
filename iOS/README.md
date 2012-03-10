@@ -1,9 +1,22 @@
 Setup
 ====
 
+##Frameworks
+
+You must link the following libraries in your project to use the SDK
+
+* AssetsLibrary
+* CFNetwork
+* EventKit
+* libz.dylib
+* MessageUI
+* MobileCoreServices
+* Security
+* SystemConfiguration
+
 ##Client Authentication
 
-First copy the SDK files into your project.  Find the GCConstants.h file located at SDK/Classes/Core and enter your OAuth information.
+After you copy the SDK files into your project.  Find the GCConstants.h file located at SDK/Classes/Core and enter your OAuth information.
 
 ``` Objective-C
     #define kOAuthRedirectURL               @"http://getchute.com/oauth/callback"
