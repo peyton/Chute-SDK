@@ -36,8 +36,7 @@ public class GCHttpRequestStore {
     public static final String ID = "id";
     public static final String IS_SUCCESSFUL = "isSuccessful";
 
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHttpRequestStore.class.getSimpleName();
+    public static final String TAG = GCHttpRequestStore.class.getSimpleName();
 
     private final Context context;
 
@@ -56,7 +55,6 @@ public class GCHttpRequestStore {
 	return instance;
     }
 
-    @SuppressWarnings("rawtypes")
     private static final HashMap<Integer, GCHttpRequest> map = new HashMap<Integer, GCHttpRequest>();
 
     public Integer addBlock(GCHttpRequest block) {

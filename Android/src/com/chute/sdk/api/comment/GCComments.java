@@ -29,29 +29,202 @@ import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
+import com.chute.sdk.collections.GCCommentCollection;
+import com.chute.sdk.model.GCChuteModel;
+import com.chute.sdk.model.GCCommentModel;
+import com.chute.sdk.model.GCLocalAssetModel;
+import com.chute.sdk.parsers.GCChuteSingleObjectParser;
+import com.chute.sdk.parsers.GCCommentListObjectParser;
+import com.chute.sdk.parsers.GCCommentSingleObjectParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
+/**
+ * The {@link GCComments} class is a helper class which contains methods for
+ * deleting, getting and adding comments.
+ * 
+ */
 public class GCComments {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCComments.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCComments.class.getSimpleName();
 
-    private GCComments() {
-    }
+	/**
+	 * A private no-args default constructor.
+	 */
+	private GCComments() {
+	}
 
-    public static <T> GCHttpRequest delete(final Context context, final String id,
-	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new CommentsDeleteRequest<T>(context, id, parser, callback);
-    }
+	/**
+	 * Method used for deleting a comment. It returns a JSON object containing a
+	 * comment using the following parameters: context, string value and the
+	 * given callback and parser.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param id
+	 *            {@link GCCommentModel} ID, representing the comment to be
+	 *            deleted.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface. You can
+	 *            add a custom parser or use the parser provided here {@see
+	 *            #delete(Context, String, GCHttpCallback)}.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link CommentsDeleteRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest delete(final Context context,
+			final String id, final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new CommentsDeleteRequest<T>(context, id, parser, callback);
+	}
 
-    public static <T> GCHttpRequest get(final Context context, final String chuteId,
-	    final String assetId, final GCHttpResponseParser<T> parser,
-	    final GCHttpCallback<T> callback) {
-	return new CommentsGetRequest<T>(context, chuteId, assetId, parser, callback);
-    }
+	/**
+	 * Method that defaults to the generic method {@see #delete(Context, String,
+	 * GCHttpResponseParser, GCHttpCallback)}. This method uses
+	 * {@link GCCommentSingleObjectParser} which has {@link GCCommentModel} as a
+	 * return type if the callback is successful.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param id
+	 *            {@link GCCommentModel} ID, representing the comment to be
+	 *            deleted.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. If successful,
+	 *            the callback returns {@link GCCommentModel}.
+	 * @return {@link #delete(Context, String, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest delete(final Context context, final String id,
+			final GCHttpCallback<GCCommentModel> callback) {
+		return delete(context, id, new GCCommentSingleObjectParser(), callback);
+	}
 
-    public static <T> GCHttpRequest add(final Context context, final String chuteId,
-	    final String assetId, final String comment, final GCHttpResponseParser<T> parser,
-	    final GCHttpCallback<T> callback) {
-	return new CommentsPostRequest<T>(context, chuteId, assetId, comment, parser, callback);
-    }
+	/**
+	 * Method used for getting a collection of comments. It returns a JSON
+	 * object containing array of comments using the following parameters:
+	 * context, string value representing the chute ID, string value
+	 * representing the asset ID and the given callback and parser.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute that contains
+	 *            the returned comments.
+	 * @param assetId
+	 *            {@link GCLocalAssetModel} ID, representing the assets that
+	 *            contains the returned comments.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface. You can
+	 *            add a custom parser or use the parser provided here {@see
+	 *            #get(Context, String, String, String, GCHttpCallback)}.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link CommentsGetRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest get(final Context context,
+			final String chuteId, final String assetId,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new CommentsGetRequest<T>(context, chuteId, assetId, parser,
+				callback);
+	}
+
+	/**
+	 * Method that defaults to the generic method {@see #get(Context, String,
+	 * String, GCHttpResponseParser, GCHttpCallback)}. This method uses
+	 * {@link GCCommentListObjectParser} which has {@link GCCommentCollection}
+	 * as a return type if the callback is successful.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute that contains
+	 *            the returned comments.
+	 * @param assetId
+	 *            {@link GCLocalAssetModel} ID, representing the asset that
+	 *            contains the returned comments.
+	 * @param comment
+	 *            String variable representing the actual comment.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. If successful,
+	 *            the callback returns {@link GCCommentCollection}.
+	 * @return {@link #get(Context, String, String, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest get(final Context context,
+			final String chuteId, final String assetId, final String comment,
+			final GCHttpCallback<GCCommentCollection> callback) {
+		return get(context, chuteId, assetId, new GCCommentListObjectParser(),
+				callback);
+	}
+
+	/**
+	 * Method used for adding a comment. It returns a JSON object containing a
+	 * comment using the following parameters: context, string value
+	 * representing the chute ID, string value representing the asset ID, string
+	 * value representing the actual comment and the given callback and parser.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute that the added
+	 *            comment belongs to.
+	 * @param assetId
+	 *            {@link GCLocalAssetModel} ID, representing the asset that the
+	 *            added comment belongs to.
+	 * @param comment
+	 *            String variable representing the actual comment.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface. You can
+	 *            add a custom parser or use the parser provided here {@see
+	 *            #add(Context, String, String, String, GCHttpCallback)}.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link CommentsPostRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest add(final Context context,
+			final String chuteId, final String assetId, final String comment,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new CommentsPostRequest<T>(context, chuteId, assetId, comment,
+				parser, callback);
+	}
+
+	/**
+	 * Method that defaults to the generic method {@see #add(Context, String,
+	 * String, String, GCHttpResponseParser, GCHttpCallback)}. This method uses
+	 * {@link GCChuteSingleObjectParser} which has {@link GCCommentModel} as a
+	 * return type if the callback is successful.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute that the added
+	 *            comment belongs to.
+	 * @param assetId
+	 *            {@link GCLocalAssetModel} ID, representing the asset that the
+	 *            added comment belongs to.
+	 * @param comment
+	 *            String variable representing the actual comment.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. If successful,
+	 *            the callback returns {@link GCCommentModel}.
+	 * @return {@link #add(Context, String, String, String, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest add(final Context context,
+			final String chuteId, final String assetId, final String comment,
+			final GCHttpCallback<GCCommentModel> callback) {
+		return add(context, chuteId, assetId, comment,
+				new GCCommentSingleObjectParser(), callback);
+	}
 }

@@ -31,23 +31,72 @@ import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
+import com.chute.sdk.model.GCAssetModel;
+import com.chute.sdk.model.GCBundleModel;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
+/**
+ * The {@link GCBundles} class is a helper class which contains methods for
+ * getting and creating bundles.
+ * 
+ */
 public class GCBundles {
-    private static final String TAG = GCBundles.class.getSimpleName();
 
-    // Cannot instantiate
-    private GCBundles() {
-    }
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBundles.class.getSimpleName();
 
-    public static <T> GCHttpRequest get(final Context context, final String id,
-	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new BundleGetRequest<T>(context, id, parser, callback);
-    }
+	// Cannot instantiate
+	/**
+	 * A private no-args default constructor.
+	 */
+	private GCBundles() {
+	}
 
-    public static <T> GCHttpRequest create(final Context context,
-	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback,
-	    final ArrayList<String> assetIds) {
-	return new BundleCreateRequest<T>(context, assetIds, parser, callback);
-    }
+	/**
+	 * Method used for getting bundles. It returns a JSON object containing
+	 * array of bundles using the following parameters: context, string value
+	 * and the given callback and parser.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param id
+	 *            {@link GCBundleModel} ID.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link BundleGetRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest get(final Context context, final String id,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new BundleGetRequest<T>(context, id, parser, callback);
+	}
+
+	/**
+	 * Method used for creating bundles. It returns a JSON object containing a
+	 * bundle using the following parameters: context, array of assetIds and the
+	 * given callback and parser.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @param assetIds
+	 *            ArrayList of {@link GCAssetModel} IDs.
+	 * @return Instance of {@link BundleCreateRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest create(final Context context,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback, final ArrayList<String> assetIds) {
+		return new BundleCreateRequest<T>(context, assetIds, parser, callback);
+	}
 }

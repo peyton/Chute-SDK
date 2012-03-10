@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2011, Chute Corporation. All rights reserved.
-// 
-//  Redistribution and use in source and binary forms, with or without modification, 
+//
+//  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
-// 
-//     * Redistributions of source code must retain the above copyright notice, this 
+//
+//     * Redistributions of source code must retain the above copyright notice, this
 //       list of conditions and the following disclaimer.
 //     * Redistributions in binary form must reproduce the above copyright notice,
 //       this list of conditions and the following disclaimer in the documentation
@@ -11,9 +11,9 @@
 //     * Neither the name of the  Chute Corporation nor the names
 //       of its contributors may be used to endorse or promote products derived from
 //       this software without specific prior written permission.
-// 
+//
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 //  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
 //  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
 //  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
@@ -22,7 +22,7 @@
 //  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 package com.chute.sdk.api.asset;
 
 import java.io.DataOutputStream;
@@ -64,29 +64,29 @@ class GCS3Uploader {
     private GCUploadToken token;
 
     public GCS3Uploader(GCUploadProgressListener onProgressUpdate) {
-	this.onProgressUpdate = onProgressUpdate;
+        this.onProgressUpdate = onProgressUpdate;
     }
 
     public void startUpload(GCUploadToken token) throws IOException {
-	this.token = token;
-	this.url = new URL(token.getUploadUrl());
-	if (onProgressUpdate != null) {
-	    try {
-		URL thumb;
-		BitmapContentHandler handler = new BitmapContentHandler();
-		handler.setRequiredSize(50);
-		thumb = new URL(Uri.fromFile(new File(token.getFilepath())).toString());
-		onProgressUpdate.onUploadStarted(token.getAssetId(), token.getFilepath(),
-			handler.getContent(thumb.openConnection()));
-	    } catch (Exception e) {
-		Log.w(TAG, "", e);
-		onProgressUpdate.onUploadStarted(token.getAssetId(), token.getFilepath(), null);
-	    }
-	}
-	startUpload();
-	if (onProgressUpdate != null) {
-	    onProgressUpdate.onUploadFinished(token.getAssetId(), token.getFilepath());
-	}
+        this.token = token;
+        this.url = new URL(token.getUploadUrl());
+        if (onProgressUpdate != null) {
+            try {
+                URL thumb;
+                BitmapContentHandler handler = new BitmapContentHandler();
+                handler.setDefaultImageSize(50);
+                thumb = new URL(Uri.fromFile(new File(token.getFilepath())).toString());
+                onProgressUpdate.onUploadStarted(token.getAssetId(), token.getFilepath(),
+                        handler.getContent(thumb.openConnection()));
+            } catch (Exception e) {
+                Log.w(TAG, "", e);
+                onProgressUpdate.onUploadStarted(token.getAssetId(), token.getFilepath(), null);
+            }
+        }
+        startUpload();
+        if (onProgressUpdate != null) {
+            onProgressUpdate.onUploadFinished(token.getAssetId(), token.getFilepath());
+        }
     }
 
     /* private void startUpload() throws IOException {
@@ -146,75 +146,75 @@ class GCS3Uploader {
     }
     // outputStream.close();
      }
-    */
+     */
     private void startUpload() throws IOException {
-	HttpPut request = new HttpPut(url.toString());
-	File file = new File(token.getFilepath());
-	FileInputStream fileInputStream = new FileInputStream(file);
-	// request.addHeader("Content-Length", String.valueOf(file.length()));
-	request.addHeader("Date", token.getDate());
-	request.addHeader("Authorization", token.getSignature());
-	request.addHeader("Content-Type", "image/jpg");
-	request.addHeader("x-amz-acl", "public-read");
-	CountingInputStreamEntity countingInputStreamEntity = new CountingInputStreamEntity(
-		fileInputStream, file.length());
-	final long total = file.length();
-	countingInputStreamEntity.setUploadListener(new UploadListener() {
+        HttpPut request = new HttpPut(url.toString());
+        File file = new File(token.getFilepath());
+        FileInputStream fileInputStream = new FileInputStream(file);
+        // request.addHeader("Content-Length", String.valueOf(file.length()));
+        request.addHeader("Date", token.getDate());
+        request.addHeader("Authorization", token.getSignature());
+        request.addHeader("Content-Type", "image/jpg");
+        request.addHeader("x-amz-acl", "public-read");
+        CountingInputStreamEntity countingInputStreamEntity = new CountingInputStreamEntity(
+                fileInputStream, file.length());
+        final long total = file.length();
+        countingInputStreamEntity.setUploadListener(new UploadListener() {
 
-	    @Override
-	    public void onChange(long current) {
-		onProgressUpdate.onProgress(total, current);
-	    }
-	});
-	request.setEntity(countingInputStreamEntity);
-	executeRequest(request);
+            @Override
+            public void onChange(long current) {
+                onProgressUpdate.onProgress(total, current);
+            }
+        });
+        request.setEntity(countingInputStreamEntity);
+        executeRequest(request);
     }
 
     private void executeRequest(HttpUriRequest request) throws IOException {
 
-	HttpParams httpParameters = new BasicHttpParams();
-	// Set the timeout in milliseconds until a connection is established.
-	HttpConnectionParams.setConnectionTimeout(httpParameters, 8000);
-	// Set the default socket timeout (SO_TIMEOUT)
-	// in milliseconds which is the timeout for waiting for data.
-	HttpConnectionParams.setSoTimeout(httpParameters, 40000);
+        HttpParams httpParameters = new BasicHttpParams();
+        // Set the timeout in milliseconds until a connection is established.
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 8000);
+        // Set the default socket timeout (SO_TIMEOUT)
+        // in milliseconds which is the timeout for waiting for data.
+        HttpConnectionParams.setSoTimeout(httpParameters, 40000);
 
-	DefaultHttpClient client = generateClient();
-	client.setParams(httpParameters);
-	HttpResponse httpResponse;
-	try {
+        DefaultHttpClient client = generateClient();
+        client.setParams(httpParameters);
+        HttpResponse httpResponse;
+        try {
 
-	    httpResponse = client.execute(request);
+            httpResponse = client.execute(request);
 
-	    int serverResponseCode;
+            int serverResponseCode;
 
-	    serverResponseCode = httpResponse.getStatusLine().getStatusCode();
-	    if (GCConstants.DEBUG) {
-		Log.e("ResponseS3: ", String.valueOf(serverResponseCode));
-	    }
-	    if (serverResponseCode != 200)// 200 Staus OK
-	    {
-		throw new IOException();
-	    }
-	} catch (IOException e) {
-	    throw e;
-	} catch (RuntimeException ex) {
-	    // In case of an unexpected exception you may want to abort
-	    // the HTTP request in order to shut down the underlying
-	    // connection immediately.
-	    request.abort();
-	    throw ex;
-	} finally {
-	    // Closing the input stream will trigger connection release
-	    client.getConnectionManager().shutdown();
-	}
+            serverResponseCode = httpResponse.getStatusLine().getStatusCode();
+            if (GCConstants.DEBUG) {
+                Log.e("ResponseS3: ", String.valueOf(serverResponseCode));
+            }
+            if (serverResponseCode != 200)// 200 Staus OK
+            {
+                throw new IOException();
+            }
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException ex) {
+            // In case of an unexpected exception you may want to abort
+            // the HTTP request in order to shut down the underlying
+            // connection immediately.
+            request.abort();
+            throw ex;
+        } finally {
+            // Closing the input stream will trigger connection release
+            client.getConnectionManager().shutdown();
+        }
     }
 
     private static DefaultHttpClient generateClient() {
-	final HttpParams params = new BasicHttpParams();
-	HttpConnectionParams.setConnectionTimeout(params, 20 * 1000);
-	HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-	final DefaultHttpClient httpClient = new DefaultHttpClient(params);
-	return httpClient;
+        final HttpParams params = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(params, 20 * 1000);
+        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+        final DefaultHttpClient httpClient = new DefaultHttpClient(params);
+        return httpClient;
     }
 }

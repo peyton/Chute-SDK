@@ -39,8 +39,7 @@ import com.chute.sdk.utils.AsyncTaskEx;
 import com.chute.sdk.utils.GCConstants;
 
 public class GCHttpService extends Service {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHttpService.class.getSimpleName();
+    public static final String TAG = GCHttpService.class.getSimpleName();
     private GCHttpRequestStore instance;
     private WakeLock wl;
 

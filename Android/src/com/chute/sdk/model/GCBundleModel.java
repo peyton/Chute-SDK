@@ -25,20 +25,34 @@
 // 
 package com.chute.sdk.model;
 
+/**
+ * The {@link GCBundleModel} class represents the concept of a bundle.
+ * 
+ */
 public class GCBundleModel {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBundleModel.class.getSimpleName();
-    private String id;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBundleModel.class.getSimpleName();
 
-    public GCBundleModel() {
-    }
+	/**
+	 * The unique identifier of the bundle.
+	 */
+	private String id;
 
-    public String getId() {
-	return id;
-    }
+	/**
+	 * A default non-args constructor.
+	 */
+	public GCBundleModel() {
+	}
 
-    public void setId(String id) {
-	this.id = id;
-    }
+	/**
+	 * Getter and setter methods.
+	 */
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 }

@@ -25,66 +25,243 @@
 // 
 package com.chute.sdk.model;
 
-public class GCCommentModel {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCCommentModel.class.getSimpleName();
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private String id;
-    private String comment;
-    private int status;
-    private String createdAt;
-    public GCUserModel user = new GCUserModel();
+/**
+ * The {@link GCCommentModel} class represents the concept of a comment. Each
+ * comment contains status, time of creation, user who wrote the comment and the
+ * actual comment.
+ * 
+ */
+public class GCCommentModel implements Parcelable {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCCommentModel.class.getSimpleName();
 
-    public GCCommentModel() {
-    }
+	/**
+	 * The unique identifier of a comment.
+	 */
+	private String id;
+	/**
+	 * The actual comment.
+	 */
+	private String comment;
+	/**
+	 * The status of the comment.
+	 */
+	private int status;
+	/**
+	 * Time when the comment is first created.
+	 */
+	private String createdAt;
+	/**
+	 * {@link GCUserModel} which the comment belongs to.
+	 */
+	public GCUserModel user = new GCUserModel();
 
-    public String getId() {
-	return id;
-    }
+	/**
+	 * Default non-args constructor.
+	 */
+	public GCCommentModel() {
+	}
 
-    public void setId(String id) {
-	this.id = id;
-    }
+	/**
+	 * Getter and setter methods
+	 */
+	public GCUserModel getUser() {
+		return user;
+	}
 
-    public String getComment() {
-	return comment;
-    }
+	public void setUser(GCUserModel user) {
+		this.user = user;
+	}
 
-    public void setComment(String comment) {
-	this.comment = comment;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public int getStatus() {
-	return status;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setStatus(int status) {
-	this.status = status;
-    }
+	public String getComment() {
+		return comment;
+	}
 
-    public String getCreatedAt() {
-	return createdAt;
-    }
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
-    public void setCreatedAt(String createdAt) {
-	this.createdAt = createdAt;
-    }
+	public int getStatus() {
+		return status;
+	}
 
-    @Override
-    public String toString() {
-	StringBuilder builder = new StringBuilder();
-	builder.append("GCCommentModel [id=");
-	builder.append(id);
-	builder.append(", comment=");
-	builder.append(comment);
-	builder.append(", status=");
-	builder.append(status);
-	builder.append(", createdAt=");
-	builder.append(createdAt);
-	builder.append(", user=");
-	builder.append(user);
-	builder.append("]");
-	return builder.toString();
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GCCommentModel [id=");
+		builder.append(id);
+		builder.append(", comment=");
+		builder.append(comment);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", createdAt=");
+		builder.append(createdAt);
+		builder.append(", user=");
+		builder.append(user);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	/**
+	 * Constructor with fields.
+	 * 
+	 * @param id
+	 * @param comment
+	 * @param status
+	 * @param createdAt
+	 * @param user
+	 */
+	public GCCommentModel(String id, String comment, int status,
+			String createdAt, GCUserModel user) {
+		super();
+		this.id = id;
+		this.comment = comment;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.user = user;
+	}
+
+	public GCCommentModel(Parcel in) {
+		id = in.readString();
+		comment = in.readString();
+		status = in.readInt();
+		createdAt = in.readString();
+		user = in.readParcelable(GCUserModel.class.getClassLoader());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#describeContents()
+	 */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(id);
+		dest.writeString(comment);
+		dest.writeInt(status);
+		dest.writeString(createdAt);
+		dest.writeParcelable(user, flags);
+	}
+
+	public static final Parcelable.Creator<GCCommentModel> CREATOR = new Parcelable.Creator<GCCommentModel>() {
+
+		@Override
+		public GCCommentModel createFromParcel(Parcel in) {
+			return new GCCommentModel(in);
+		}
+
+		@Override
+		public GCCommentModel[] newArray(int size) {
+			return new GCCommentModel[size];
+		}
+
+	};
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+		result = prime * result
+				+ ((createdAt == null) ? 0 : createdAt.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + status;
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		GCCommentModel other = (GCCommentModel) obj;
+		if (comment == null) {
+			if (other.comment != null) {
+				return false;
+			}
+		} else if (!comment.equals(other.comment)) {
+			return false;
+		}
+		if (createdAt == null) {
+			if (other.createdAt != null) {
+				return false;
+			}
+		} else if (!createdAt.equals(other.createdAt)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (status != other.status) {
+			return false;
+		}
+		if (user == null) {
+			if (other.user != null) {
+				return false;
+			}
+		} else if (!user.equals(other.user)) {
+			return false;
+		}
+		return true;
+	}
 
 }

@@ -92,6 +92,7 @@ public class AssetsUploadRequest<T> extends GCHttpRequestImpl<T> {
 	@Override
 	public void onSuccess(GCAssetModel responseData) {
 	    try {
+		obj.put("url", responseData.getUrl());
 		obj.put("code", HttpStatus.SC_OK);
 	    } catch (JSONException e) {
 		Log.w(TAG, "", e);

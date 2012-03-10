@@ -27,13 +27,60 @@ package com.chute.sdk.api;
 
 import com.chute.sdk.model.GCHttpRequestParameters;
 
+/**
+ * The {@link GCHttpCallback} interface is used for HTTP request notification.
+ * It contains methods that describe the error if the callback fails and return
+ * response data if the callback succeeds.
+ * 
+ * @param <T>
+ *            Parameter that indicates which object the callback returns. It can
+ *            be of any type.
+ */
 public interface GCHttpCallback<T> {
 
-    public void onSuccess(T responseData);
+	/**
+	 * This method shows that the callback successfully finished. It contains
+	 * response data which represents the return type of the callback.
+	 * 
+	 * @param responseData
+	 *            It can be of any type.
+	 */
+	public void onSuccess(T responseData);
 
-    public void onHttpException(GCHttpRequestParameters params, Throwable exception);
+	/**
+	 * This method shows that the callback has failed due to Internet connection
+	 * issue.
+	 * 
+	 * @param params
+	 *            Instance of {@link GCHttpRequestParameters} class.
+	 * @param exception
+	 *            The exception that the callback throws to indicate what went
+	 *            wrong.
+	 */
+	public void onHttpException(GCHttpRequestParameters params,
+			Throwable exception);
 
-    public void onHttpError(int responseCode, String statusMessage);
+	/**
+	 * This method shows that the callback has failed due to server issue.
+	 * 
+	 * @param responseCode
+	 *            The response code indicating which server problem has
+	 *            occurred.
+	 * @param statusMessage
+	 *            The message describing the server issue.
+	 */
+	public void onHttpError(int responseCode, String statusMessage);
 
-    public void onParserException(int responseCode, Throwable exception);
+	/**
+	 * This method shows that the callback has failed due to invalid response
+	 * format.
+	 * 
+	 * @param responseCode
+	 *            The response code indicating which invalid response format has
+	 *            occurred.
+	 * @param exception
+	 *            The exception that the callback throws to indicate what went
+	 *            wrong.
+	 */
+	public void onParserException(int responseCode, Throwable exception);
 }

@@ -29,7 +29,7 @@ import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequestImpl;
-import com.chute.sdk.model.GCAccount.GCAuthConstants;
+import com.chute.sdk.model.GCAccountStore.GCAuthConstants;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;

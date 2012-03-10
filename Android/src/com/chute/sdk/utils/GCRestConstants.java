@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2011, Chute Corporation. All rights reserved.
-// 
-//  Redistribution and use in source and binary forms, with or without modification, 
+//
+//  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
-// 
-//     * Redistributions of source code must retain the above copyright notice, this 
+//
+//     * Redistributions of source code must retain the above copyright notice, this
 //       list of conditions and the following disclaimer.
 //     * Redistributions in binary form must reproduce the above copyright notice,
 //       this list of conditions and the following disclaimer in the documentation
@@ -11,9 +11,9 @@
 //     * Neither the name of the  Chute Corporation nor the names
 //       of its contributors may be used to endorse or promote products derived from
 //       this software without specific prior written permission.
-// 
+//
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 //  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
 //  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
 //  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
@@ -22,13 +22,10 @@
 //  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
-// 
+//
 package com.chute.sdk.utils;
 
-/**
- * @author DArkO
- * 
- */
+/** @author DArkO */
 public class GCRestConstants {
 
     public static final String BASE_URL = "http://api.getchute.com";
@@ -43,7 +40,17 @@ public class GCRestConstants {
     public static final String URL_AUTHENTICATION_FACEBOOK = BASE_AUTH_URL + "/oauth/facebook";
     public static final String URL_AUTHENTICATION_EVERNOTE = BASE_AUTH_URL + "/oauth/evernote";
     public static final String URL_AUTHENTICATION_CHUTE = BASE_AUTH_URL + "/oauth/chute";
+    public static final String URL_AUTHENTICATION_TWITTER = BASE_AUTH_URL + "/oauth/twitter";
+    public static final String URL_AUTHENTICATION_FOURSQUARE = BASE_AUTH_URL + "/oauth/foursquare";
+    public static final String URL_AUTHENTICATION_FLICKR = BASE_AUTH_URL + "/oauth/flickr";
+    public static final String URL_AUTHENTICATION_INSTAGRAM = BASE_AUTH_URL + "/oauth/instagram";
+    public static final String URL_AUTHENTICATION_PICASA = BASE_AUTH_URL + "/oauth/google";
     public static final String URL_AUTHENTICATION_TOKEN = BASE_AUTH_URL + "/oauth/access_token";
+
+    public static final String URL_ACCOUNT_OBJECT = BASE_URL + "/v1/accounts/%s/objects";
+    public static final String URL_ACCOUNT_OBJECT_MEDIA = BASE_URL + "/v1/accounts/%s/objects/%s/media";
+
+
     // App Metadata
     public static final String URL_META_APP = BASE_URL + "/v1/app/meta";
     public static final String URL_META_APP_KEY = BASE_URL + "/v1/app/meta/%s";
@@ -72,12 +79,14 @@ public class GCRestConstants {
     public static final String URL_CHUTES_GET_SPECIFIC = BASE_URL + "/v1/chutes/%s";
     public static final String URL_CHUTES_UPDATE = BASE_URL + "/v1/chutes/%s";
     public static final String URL_CHUTES_DELETE = BASE_URL + "/v1/chutes/%s";
+    public static final String URL_CHUTES_SEARCH = BASE_URL + "/v1/chutes/search?url=%s";
+    public static final String URL_CHUTES_ALL = BASE_URL + "/v1/%s/chutes/all";
 
     // Chute Assets
     public static final String URL_CHUTE_ASSETS_ADD = BASE_URL + "/v1/chutes/%s/assets/add";
     public static final String URL_CHUTE_ASSETS_REMOVE = BASE_URL + "/v1/chutes/%s/assets/remove";
     public static final String URL_CHUTE_ASSETS_DELETE = BASE_URL
-	    + "/v1/chutes/%s/assets/%s/remove";
+            + "/v1/chutes/%s/assets/%s/remove";
 
     // Chute Memberships
     public static final String URL_CHUTE_MEMBERSHIPS_REQUEST = BASE_URL + "/v1/chutes/%s/request";
@@ -94,7 +103,7 @@ public class GCRestConstants {
     public static final String URL_CHUTE_RESOURCES_ASSETS = BASE_URL + "/v1/chutes/%s/assets";
     public static final String URL_CHUTE_RESOURCES_MEMBERS = BASE_URL + "/v1/chutes/%s/members";
     public static final String URL_CHUTE_RESOURCES_CONTRIBUTORS = BASE_URL
-	    + "/v1/chutes/%s/contributors";
+            + "/v1/chutes/%s/contributors";
 
     // Comments
     public static final String URL_COMMENTS_GET = BASE_URL + "/v1/chutes/%s/assets/%s/comments";
@@ -133,7 +142,7 @@ public class GCRestConstants {
     public static final String URL_PARCELS_GET_CHUTE_PARCEL = BASE_URL + "/v1/chutes/%s/parcels/%s";
     public static final String URL_PARCELS_GET_PARCEL = BASE_URL + "/v1/parcels/%s";
     public static final String URL_PARCELS_GET_CHUTE_PARCEL_ALL = BASE_URL
-	    + "/v1/chutes/%s/parcels";
+            + "/v1/chutes/%s/parcels";
     public static final String URL_PARCELS_COMPLETE = BASE_URL + "/v1/parcels/%s/complete";
 
     // Parcel Metadata
@@ -167,5 +176,6 @@ public class GCRestConstants {
     public static final String URL_USER_HEARTS = BASE_URL + "/v1/%s/hearts";
     public static final String URL_USER_PARCELS = BASE_URL + "/v1/%s/parcels";
     public static final String URL_USER_NOTICES = BASE_URL + "/v1/%s/notices";
+
 
 }

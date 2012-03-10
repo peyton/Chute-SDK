@@ -29,19 +29,123 @@ import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
+import com.chute.sdk.collections.GCHeartsMap;
+import com.chute.sdk.model.GCLocalAssetModel;
+import com.chute.sdk.model.GCUserModel;
+import com.chute.sdk.parsers.GCHeartsMapObjectParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
+/**
+ * The {@link GCHearts} class is a helper class which contains methods for
+ * getting and setting hearts.
+ * 
+ */
 public class GCHearts {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHearts.class.getSimpleName();
 
-    public static <T> GCHttpRequest get(final Context context, final String userId,
-	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new HeartsGetRequest<T>(context, userId, parser, callback);
-    }
+	@SuppressWarnings("unused")
+	private static final String TAG = GCHearts.class.getSimpleName();
 
-    public static <T> GCHttpRequest set(final Context context, final String assetId,
-	    boolean isHeart, final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new HeartsPostRequest<T>(context, assetId, isHeart, parser, callback);
-    }
+	/**
+	 * Method used for getting hearts. It returns a JSON object containing array
+	 * of hearts using the following parameters: context, string value and the
+	 * given callback and parser.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param userId
+	 *            {@link GCUserModel} ID.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface. You can
+	 *            add a custom parser or use the parser provided here {@see
+	 *            #get(Context, String, GCHttpCallback)}.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link HeartsGetRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest get(final Context context,
+			final String userId, final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new HeartsGetRequest<T>(context, userId, parser, callback);
+	}
+
+	/**
+	 * Method that defaults to the generic method {@see #get(Context, String,
+	 * GCHttpResponseParser, GCHttpCallback)}. This method uses
+	 * {@link GCHeartsMapObjectParser} which has {@link GCHeartsMap} as a return
+	 * type if the callback is successful.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param userId
+	 *            {@link GCUserModel} ID.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. If successful,
+	 *            the callback returns {@link GCHeartsMap}.
+	 * @return {@link #get(Context, String, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest get(final Context context, final String userId,
+			final GCHttpCallback<GCHeartsMap> callback) {
+		return get(context, userId, new GCHeartsMapObjectParser(), callback);
+	}
+
+	/**
+	 * Method used for setting hearts. It returns a JSON object containing array
+	 * of hearts using the following parameters: context, string value
+	 * representing the asset ID, boolean value indicating if the heart is
+	 * checked, and the given callback and parser.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param assetId
+	 *            {@link GCLocalAssetModel} ID, representing the asset to which
+	 *            the heart belongs to.
+	 * @param isHeart
+	 *            true if the heart is checked, false otherwise.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface. You can
+	 *            add a custom parser or use the parser provided here {@see
+	 *            #set(Context, String, boolean, GCHttpCallback)}.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link HeartsPostRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest set(final Context context,
+			final String assetId, boolean isHeart,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new HeartsPostRequest<T>(context, assetId, isHeart, parser,
+				callback);
+	}
+
+	/**
+	 * Method that defaults to the generic method {@see #set(Context, String,
+	 * boolean, GCHttpResponseParser, GCHttpCallback)}. This method uses
+	 * {@link GCHeartsMapObjectParser} which has {@link GCHeartsMap} as a return
+	 * type if the callback is successful.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param assetId
+	 *            {@link GCLocalAssetModel} ID, representing the asset to which
+	 *            the heart belogns to.
+	 * @param isHeart
+	 *            true if the heart is checked, false otherwise.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. If successful,
+	 *            the callback returns {@link GCHeartsMap}.
+	 * @return {@link #set(Context, String, boolean, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest set(final Context context,
+			final String assetId, boolean isHeart,
+			final GCHttpCallback<GCHeartsMap> callback) {
+		return set(context, assetId, isHeart, new GCHeartsMapObjectParser(),
+				callback);
+	}
 }

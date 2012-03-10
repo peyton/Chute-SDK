@@ -27,8 +27,10 @@ package com.chute.sdk.utils;
 
 import java.net.URLDecoder;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 
 public class GCUtils {
     @SuppressWarnings("unused")
@@ -75,4 +77,8 @@ public class GCUtils {
 	return sb.toString();
     }
 
+    public static int pixelsFromDp(Context context, int value) {
+	return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context
+		.getResources().getDisplayMetrics());
+    }
 }

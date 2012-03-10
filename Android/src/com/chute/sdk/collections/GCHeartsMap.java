@@ -28,7 +28,7 @@ package com.chute.sdk.collections;
 import android.util.SparseArray;
 
 public class GCHeartsMap extends SparseArray<Boolean> {
-    private static final long serialVersionUID = 1L;
+
     @SuppressWarnings("unused")
     private static final String TAG = GCHeartsMap.class.getSimpleName();
 

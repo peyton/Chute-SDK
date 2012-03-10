@@ -29,7 +29,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.chute.sdk.model.GCAccount;
+import com.chute.sdk.model.GCAccountStore;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 import com.chute.sdk.utils.GCConstants;
 import com.chute.sdk.utils.GCRest;
@@ -37,8 +37,7 @@ import com.chute.sdk.utils.GCRest.RequestMethod;
 
 public abstract class GCHttpRequestImpl<T> implements GCHttpRequest {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHttpRequestImpl.class.getSimpleName();
+    public static final String TAG = GCHttpRequestImpl.class.getSimpleName();
 
     protected GCRest client = new GCRest();
     private final RequestMethod requestMethod;
@@ -81,18 +80,14 @@ public abstract class GCHttpRequestImpl<T> implements GCHttpRequest {
 	return handler;
     }
 
-    /**
-     * @param connectionTimeout
-     *            default 6 seconds
-     */
+    /** @param connectionTimeout
+     *            default 6 seconds */
     public final void setConnectionTimeout(int connectionTimeout) {
 	client.setConnectionTimeout(connectionTimeout);
     }
 
-    /**
-     * @param socketTimeout
-     *            default 9 seconds
-     */
+    /** @param socketTimeout
+     *            default 9 seconds */
     public final void setSocketTimeout(int socketTimeout) {
 	client.setSocketTimeout(socketTimeout);
     }
@@ -105,7 +100,7 @@ public abstract class GCHttpRequestImpl<T> implements GCHttpRequest {
 
 	try {
 	    client.setUrl(url);
-	    client.setAuthentication(GCAccount.getInstance(context));
+	    client.setAuthentication(GCAccountStore.getInstance(context));
 	    prepareParams();
 	    client.execute(requestMethod);
 	    // Execute the HTTP request

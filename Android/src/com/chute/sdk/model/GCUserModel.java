@@ -25,58 +25,192 @@
 // 
 package com.chute.sdk.model;
 
-public class GCUserModel {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCUserModel.class.getSimpleName();
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private String id;
-    private String name;
-    private String avatarURL;
+/**
+ * The {@link GCUserModel} class represents a concept of a user. Each user
+ * contains ID, name and avatar URL.
+ * 
+ */
+public class GCUserModel implements Parcelable {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCUserModel.class.getSimpleName();
 
-    public GCUserModel() {
-    }
+	/**
+	 * Unique identifier of the user.
+	 */
+	private String id;
+	/**
+	 * User name.
+	 */
+	private String name;
+	/**
+	 * The URL for fetching the user avatar.
+	 */
+	private String avatarURL;
 
-    public GCUserModel(String id, String name, String avatarURL) {
-	this.id = id;
-	this.name = name;
-	this.avatarURL = avatarURL;
-    }
+	/**
+	 * Default non-args constructor.
+	 */
+	public GCUserModel() {
+	}
 
-    public String getId() {
-	return id;
-    }
+	/**
+	 * Constructor with fields.
+	 * 
+	 * @param id
+	 * @param name
+	 * @param avatarURL
+	 */
+	public GCUserModel(String id, String name, String avatarURL) {
+		this.id = id;
+		this.name = name;
+		this.avatarURL = avatarURL;
+	}
 
-    public void setId(String id) {
-	this.id = id;
-    }
+	/**
+	 * Getter and setter methods.
+	 */
+	public String getId() {
+		return id;
+	}
 
-    public String getName() {
-	return name;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getAvatarURL() {
-	return avatarURL;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setAvatarURL(String avatarURL) {
-	this.avatarURL = avatarURL;
-    }
+	public String getAvatarURL() {
+		return avatarURL;
+	}
 
-    @Override
-    public String toString() {
-	StringBuilder builder = new StringBuilder();
-	builder.append("GCUser [id=");
-	builder.append(id);
-	builder.append(", name=");
-	builder.append(name);
-	builder.append(", avatarURL=");
-	builder.append(avatarURL);
-	builder.append("]");
-	return builder.toString();
-    }
+	public void setAvatarURL(String avatarURL) {
+		this.avatarURL = avatarURL;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GCUser [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", avatarURL=");
+		builder.append(avatarURL);
+		builder.append("]");
+		return builder.toString();
+	}
+
+	public GCUserModel(Parcel in) {
+		id = in.readString();
+		name = in.readString();
+		avatarURL = in.readString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#describeContents()
+	 */
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+	 */
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(id);
+		dest.writeString(name);
+		dest.writeString(avatarURL);
+	}
+
+	public static final Parcelable.Creator<GCUserModel> CREATOR = new Parcelable.Creator<GCUserModel>() {
+
+		@Override
+		public GCUserModel createFromParcel(Parcel in) {
+			return new GCUserModel(in);
+		}
+
+		@Override
+		public GCUserModel[] newArray(int size) {
+			return new GCUserModel[size];
+		}
+
+	};
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((avatarURL == null) ? 0 : avatarURL.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		GCUserModel other = (GCUserModel) obj;
+		if (avatarURL == null) {
+			if (other.avatarURL != null) {
+				return false;
+			}
+		} else if (!avatarURL.equals(other.avatarURL)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
+	}
 
 }

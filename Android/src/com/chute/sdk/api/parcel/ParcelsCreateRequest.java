@@ -54,8 +54,7 @@ class ParcelsCreateRequest<T> extends GCHttpRequestImpl<T> {
 	this.chutes = chutes;
     }
 
-    @SuppressWarnings("unused")
-    private static final String TAG = ParcelsCreateRequest.class.getSimpleName();
+    public static final String TAG = ParcelsCreateRequest.class.getSimpleName();
 
     @Override
     protected void prepareParams() {

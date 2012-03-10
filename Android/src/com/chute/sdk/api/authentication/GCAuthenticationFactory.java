@@ -25,7 +25,7 @@
 // 
 package com.chute.sdk.api.authentication;
 
-import com.chute.sdk.model.GCAccount.GCAuthConstants;
+import com.chute.sdk.model.GCAccountStore.GCAuthConstants;
 import com.chute.sdk.utils.GCRestConstants;
 
 public class GCAuthenticationFactory {
@@ -34,7 +34,23 @@ public class GCAuthenticationFactory {
     private final GCAuthConstants authConstants;
 
     public enum AccountType {
-	FACEBOOK, EVERNOTE, CHUTE
+	FACEBOOK("facebook"), EVERNOTE("evernote"), CHUTE("chute"), TWITTER("twitter"), FOURSQUARE(
+		"foursquare"), PICASA("google"), FLICKR("flickr"), INSTAGRAM("instagram");
+
+	private final String name;
+
+	private AccountType(String name) {
+	    this.name = name;
+	}
+
+	@Override
+	public String toString() {
+	    return name;
+	};
+
+	public String getName() {
+	    return name;
+	}
     }
 
     public GCAuthenticationFactory(GCAuthConstants authConstants) {
@@ -52,6 +68,21 @@ public class GCAuthenticationFactory {
 	    break;
 	case CHUTE:
 	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_CHUTE);
+	    break;
+	case TWITTER:
+	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_TWITTER);
+	    break;
+	case FOURSQUARE:
+	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_FOURSQUARE);
+	    break;
+	case PICASA:
+	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_PICASA);
+	    break;
+	case FLICKR:
+	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_FLICKR);
+	    break;
+	case INSTAGRAM:
+	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_INSTAGRAM);
 	    break;
 	default:
 	    throw new RuntimeException("Not a valid account type");

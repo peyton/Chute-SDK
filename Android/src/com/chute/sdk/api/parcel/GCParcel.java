@@ -31,15 +31,81 @@ import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
 import com.chute.sdk.collections.GCChuteCollection;
 import com.chute.sdk.collections.GCLocalAssetCollection;
+import com.chute.sdk.parsers.GCCreateParcelsUploadsListParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
+/**
+ * The {@link GCParcel} class is a helper class which contains methods for
+ * creating parcels containing chutes and assets.
+ * 
+ */
 public class GCParcel {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCParcel.class.getSimpleName();
 
-    public static <T> GCHttpRequest create(final Context context,
-	    final GCLocalAssetCollection assets, final GCChuteCollection chutes,
-	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new ParcelsCreateRequest<T>(context, assets, chutes, parser, callback);
-    }
+	@SuppressWarnings("unused")
+	private static final String TAG = GCParcel.class.getSimpleName();
+
+	/**
+	 * Method used for creating a parcel. It returns a JSON object containing
+	 * array of assets using the following parameters: context,
+	 * {@link GCLocalAssetCollection}, {@link GCChuteCollection} and the given
+	 * callback and parser.
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param assets
+	 *            Instance of {@link GCLocalAssetCollection} class, representing
+	 *            the assets that the created parcel contains.
+	 * @param chutes
+	 *            Instance of {@link GCChuteCollection} class, representing the
+	 *            chutes that the created parcel contains.
+	 * @param parser
+	 *            Instance of {@link GCHttpResponseParser} interface. You can
+	 *            add a custom parser or use the parser provided here {@see
+	 *            #create(Context, GCLocalAssetCollection, GCChuteCollection,
+	 *            GCHttpCallback)}.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. According to the
+	 *            parser, the callback should have the same return type.
+	 * @return Instance of {@link ParcelsCreateRequest}, class that implements
+	 *         {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest create(final Context context,
+			final GCLocalAssetCollection assets,
+			final GCChuteCollection chutes,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new ParcelsCreateRequest<T>(context, assets, chutes, parser,
+				callback);
+	}
+
+	/**
+	 * Method that defaults to the generic method {@see #create(Context,
+	 * GCLocalAssetCollection, GCChuteCollection, GCHttpResponseParser,
+	 * GCHttpCallback)}. This method uses
+	 * {@link GCCreateParcelsUploadsListParser} which has
+	 * {@link GCLocalAssetCollection} as a return type if the callback is
+	 * successful.
+	 * 
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param assets
+	 *            Instance of {@link GCLocalAssetCollection} class, representing
+	 *            the assets that the created parcel contains.
+	 * @param chutes
+	 *            Instance of {@link GCChuteCollection} class, representing the
+	 *            chutes that the created parcel contains.
+	 * @param callback
+	 *            Instance of {@link GCHttpCallback} interface. If successful,
+	 *            the callback returns {@link GCLocalAssetCollection}.
+	 * @return {@link #create(Context, GCLocalAssetCollection, GCChuteCollection, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest create(final Context context,
+			final GCLocalAssetCollection assets,
+			final GCChuteCollection chutes,
+			final GCHttpCallback<GCLocalAssetCollection> callback) {
+		return create(context, assets, chutes,
+				new GCCreateParcelsUploadsListParser(), callback);
+	}
 }

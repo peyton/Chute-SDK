@@ -60,7 +60,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.chute.sdk.exceptions.GCHttpException;
-import com.chute.sdk.model.GCAccount;
+import com.chute.sdk.model.GCAccountStore;
 import com.chute.sdk.model.GCHttpRequestParameters;
 
 /**
@@ -133,7 +133,7 @@ public class GCRest {
 	this.socketTimeout = socketTimeout;
     }
 
-    public void setAuthentication(final GCAccount userAccount) {
+    public void setAuthentication(final GCAccountStore userAccount) {
 	if (TextUtils.isEmpty(userAccount.getPassword())) {
 	    Log.w(TAG, "Need to place authentication in GCAccount");
 	}

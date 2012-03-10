@@ -27,10 +27,22 @@ package com.chute.sdk.api;
 
 /**
  * @author darko.grozdanovski
+ * 
+ *         The {@link GCHttpRequest} interface has the responsibility to send a
+ *         request object to the server which is used for data exchange with the
+ *         server behind the scenes. It contains methods that run in threads.
  */
 public interface GCHttpRequest {
 
-    public void executeAsync();
+	/**
+	 * This method runs asynchronously in the same thread as the application and
+	 * launches a service for further server communication.
+	 */
+	public void executeAsync();
 
-    public abstract void execute();
+	/**
+	 * This method runs in a different thread and executes the request for the
+	 * server.
+	 */
+	public abstract void execute();
 }
