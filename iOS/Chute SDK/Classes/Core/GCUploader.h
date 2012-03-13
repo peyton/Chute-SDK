@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "GetChute.h"
 #import "GCParcel.h"
+#import "GCChute.h"
 
 NSString * const GCUploaderProgressChanged;
 NSString * const GCUploaderFinished;
@@ -27,5 +28,7 @@ NSString * const GCUploaderFinished;
 
 - (void) backupQueueToUserDefaults;
 - (void) loadQueueFromUserDefaults;
+
++ (void) uploadImage:(UIImage*)image toChute:(GCChute*)chute;
 
 @end

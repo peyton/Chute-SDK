@@ -21,6 +21,26 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
 @synthesize queue = _queue;
 @synthesize progress;
 
++ (void) uploadImage:(UIImage*)image toChute:(GCChute*)chute{
+    if(![[GCAccount sharedManager] assetsLibrary]){
+        ALAssetsLibrary *temp = [[ALAssetsLibrary alloc] init];
+        [[GCAccount sharedManager] setAssetsLibrary:temp];
+        [temp release];
+    }
+    ALAssetsLibrary *library = [[GCAccount sharedManager] assetsLibrary];
+    [library writeImageToSavedPhotosAlbum:[image CGImage] metadata:[NSDictionary dictionary] completionBlock:^(NSURL *assetURL, NSError *error){
+        if(!error){
+            [library assetForURL:assetURL resultBlock:^(ALAsset *asset){
+                GCAsset *temp = [[[GCAsset alloc] init] autorelease];
+                [temp setAlAsset:asset];
+                GCParcel *parcel = [GCParcel objectWithAssets:[NSArray arrayWithObject:temp] andChutes:[NSArray arrayWithObject:chute]];
+                [[GCUploader sharedUploader] addParcel:parcel];
+            } failureBlock:^(NSError *error){
+                NSLog(@"finding asset failed");
+            }];
+        }
+    }];
+}
 
 - (int) queueParcelCount{
     if(self.queue)
@@ -72,12 +92,10 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
 }
 
 - (void) processQueue {
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        if ([[self queue] count] > 0) {
-            GCParcel *_parcel = [self.queue objectAtIndex:0];
-            [_parcel startUploadWithTarget:self andSelector:@selector(parcelCompleted)];
-        }
-    });
+    if ([[self queue] count] > 0) {
+        GCParcel *_parcel = [self.queue objectAtIndex:0];
+        [_parcel startUploadWithTarget:self andSelector:@selector(parcelCompleted)];
+    }
 }
 
 - (void) backupQueueToUserDefaults{
@@ -97,17 +115,13 @@ NSString * const GCUploaderFinished = @"GCUploaderFinished";
         GCParcel *parcel = [[GCParcel alloc] initWithDictionaryRepresentation:dictionary];
         [self.queue addObject:[parcel autorelease]];
     }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
-        [self processQueue];
-    });
+    [self processQueue];
 }
 
 - (void) addParcel:(GCParcel *) _parcel {
     [self.queue addObject:_parcel];
     [self backupQueueToUserDefaults];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void) {
-        [self processQueue];
-    });
+    [self processQueue];
 }
 
 - (void) removeParcel:(GCParcel *) _parcel {

@@ -167,6 +167,7 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
     
     __block NSMutableData* _imageData = [UIImageJPEGRepresentation([UIImage imageWithCGImage:[[anAsset.alAsset defaultRepresentation] fullResolutionImage] scale:1 orientation:[[anAsset.alAsset valueForProperty:ALAssetPropertyOrientation] intValue]], 1.0) mutableCopy];
     if(!_imageData && [anAsset objectID]){
+        [pool release];
         NSString *assetURL = NULL;
         for(NSDictionary *dict in [self objectForKey:@"uploads"]){
             if([[NSString stringWithFormat:@"%@",[dict objectForKey:@"asset_id"]] isEqualToString:[anAsset objectID]])
@@ -180,6 +181,7 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
         ALAssetsLibrary *library = [[GCAccount sharedManager] assetsLibrary];
         __block BOOL _response;
         [library assetForURL:[NSURL URLWithString:assetURL] resultBlock:^(ALAsset* _alasset){
+            NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
             _imageData = [UIImageJPEGRepresentation([UIImage imageWithCGImage:[[_alasset defaultRepresentation] fullResolutionImage] scale:1 orientation:[[anAsset.alAsset valueForProperty:ALAssetPropertyOrientation] intValue]], 1.0) mutableCopy];
             
             ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_token objectForKey:@"upload_url"]]];
@@ -303,7 +305,8 @@ NSString * const GCParcelNoUploads   = @"GCParcelNoUploads";
     
     //Remove assets which are already uploaded.
     [self removeUploadedAssets];
-    
+    if(status == GCParcelStatusDone)
+        return;
     dispatch_queue_t queue;
     queue = dispatch_queue_create("com.sharedRoll.queue", NULL);
     
