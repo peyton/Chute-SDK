@@ -44,6 +44,8 @@
 @synthesize error;
 @synthesize maxDepth;
 
+@synthesize sortKeysComparator;
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -52,15 +54,11 @@
     return self;
 }
 
-- (void)dealloc {
-    [error release];
-    [super dealloc];
-}
 
 - (NSString*)stringWithObject:(id)value {
 	NSData *data = [self dataWithObject:value];
 	if (data)
-		return [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+		return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	return nil;
 }	
 
@@ -80,11 +78,12 @@
 - (NSData*)dataWithObject:(id)object {	
     self.error = nil;
 
-    SBJsonStreamWriterAccumulator *accumulator = [[[SBJsonStreamWriterAccumulator alloc] init] autorelease];
+    SBJsonStreamWriterAccumulator *accumulator = [[SBJsonStreamWriterAccumulator alloc] init];
     
-	SBJsonStreamWriter *streamWriter = [[[SBJsonStreamWriter alloc] init] autorelease];
+	SBJsonStreamWriter *streamWriter = [[SBJsonStreamWriter alloc] init];
 	streamWriter.sortKeys = self.sortKeys;
 	streamWriter.maxDepth = self.maxDepth;
+	streamWriter.sortKeysComparator = self.sortKeysComparator;
 	streamWriter.humanReadable = self.humanReadable;
     streamWriter.delegate = accumulator;
 	

@@ -153,7 +153,11 @@ static GCAccount *sharedAccountManager = nil;
 // aCompletionBlock - A Block to be ran after the assets are done loading.
 //
 // No return value.
-- (void)loadAssetsCompletionBlock:(void (^)(void))aCompletionBlock {
+- (void)loadAssetsCompletionBlock:(void (^)(void))aCompletionBlock{
+    [self loadAssetsCompletionBlock:aCompletionBlock andFailure:nil]; 
+}
+
+- (void)loadAssetsCompletionBlock:(void (^)(void))aCompletionBlock andFailure:(void (^)(void))aFailureBlock{
         if (assetsArray) {
             [assetsArray release], assetsArray = nil;
         }
@@ -186,6 +190,9 @@ static GCAccount *sharedAccountManager = nil;
         
         void (^assetFailureBlock)(NSError *) = ^(NSError *error)
         {
+            if(aFailureBlock){
+                aFailureBlock();
+            }
         };
         
         if(!self.assetsLibrary){

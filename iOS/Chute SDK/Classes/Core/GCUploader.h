@@ -9,6 +9,7 @@
 #import "GetChute.h"
 #import "GCParcel.h"
 #import "GCChute.h"
+#import "GCAsset.h"
 
 NSString * const GCUploaderProgressChanged;
 NSString * const GCUploaderFinished;

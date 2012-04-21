@@ -46,6 +46,7 @@ typedef enum {
 
 - (void)loadAssets;
 - (void)loadAssetsCompletionBlock:(void (^)(void))aCompletionBlock;
+- (void)loadAssetsCompletionBlock:(void (^)(void))aCompletionBlock andFailure:(void (^)(void))aFailureBlock;
 
 - (void) verifyAuthorizationWithAccessCode:(NSString *) accessCode 
                                    success:(GCBasicBlock)successBlock 
