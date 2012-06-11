@@ -40,4 +40,4 @@
 
 #define kOAuthPermissions               @"all_resources manage_resources profile resources"
 
-#define kOAuthTokenURL                  @"http://getchute.com/oauth/access_token"
+#define kOAuthTokenURL                  @"https://getchute.com/oauth/access_token"
