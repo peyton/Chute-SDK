@@ -34,62 +34,64 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.model.GCLocalAssetModel;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 import com.chute.sdk.utils.GCConstants;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class AssetsVerifyRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = AssetsVerifyRequest.class.getSimpleName();
-    private final GCLocalAssetModel[] assetModels;
+class AssetsVerifyRequest<T> extends GCParameterHttpRequestImpl<T> {
 
-    public AssetsVerifyRequest(Context context, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback, GCLocalAssetModel... assetModels) {
-	super(context, RequestMethod.POST, parser, callback);
-	if (assetModels == null || assetModels.length == 0) {
-	    throw new NullPointerException(
-		    "Need to provide an array with at least 1 item (Not NULL)");
+	public static final String TAG = AssetsVerifyRequest.class.getSimpleName();
+	private final GCLocalAssetModel[] assetModels;
+
+	public AssetsVerifyRequest(Context context, GCHttpResponseParser<T> parser,
+			GCHttpCallback<T> callback, GCLocalAssetModel... assetModels) {
+		super(context, RequestMethod.POST, parser, callback);
+		if (assetModels == null || assetModels.length == 0) {
+			throw new NullPointerException(
+					"Need to provide an array with at least 1 item (Not NULL)");
+		}
+		this.assetModels = assetModels;
 	}
-	this.assetModels = assetModels;
-    }
 
-    @Override
-    protected void prepareParams() {
-	JSONArray array = new JSONArray();
-	JSONObject obj;
-	for (int i = 0; i < assetModels.length; i++) {
-	    obj = new JSONObject();
-	    try {
-		if (assetModels[i].getFile().exists()) {
-		    obj.put("filename", assetModels[i].getFile().getPath());
-		    obj.put("size", String.valueOf(assetModels[i].getFile().length()));
-		    if (TextUtils.isEmpty(assetModels[i].getFileMD5())) {
-			assetModels[i].calculateFileMD5();
-		    }
-		    obj.put("md5", assetModels[i].getFileMD5());
-		    array.put(obj);
-		} else {
-		    Log.e(TAG, " Doesn't EXIST: " + assetModels[i].getFile().getPath());
+	@Override
+	protected void prepareParams() {
+		JSONArray array = new JSONArray();
+		JSONObject obj;
+		for (int i = 0; i < assetModels.length; i++) {
+			obj = new JSONObject();
+			try {
+				if (assetModels[i].getFile().exists()) {
+					obj.put("filename", assetModels[i].getFile().getPath());
+					obj.put("size",
+							String.valueOf(assetModels[i].getFile().length()));
+					if (TextUtils.isEmpty(assetModels[i].getFileMD5())) {
+						assetModels[i].calculateFileMD5();
+					}
+					obj.put("md5", assetModels[i].getFileMD5());
+					array.put(obj);
+				} else {
+					Log.e(TAG, " Doesn't EXIST: "
+							+ assetModels[i].getFile().getPath());
+				}
+			} catch (JSONException e) {
+				if (GCConstants.DEBUG) {
+					Log.w(TAG, "", e);
+				}
+			} catch (Exception e) {
+				if (GCConstants.DEBUG) {
+					Log.w(TAG, "", e);
+				}
+			}
 		}
-	    } catch (JSONException e) {
-		if (GCConstants.DEBUG) {
-		    Log.w(TAG, "", e);
-		}
-	    } catch (Exception e) {
-		if (GCConstants.DEBUG) {
-		    Log.w(TAG, "", e);
-		}
-	    }
+		addParam("files", array.toString());
 	}
-	addParam("files", array.toString());
-    }
 
-    @Override
-    public void execute() {
-	runRequest(GCRestConstants.URL_ASSET_VERIFY);
-    }
+	@Override
+	public void execute() {
+		runRequest(GCRestConstants.URL_ASSET_VERIFY);
+	}
 
 }

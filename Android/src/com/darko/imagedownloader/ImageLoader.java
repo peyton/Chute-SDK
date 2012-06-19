@@ -26,14 +26,11 @@
 package com.darko.imagedownloader;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Stack;
 import java.util.WeakHashMap;
 
 import android.app.Activity;
@@ -41,312 +38,390 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.darko.imagedownloader.PhotosQueue.PhotoToLoad;
+import com.darko.imagedownloader.PhotosQueue.QueueMethod;
 
 /**
  * @author Darko.Grozdanovski
  **/
 public class ImageLoader {
 
-    private final MemoryCache memoryCache;
-    private static final String TAG = ImageLoader.class.getSimpleName();
-    public static final int DEFAULT_HARD_CACHE_SIZE = 25;
-    private final FileCache fileCache;
-    private final boolean shouldCacheOnSD;
-    private boolean shouldCacheInMemory = true;
-    private final Map<ImageView, String> imageViews = Collections
-	    .synchronizedMap(new WeakHashMap<ImageView, String>());
-    private final BitmapContentHandler handler;
-    private final ContentURLStreamHandlerFactory streamFactory;
-    private int defaultImageId;
-    private boolean onlyFromCache = false;
+	private final PhotosQueue photosQueue;
+	private final MemoryCache memoryCache;
+	private static final String TAG = ImageLoader.class.getSimpleName();
+	private boolean loggerEnable = false;
+	public static final int DEFAULT_HARD_CACHE_SIZE = 10;
+	private final FileCache fileCache;
+	private final boolean shouldCacheOnSD;
+	private final Map<ImageView, String> imageViews = Collections
+			.synchronizedMap(new WeakHashMap<ImageView, String>());
+	private final ContentURLStreamHandlerFactory streamFactory;
+	private int preloadDrawableId;
+	private int errorDrawableId;
 
-    /**
-     * Use with {@link Context#getSystemService(String)} to retrieve an
-     * {@link ImageLoader} for loading images.
-     * <p>
-     * Since {@link ImageLoader} is not a standard system service, you must
-     * create a custom {@link Application} subclass implementing
-     * {@link Application#getSystemService(String)} and add it to your
-     * {@code AndroidManifest.xml}.
-     * <p>
-     * Using this constant is optional and it is only provided for convenience
-     * and to promote consistency across deployments of this component.
-     */
-    public static final String IMAGE_LOADER_SERVICE = "com.imagedownloader";
+	/**
+	 * Use with {@link Context#getSystemService(String)} to retrieve an
+	 * {@link ImageLoader} for loading images.
+	 * <p>
+	 * Since {@link ImageLoader} is not a standard system service, you must
+	 * create a custom {@link Application} subclass implementing
+	 * {@link Application#getSystemService(String)} and add it to your
+	 * {@code AndroidManifest.xml}.
+	 * <p>
+	 * Using this constant is optional and it is only provided for convenience
+	 * and to promote consistency across deployments of this component.
+	 */
+	public static final String IMAGE_LOADER_SERVICE = "com.imagedownloader";
+	private int defaultBitmapSize = 75;
 
-    public ImageLoader(Context context, int stubResourceId) {
-	this(context, stubResourceId, true, DEFAULT_HARD_CACHE_SIZE);
-    }
-
-    public ImageLoader(Context context, int stubResourceId, boolean shouldCacheOnSD) {
-	this(context, stubResourceId, shouldCacheOnSD, DEFAULT_HARD_CACHE_SIZE);
-    }
-
-    /**
-     * @param context
-     *            application or activity context
-     * @param defaultImageId
-     *            the placeholder icon that will be displayed while the photo is
-     *            loading or in case of an error
-     * @param shouldCacheOnSD
-     *            if the files should be cached on SD card
-     * @param hardCacheCount
-     *            the maximum amount of photos that should be kept in memory
-     */
-    public ImageLoader(Context context, int defaultImageId, boolean shouldCacheOnSD,
-	    int hardCacheCount) {
-	// Make the background thead low priority. This way it will not affect
-	// the UI performance
-	this.defaultImageId = defaultImageId;
-	this.shouldCacheOnSD = shouldCacheOnSD;
-	this.shouldCacheInMemory = (hardCacheCount == 0 ? false : true);
-	photoLoaderThread.setPriority(Thread.NORM_PRIORITY - 1);
-	fileCache = new FileCache(context);
-	if (shouldCacheInMemory) {
-	    memoryCache = new MemoryCache(hardCacheCount);
-	} else {
-	    memoryCache = null;
-	}
-	handler = new BitmapContentHandler();
-	streamFactory = new ContentURLStreamHandlerFactory(context.getContentResolver());
-    }
-
-    public static ImageLoader getLoader(Context context) {
-	ImageLoader loader = (ImageLoader) context.getSystemService(IMAGE_LOADER_SERVICE);
-	if (loader == null) {
-	    context = context.getApplicationContext();
-	    loader = (ImageLoader) context.getSystemService(IMAGE_LOADER_SERVICE);
-	}
-	if (loader == null) {
-	    throw new IllegalStateException(
-		    "ImageLoader not available, please init the ImageLoader service in the Application class");
-	}
-	return loader;
-    }
-
-    public void setDefaultImageResource(int defaultImageId) {
-	this.defaultImageId = defaultImageId;
-    }
-
-    public void setDefaultImageSize(int size) {
-	handler.setDefaultImageSize(size);
-    }
-
-    public void setOnlyFromCache(boolean onlyFromCache) {
-	this.onlyFromCache = onlyFromCache;
-    }
-
-    public void displayImage(String url, ImageView imageView) {
-	try {
-	    imageViews.put(imageView, url);
-	    Bitmap bitmap = null;
-	    if (shouldCacheInMemory) {
-		bitmap = memoryCache.get(url);
-	    }
-	    if (bitmap != null) {
-		imageView.setImageBitmap(bitmap);
-	    } else {
-		queuePhoto(url, imageView);
-		imageView.setImageResource(defaultImageId);
-	    }
-	} catch (Exception e) {
-	    Log.e(TAG, e.getMessage(), e);
-	}
-    }
-
-    private void queuePhoto(String url, ImageView imageView) {
-	// This ImageView may be used for other images before. So there may be
-	// some old tasks in the queue. We need to discard them.
-	photosQueue.clean(imageView);
-	PhotoToLoad p = new PhotoToLoad(url, imageView);
-	synchronized (photosQueue.photosToLoad) {
-	    photosQueue.photosToLoad.push(p);
-	    photosQueue.photosToLoad.notifyAll();
+	public ImageLoader(final Context context, final int defaultDrawableId) {
+		this(context, defaultDrawableId, true, DEFAULT_HARD_CACHE_SIZE,
+				QueueMethod.STACK);
 	}
 
-	// start thread if it's not started yet
-	if (photoLoaderThread.getState() == Thread.State.NEW) {
-	    photoLoaderThread.start();
+	public ImageLoader(final Context context, final int defaultDrawableId,
+			final boolean shouldCacheOnSD) {
+		this(context, defaultDrawableId, shouldCacheOnSD,
+				DEFAULT_HARD_CACHE_SIZE, QueueMethod.STACK);
 	}
-    }
 
-    public Bitmap downloadBitmap(String url) {
-	// TRY TO GET IT FROM SDCARD...
-	if (TextUtils.isEmpty(url)) {
-	    return null;
+	/**
+	 * @param context
+	 *            application or activity context
+	 * @param defaultDrawableId
+	 *            the placeholder icon that will be displayed while the photo is
+	 *            loading or in case of an error
+	 * @param shouldCacheOnSD
+	 *            if the files should be cached on SD card
+	 * @param hardCacheCount
+	 *            the maximum amount of photos that should be kept in memory
+	 * @param queueMethod
+	 *            to set if the photos will be loaded FIFO(QUEUE) or LIFO(STACK)
+	 */
+	public ImageLoader(final Context context, final int defaultDrawableId,
+			final boolean shouldCacheOnSD, final int hardCacheCount,
+			final QueueMethod queueMethod) {
+		// Make the background thread low priority. This way it will not affect
+		// the UI performance
+		setDefaultDrawableResourceId(defaultDrawableId);
+		photosQueue = new PhotosQueue(queueMethod);
+		this.shouldCacheOnSD = shouldCacheOnSD;
+		photoLoaderThread.setPriority(Thread.NORM_PRIORITY - 1);
+		fileCache = new FileCache(context);
+		memoryCache = new MemoryCache(hardCacheCount);
+		streamFactory = new ContentURLStreamHandlerFactory(
+				context.getContentResolver());
+
 	}
-	Bitmap bmp = null;
-	File f = null;
-	if (shouldCacheOnSD) {
-	    Log.d(TAG, "url" + url);
-	    f = fileCache.getFile(url);
-	    try {
-		Log.d(TAG, "file" + f.length());
-		if (f.exists()) {
-		    Log.d(TAG, "file exists");
-		    // from SD cache
-		    bmp = BitmapFactory.decodeFile(f.getPath());
-		    if (bmp != null) {
-			return bmp; // Can be null
-		    }
+
+	public static ImageLoader getLoader(Context context) {
+		if (context == null) {
+			throw new IllegalStateException(
+					"Context is null, please init the ImageLoader service in the Application class");
 		}
-	    } catch (Exception e) {
-		Log.e(TAG, e.getMessage(), e);
-	    }
+		ImageLoader loader = (ImageLoader) context
+				.getSystemService(IMAGE_LOADER_SERVICE);
+		if (loader == null) {
+			context = context.getApplicationContext();
+			loader = (ImageLoader) context
+					.getSystemService(IMAGE_LOADER_SERVICE);
+		}
+		if (loader == null) {
+			throw new IllegalStateException(
+					"ImageLoader not available, please init the ImageLoader service in the Application class");
+		}
+		return loader;
 	}
-	if (onlyFromCache) {
-	    return null;
-	}
-	// IF IT DOESNT RETURN A BITMAP DOWNLOAD IT
-	try {
 
-	    try {
-		String protocol = Utils.getProtocol(url);
-		URLStreamHandler streamHandler = streamFactory.createURLStreamHandler(protocol);
-		bmp = handler.getContent(new URL(null, url, streamHandler).openConnection());
+	public void setDefaultDrawableResourceId(final int defaultDrawableId) {
+		this.preloadDrawableId = defaultDrawableId;
+		this.errorDrawableId = defaultDrawableId;
+	}
+
+	public void setPreloadDrawableId(final int drawableId) {
+		this.preloadDrawableId = drawableId;
+	}
+
+	public void setLoadingErrorDrawableId(final int drawableId) {
+		this.errorDrawableId = drawableId;
+	}
+
+	public void setDefaultBitmapSize(final int size) {
+		this.defaultBitmapSize = size;
+	}
+
+	public void setLoggerStatus(final boolean active) {
+		this.loggerEnable = active;
+	}
+
+	/**
+	 * @see ImageLoader#fetchBitmapAsync(String, int, ImageLoaderListener)
+	 */
+	public void fetchBitmapAsync(final String url,
+			final ImageLoaderListener listener) {
+		fetchBitmapAsync(url, defaultBitmapSize, listener);
+	}
+
+	/**
+	 * This method executes in the background via {@link AsyncTask}. If
+	 * successful it returns a {@link Bitmap} of the image in the required
+	 * maximum size specified. It uses the SDcard cache to fetch the image if
+	 * already downloaded. This method doesn't store the images in the memory
+	 * cache!
+	 * 
+	 * @param url
+	 *            The URI of the photo
+	 * @param bitmapSizeInPixels
+	 *            the maximum size of the bigger side of the photo in pixels
+	 * @param listener
+	 *            callback for the result
+	 */
+	public void fetchBitmapAsync(final String url,
+			final int bitmapSizeInPixels, final ImageLoaderListener listener) {
+		if (listener == null) {
+			throw new IllegalArgumentException("Listener must not be null!");
+		}
+		new FetchBitmapTask(this, listener, bitmapSizeInPixels, url).execute();
+	}
+
+	/**
+     * 
+     */
+	public void displayImage(final String url, final ImageView imageView) {
+		displayImage(url, imageView, defaultBitmapSize);
+	}
+
+	/**
+	 * Binds a bitmap to the specified imageView. Uses in-memory cache and
+	 * SDCard cache.
+	 * 
+	 * @param url
+	 * @param imageView
+	 * @param bitmapSizeInPixels
+	 */
+	public void displayImage(final String url, final ImageView imageView,
+			final int bitmapSizeInPixels) {
+		try {
+			imageViews.put(imageView, url);
+			final Bitmap bitmap = memoryCache.get(url);
+			if (bitmap != null) {
+				imageView.setImageBitmap(bitmap);
+			} else {
+				queuePhoto(url, imageView, bitmapSizeInPixels);
+				imageView.setImageResource(preloadDrawableId);
+			}
+		} catch (final Exception e) {
+			if (loggerEnable) {
+				Log.e(TAG, e.getMessage(), e);
+			}
+		}
+	}
+
+	private void queuePhoto(final String url, final ImageView imageView,
+			final int bitmapSizeInPixels) {
+		// This ImageView may be used for other images before. So there may be
+		// some old tasks in the queue. We need to discard them.
+		photosQueue.clean(imageView);
+		final PhotoToLoad p = new PhotoToLoad(url, imageView,
+				bitmapSizeInPixels);
+		synchronized (photosQueue.photosToLoad) {
+			photosQueue.photosToLoad.push(p);
+			photosQueue.photosToLoad.notifyAll();
+		}
+
+		// start thread if it's not started yet
+		if (photoLoaderThread.getState() == Thread.State.NEW) {
+			photoLoaderThread.start();
+		}
+	}
+
+	/**
+	 * @see ImageLoader#downloadBitmap(String, int)
+	 */
+	public Bitmap downloadBitmap(final String url) {
+		return downloadBitmap(url, defaultBitmapSize);
+	}
+
+	/**
+	 * This method runs in the same thread that it is called in. see
+	 * {@link ImageLoader#fetchBitmapAsync(String, int, ImageLoaderListener)}
+	 * for an Async Download task or use this one for a different async process.
+	 * 
+	 * @param url
+	 *            the URI of the file to load
+	 * @param bitmapSizeInPixels
+	 *            size the maximum size of the bigger side of the photo in
+	 *            pixels
+	 * @return a bitmap of the requested photo URL
+	 */
+	public Bitmap downloadBitmap(final String url, final int bitmapSizeInPixels) {
+		// TRY TO GET IT FROM SDCARD...
+		if (TextUtils.isEmpty(url)) {
+			return null;
+		}
+		File f = null;
 		if (shouldCacheOnSD) {
-		    OutputStream outStream = new FileOutputStream(f);
-		    bmp.compress(Bitmap.CompressFormat.PNG, 90, outStream);
+			f = fileCache.getFile(url);
+			try {
+				if (f.exists()) {
+					// from SD cache
+					final Options options = Utils.decodeInBounds(f,
+							bitmapSizeInPixels);
+					final Bitmap b = BitmapFactory.decodeFile(f.getPath(),
+							options);
+					if (b != null) {
+						return b; // Can be null
+					}
+				}
+			} catch (final Exception e) {
+				if (loggerEnable) {
+					Log.e(TAG, e.getMessage(), e);
+				}
+			}
 		}
-	    } catch (OutOfMemoryError e) {
-		Log.e(TAG, e.getMessage(), e);
-		System.gc();
-	    }
-	    if (bmp != null) {
-		return bmp;
-	    }
-	} catch (IOException e) {
-	    Log.e(TAG, "Connection error while downloading photo" + e.getMessage());
-	}
-	return null;
-    }
-
-    /*
-     * An InputStream that skips the exact number of bytes provided, unless it reaches EOF.
-     */
-
-    // Task for the queue
-    private class PhotoToLoad {
-
-	public String url;
-	public ImageView imageView;
-
-	public PhotoToLoad(String u, ImageView i) {
-	    url = u;
-	    imageView = i;
-	}
-    }
-
-    PhotosQueue photosQueue = new PhotosQueue();
-
-    public void stopThread() {
-	photoLoaderThread.interrupt();
-    }
-
-    // stores list of photos to download
-    class PhotosQueue {
-
-	private final Stack<PhotoToLoad> photosToLoad = new Stack<PhotoToLoad>();
-
-	// removes all instances of this ImageView
-	public void clean(ImageView image) {
-	    for (int j = 0; j < photosToLoad.size();) {
-		if (photosToLoad.get(j).imageView == image) {
-		    photosToLoad.remove(j);
-		} else {
-		    ++j;
-		}
-	    }
-	}
-    }
-
-    class PhotosLoader extends Thread {
-
-	@Override
-	public void run() {
-	    try {
-		while (true) {
-		    // thread waits until there are any images to load in the
-		    // queue
-		    if (photosQueue.photosToLoad.size() == 0) {
-			synchronized (photosQueue.photosToLoad) {
-			    photosQueue.photosToLoad.wait();
+		// IF IT DOESNT RETURN A BITMAP DOWNLOAD IT
+		try {
+			Bitmap bmp = null;
+			try {
+				final String protocol = Utils.getProtocol(url);
+				final URLStreamHandler streamHandler = streamFactory
+						.createURLStreamHandler(protocol);
+				final BitmapContentHandler handler = new BitmapContentHandler(
+						bitmapSizeInPixels, f);
+				bmp = handler.getContent(new URL(null, url, streamHandler)
+						.openConnection());
+				if (shouldCacheOnSD == false) {
+					f.delete();
+				}
+			} catch (final OutOfMemoryError e) {
+				if (loggerEnable) {
+					Log.e(TAG, e.getMessage(), e);
+				}
+				System.gc();
 			}
-		    }
-		    if (photosQueue.photosToLoad.size() != 0) {
-			PhotoToLoad photoToLoad;
-			synchronized (photosQueue.photosToLoad) {
-			    photoToLoad = photosQueue.photosToLoad.pop();
+			if (bmp != null) {
+				return bmp;
 			}
-			Bitmap bmp = downloadBitmap(photoToLoad.url);
-			if (bmp != null && shouldCacheInMemory) {
-			    memoryCache.put(photoToLoad.url, bmp);
-			}
-			String tag = imageViews.get(photoToLoad.imageView);
-			if (tag != null && tag.equals(photoToLoad.url)) {
-			    BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad.imageView);
-			    try {
-				Activity a = (Activity) photoToLoad.imageView.getContext();
-				a.runOnUiThread(bd);
-			    } catch (Exception e) {
+		} catch (final IOException e) {
+			if (loggerEnable) {
 				Log.e(TAG,
-					"Init the Adapter with an Activity context, NOT application!!!");
-			    }
+						"Connection error while downloading photo"
+								+ e.getMessage());
 			}
-		    }
-		    if (Thread.interrupted()) {
-			break;
-		    }
+		} catch (final Exception e) {
+			if (loggerEnable) {
+				Log.e(TAG, "General error downloading photo" + e.getMessage());
+			}
 		}
-	    } catch (InterruptedException e) {
-		// allow thread to exit
-	    }
-	}
-    }
-
-    private final PhotosLoader photoLoaderThread = new PhotosLoader();
-
-    // Used to display bitmap in the UI thread
-    class BitmapDisplayer implements Runnable {
-
-	private final Bitmap bitmap;
-	private final ImageView imageView;
-
-	public BitmapDisplayer(Bitmap b, ImageView i) {
-	    bitmap = b;
-	    imageView = i;
+		return null;
 	}
 
-	@Override
-	public void run() {
-	    if (bitmap != null) {
-		imageView.setImageBitmap(bitmap);
-	    } else {
-		imageView.setImageResource(defaultImageId);
-	    }
-	}
-    }
+	/*
+	 * An InputStream that skips the exact number of bytes provided, unless it
+	 * reaches EOF.
+	 */
 
-    public void clearMemoryCache() {
-	if (shouldCacheInMemory) {
-	    memoryCache.clear();
+	public void stopThread() {
+		photoLoaderThread.interrupt();
 	}
-    }
 
-    public void clearSDCache() {
-	if (shouldCacheOnSD) {
-	    fileCache.clearCache();
-	}
-    }
+	class PhotosLoader extends Thread {
 
-    public String getMemoryLog() {
-	if (shouldCacheInMemory) {
-	    return memoryCache.getObjectCounters() + " ImageViews in memory: " + imageViews.size();
+		@Override
+		public void run() {
+			try {
+				while (true) {
+					// thread waits until there are any images to load in the
+					// queue
+					if (photosQueue.photosToLoad.size() == 0) {
+						synchronized (photosQueue.photosToLoad) {
+							photosQueue.photosToLoad.wait();
+						}
+					}
+					if (photosQueue.photosToLoad.size() != 0) {
+						PhotoToLoad photoToLoad;
+						synchronized (photosQueue.photosToLoad) {
+							photoToLoad = photosQueue.photosToLoad.pop();
+						}
+						final Bitmap bmp = downloadBitmap(photoToLoad.url,
+								photoToLoad.photoSizeInPixels);
+						if (bmp != null) {
+							memoryCache.put(photoToLoad.url, bmp);
+						}
+						final String tag = imageViews
+								.get(photoToLoad.imageView);
+						if (tag != null && tag.equals(photoToLoad.url)) {
+							final BitmapDisplayer bd = new BitmapDisplayer(bmp,
+									photoToLoad.imageView);
+							try {
+								final Activity a = (Activity) photoToLoad.imageView
+										.getContext();
+								a.runOnUiThread(bd);
+							} catch (final Exception e) {
+								if (loggerEnable) {
+									Log.w(TAG,
+											"Init the Adapter with an Activity context, NOT application!!!");
+								}
+							}
+						}
+					}
+					if (Thread.interrupted()) {
+						break;
+					}
+				}
+			} catch (final InterruptedException e) {
+				// allow thread to exit
+			}
+		}
 	}
-	return "No memory cache created";
-    }
+
+	private final PhotosLoader photoLoaderThread = new PhotosLoader();
+
+	// Used to display bitmap in the UI thread
+	class BitmapDisplayer implements Runnable {
+
+		private final Bitmap bitmap;
+		private final ImageView imageView;
+
+		public BitmapDisplayer(final Bitmap b, final ImageView i) {
+			bitmap = b;
+			imageView = i;
+		}
+
+		@Override
+		public void run() {
+			if (bitmap != null) {
+				imageView.setImageBitmap(bitmap);
+			} else {
+				imageView.setImageResource(errorDrawableId);
+			}
+		}
+	}
+
+	public void clearMemoryCache() {
+		if (memoryCache != null) {
+			memoryCache.clear();
+		}
+	}
+
+	public void clearSDCache() {
+		if (shouldCacheOnSD) {
+			fileCache.clearCache();
+		}
+	}
+
+	public String getMemoryLog() {
+		if (memoryCache == null) {
+			return "No memory cache initialized!";
+		}
+		return memoryCache.getObjectCounters() + " ImageViews in memory: "
+				+ imageViews.size();
+	}
 
 }

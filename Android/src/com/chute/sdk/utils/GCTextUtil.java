@@ -26,17 +26,17 @@
 package com.chute.sdk.utils;
 
 public class GCTextUtil {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCTextUtil.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCTextUtil.class.getSimpleName();
 
-    private GCTextUtil() {
-    }
-
-    public static String truncate(String value, int length) {
-	if (value != null && value.length() > length) {
-	    value = value.substring(0, length);
-	    value += "...";
+	private GCTextUtil() {
 	}
-	return value;
-    }
+
+	public static String truncate(String value, int length) {
+		if (value != null && value.length() > length) {
+			value = value.substring(0, length);
+			value += "...";
+		}
+		return value;
+	}
 }

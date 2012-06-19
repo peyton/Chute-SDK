@@ -34,23 +34,24 @@ import com.chute.sdk.parsers.base.GCBaseChuteModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
 public class GCChuteListObjectParser extends GCBaseChuteModelParser implements
-	GCHttpResponseParser<GCChuteCollection> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCChuteListObjectParser.class.getSimpleName();
+		GCHttpResponseParser<GCChuteCollection> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCChuteListObjectParser.class
+			.getSimpleName();
 
-    public GCChuteListObjectParser() {
-	super();
-    }
-
-    @Override
-    public GCChuteCollection parse(String responseBody) throws JSONException {
-	GCChuteCollection list = new GCChuteCollection();
-
-	// TODO need to see this method implemented in the API
-	JSONArray array = new JSONObject(responseBody).getJSONArray("data");
-	for (int i = 0; i < array.length(); i++) {
-	    list.add(GCBaseChuteModelParser.parse(array.getJSONObject(i)));
+	public GCChuteListObjectParser() {
+		super();
 	}
-	return list;
-    }
+
+	@Override
+	public GCChuteCollection parse(String responseBody) throws JSONException {
+		GCChuteCollection list = new GCChuteCollection();
+
+		// TODO need to see this method implemented in the API
+		JSONArray array = new JSONObject(responseBody).getJSONArray("data");
+		for (int i = 0; i < array.length(); i++) {
+			list.add(GCBaseChuteModelParser.parse(array.getJSONObject(i)));
+		}
+		return list;
+	}
 }

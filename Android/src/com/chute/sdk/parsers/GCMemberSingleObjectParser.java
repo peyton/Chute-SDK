@@ -32,12 +32,15 @@ import com.chute.sdk.model.GCMemberModel;
 import com.chute.sdk.parsers.base.GCBaseMemberModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCMemberSingleObjectParser implements GCHttpResponseParser<GCMemberModel> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCMemberSingleObjectParser.class.getSimpleName();
+public class GCMemberSingleObjectParser implements
+		GCHttpResponseParser<GCMemberModel> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCMemberSingleObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCMemberModel parse(String responseBody) throws JSONException {
-	return GCBaseMemberModelParser.parse(new JSONObject(responseBody).getJSONObject("data"));
-    }
+	@Override
+	public GCMemberModel parse(String responseBody) throws JSONException {
+		return GCBaseMemberModelParser.parse(new JSONObject(responseBody)
+				.getJSONObject("data"));
+	}
 }

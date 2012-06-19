@@ -23,38 +23,43 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-package com.chute.sdk.api.bundle;
-
-import java.util.ArrayList;
+package com.chute.sdk.api;
 
 import android.content.Context;
-import android.text.TextUtils;
 
-import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.exceptions.GCHttpException;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
-import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCParametersRestClient;
+import com.chute.sdk.utils.rest.GCRest;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-public class BundleCreateRequest<T> extends GCHttpRequestImpl<T> {
-    private final ArrayList<String> assetIds;
+public abstract class GCParameterHttpRequestImpl<T> extends
+		GCBaseHttpRequestImpl<T> {
 
-    public BundleCreateRequest(Context context, final ArrayList<String> assetIds,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.DELETE, parser, callback);
-	this.assetIds = assetIds;
-    }
+	public static final String TAG = GCParameterHttpRequestImpl.class
+			.getSimpleName();
+	protected GCParametersRestClient client;
 
-    @SuppressWarnings("unused")
-    private static final String TAG = BundleCreateRequest.class.getSimpleName();
+	public GCParameterHttpRequestImpl(Context context,
+			RequestMethod requestMethod, GCHttpResponseParser<T> parser,
+			GCHttpCallback<T> callback) {
+		super(context, parser, callback);
+		client = new GCParametersRestClient();
+		client.setMethod(requestMethod);
+	}
 
-    @Override
-    protected void prepareParams() {
-	addParam("asset_ids", TextUtils.join(",", assetIds));
-    }
+	@Override
+	protected void prepareAndExecuteRequest() throws GCHttpException {
+		prepareParams();
+		client.execute();
+	}
 
-    @Override
-    public void execute() {
-	runRequest(GCRestConstants.URL_BUNDLES_CREATE);
-    }
+	@Override
+	public GCRest getClient() {
+		return client;
+	}
+
+	public void addParam(String key, String value) {
+		client.addParam(key, value);
+	}
 }

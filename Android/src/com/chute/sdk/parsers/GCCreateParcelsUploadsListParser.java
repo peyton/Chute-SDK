@@ -29,17 +29,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.chute.sdk.collections.GCLocalAssetCollection;
+import com.chute.sdk.model.response.GCParcelCreateResponse;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
 public class GCCreateParcelsUploadsListParser implements
-	GCHttpResponseParser<GCLocalAssetCollection> {
+		GCHttpResponseParser<GCParcelCreateResponse> {
 
-    @Override
-    public GCLocalAssetCollection parse(final String response) throws JSONException {
-	JSONObject obj = new JSONObject(response);
-	JSONArray array = obj.getJSONArray("uploads");
-	return new GCLocalAssetListObjectParser().parse(array.toString());
-    }
+	@Override
+	public GCParcelCreateResponse parse(final String response)
+			throws JSONException {
+		JSONObject obj = new JSONObject(response);
+		JSONArray array = obj.getJSONArray("uploads");
+		GCParcelCreateResponse parcelResponse = new GCParcelCreateResponse();
+		parcelResponse
+				.setLocalAssetCollection(new GCLocalAssetListObjectParser()
+						.parse(array.toString()));
+		parcelResponse.setId(obj.getString("id"));
+		parcelResponse.setParcelShareUrl(obj.getString("share_url"));
+		return parcelResponse;
+	}
 
 }

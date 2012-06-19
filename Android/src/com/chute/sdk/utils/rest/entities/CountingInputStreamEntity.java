@@ -23,29 +23,60 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-package com.chute.sdk.parsers;
+package com.chute.sdk.utils.rest.entities;
 
-import org.json.JSONException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import com.chute.sdk.model.GCBundleModel;
-import com.chute.sdk.parsers.base.GCHttpResponseParser;
+import org.apache.http.entity.InputStreamEntity;
 
-/**
- * Returns an GCBundleModel Holding the data
- * 
- * @author DArkO
- */
-public class GCBundleSingleObjectParser implements GCHttpResponseParser<GCBundleModel> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBundleSingleObjectParser.class.getSimpleName();
+public class CountingInputStreamEntity extends InputStreamEntity {
 
-    public GCBundleSingleObjectParser() {
-	super();
-    }
+	private UploadListener listener;
 
-    @Override
-    public GCBundleModel parse(String responseBody) throws JSONException {
-	// TODO need to be made
-	return null;
-    }
+	public CountingInputStreamEntity(InputStream instream, long length) {
+		super(instream, length);
+	}
+
+	public void setUploadListener(UploadListener listener) {
+		this.listener = listener;
+	}
+
+	@Override
+	public void writeTo(OutputStream outstream) throws IOException {
+		super.writeTo(new CountingOutputStream(outstream));
+	}
+
+	class CountingOutputStream extends OutputStream {
+		private long counter = 0l;
+		private final OutputStream outputStream;
+
+		public CountingOutputStream(OutputStream outputStream) {
+			this.outputStream = outputStream;
+		}
+
+		@Override
+		public void write(byte[] buffer, int offset, int count)
+				throws IOException {
+			this.outputStream.write(buffer, offset, count);
+			this.counter += count;
+			listener.onChange(counter);
+		}
+
+		@Override
+		public void write(int oneByte) throws IOException {
+			this.outputStream.write(oneByte);
+			counter++;
+			if (listener != null) {
+				// int percent = (int) ((counter * 100) / length);
+				listener.onChange(counter);
+			}
+		}
+	}
+
+	public interface UploadListener {
+		public void onChange(long current);
+	}
+
 }

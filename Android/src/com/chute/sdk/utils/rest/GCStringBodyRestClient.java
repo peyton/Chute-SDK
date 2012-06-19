@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011, Chute Corporation. All rights reserved.
+// Copyright (c) 2011, Chute Corporation. All rights reserved.
 // 
 //  Redistribution and use in source and binary forms, with or without modification, 
 //  are permitted provided that the following conditions are met:
@@ -23,36 +23,55 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-package com.chute.sdk.model;
+package com.chute.sdk.utils.rest;
 
-/**
- * The {@link GCBundleModel} class represents the concept of a bundle.
- * 
- */
-public class GCBundleModel {
-	@SuppressWarnings("unused")
-	private static final String TAG = GCBundleModel.class.getSimpleName();
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
-	/**
-	 * The unique identifier of the bundle.
-	 */
-	private String id;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 
-	/**
-	 * A default non-args constructor.
-	 */
-	public GCBundleModel() {
+import android.util.Log;
+
+import com.chute.sdk.exceptions.GCHttpException;
+import com.chute.sdk.model.GCHttpRequestParameters;
+import com.chute.sdk.utils.GCConstants;
+
+public class GCStringBodyRestClient extends GCBaseRestClient {
+
+	public static final String TAG = GCStringBodyRestClient.class
+			.getSimpleName();
+	private String body;
+
+	public GCStringBodyRestClient() {
+		super();
 	}
 
-	/**
-	 * Getter and setter methods.
-	 */
-	public String getId() {
-		return id;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void execute() throws GCHttpException {
+		try {
+			HttpPost request = new HttpPost(getUrl());
+			request.setEntity(new StringEntity(body, "UTF-8"));
+			executeRequest(request);
+		} catch (UnsupportedEncodingException e) {
+			if (GCConstants.DEBUG) {
+				Log.w(TAG, "", e);
+			}
+			throw new GCHttpException(e);
+		} catch (IOException e) {
+			if (GCConstants.DEBUG) {
+				Log.w(TAG, "", e);
+			}
+			throw new GCHttpException(e);
+		}
+	}
+
+	@Override
+	public GCHttpRequestParameters getRequestParameters() {
+		return null;
 	}
 
 }

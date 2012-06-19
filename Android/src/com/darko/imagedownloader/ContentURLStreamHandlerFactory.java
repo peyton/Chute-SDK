@@ -39,27 +39,26 @@ import android.content.ContentResolver;
  **/
 public class ContentURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
-    private final ContentResolver resolver;
+	private final ContentResolver resolver;
 
-    public ContentURLStreamHandlerFactory(ContentResolver resolver) {
-	if (resolver == null) {
-	    throw new NullPointerException();
+	public ContentURLStreamHandlerFactory(ContentResolver resolver) {
+		if (resolver == null) {
+			throw new NullPointerException();
+		}
+		this.resolver = resolver;
 	}
-	this.resolver = resolver;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public URLStreamHandler createURLStreamHandler(String protocol) {
-	if (ContentResolver.SCHEME_CONTENT.equals(protocol)
-		|| ContentResolver.SCHEME_FILE.equals(protocol)
-		|| ContentResolver.SCHEME_ANDROID_RESOURCE.equals(protocol)) {
-	    return new ContentURLStreamHandler(this.resolver);
-	} else {
-	    return null;
+	/**
+	 * {@inheritDoc}
+	 */
+	public URLStreamHandler createURLStreamHandler(String protocol) {
+		if (ContentResolver.SCHEME_CONTENT.equals(protocol)
+				|| ContentResolver.SCHEME_FILE.equals(protocol)
+				|| ContentResolver.SCHEME_ANDROID_RESOURCE.equals(protocol)) {
+			return new ContentURLStreamHandler(this.resolver);
+		} else {
+			return null;
+		}
 	}
-    }
 
 }

@@ -26,20 +26,20 @@
 package com.chute.sdk.exceptions;
 
 public class GCParseException extends GCHttpException {
-    private static final long serialVersionUID = -7964127989566422126L;
-    @SuppressWarnings("unused")
-    private static final String TAG = GCParseException.class.getSimpleName();
+	private static final long serialVersionUID = -7964127989566422126L;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCParseException.class.getSimpleName();
 
-    public GCParseException(String s) {
-	super(s);
-    }
+	public GCParseException(String s) {
+		super(s);
+	}
 
-    public GCParseException(String detailMessage, Throwable throwable) {
-	super(detailMessage, throwable);
-    }
+	public GCParseException(String detailMessage, Throwable throwable) {
+		super(detailMessage, throwable);
+	}
 
-    public GCParseException(Throwable throwable) {
-	super(throwable);
-    }
+	public GCParseException(Throwable throwable) {
+		super(throwable);
+	}
 
 }

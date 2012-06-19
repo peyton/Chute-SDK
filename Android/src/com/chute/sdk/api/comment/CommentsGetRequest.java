@@ -29,34 +29,35 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class CommentsGetRequest<T> extends GCHttpRequestImpl<T> {
-    private final String chuteId;
-    private final String assetId;
+class CommentsGetRequest<T> extends GCParameterHttpRequestImpl<T> {
+	private final String chuteId;
+	private final String assetId;
 
-    public CommentsGetRequest(Context context, String chuteId, String assetId,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	if (TextUtils.isEmpty(chuteId) || TextUtils.isEmpty(assetId)) {
-	    throw new NullPointerException("Need to provide an ID");
+	public CommentsGetRequest(Context context, String chuteId, String assetId,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.GET, parser, callback);
+		if (TextUtils.isEmpty(chuteId) || TextUtils.isEmpty(assetId)) {
+			throw new NullPointerException("Need to provide an ID");
+		}
+		this.chuteId = chuteId;
+		this.assetId = assetId;
 	}
-	this.chuteId = chuteId;
-	this.assetId = assetId;
-    }
 
-    @SuppressWarnings("unused")
-    private static final String TAG = CommentsGetRequest.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = CommentsGetRequest.class.getSimpleName();
 
-    @Override
-    protected void prepareParams() {
-    }
+	@Override
+	protected void prepareParams() {
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_COMMENTS_GET, chuteId, assetId));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_COMMENTS_GET, chuteId,
+				assetId));
+	}
 }

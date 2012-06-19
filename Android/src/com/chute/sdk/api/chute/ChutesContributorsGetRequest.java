@@ -29,31 +29,33 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class ChutesContributorsGetRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = ChutesContributorsGetRequest.class.getSimpleName();
-    private final String chuteId;
+class ChutesContributorsGetRequest<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = ChutesContributorsGetRequest.class
+			.getSimpleName();
+	private final String chuteId;
 
-    public ChutesContributorsGetRequest(Context context, String chuteId,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	if (TextUtils.isEmpty(chuteId)) {
-	    throw new NullPointerException("Need to provide an ID of the chute");
+	public ChutesContributorsGetRequest(Context context, String chuteId,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.GET, parser, callback);
+		if (TextUtils.isEmpty(chuteId)) {
+			throw new NullPointerException("Need to provide an ID of the chute");
+		}
+		this.chuteId = chuteId;
 	}
-	this.chuteId = chuteId;
-    }
 
-    @Override
-    protected void prepareParams() {
-    }
+	@Override
+	protected void prepareParams() {
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_CHUTE_RESOURCES_CONTRIBUTORS, chuteId));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(
+				GCRestConstants.URL_CHUTE_RESOURCES_CONTRIBUTORS, chuteId));
+	}
 }

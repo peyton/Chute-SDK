@@ -32,17 +32,19 @@ import org.json.JSONObject;
 import com.chute.sdk.collections.GCHeartsMap;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCHeartsMapObjectParser implements GCHttpResponseParser<GCHeartsMap> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHeartsMapObjectParser.class.getSimpleName();
+public class GCHeartsMapObjectParser implements
+		GCHttpResponseParser<GCHeartsMap> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCHeartsMapObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCHeartsMap parse(String responseBody) throws JSONException {
-	GCHeartsMap map = new GCHeartsMap();
-	JSONArray array = new JSONObject(responseBody).getJSONArray("data");
-	for (int i = 0; i < array.length(); i++) {
-	    map.put(array.getInt(i), true);
+	@Override
+	public GCHeartsMap parse(String responseBody) throws JSONException {
+		GCHeartsMap map = new GCHeartsMap();
+		JSONArray array = new JSONObject(responseBody).getJSONArray("data");
+		for (int i = 0; i < array.length(); i++) {
+			map.put(array.getInt(i), true);
+		}
+		return map;
 	}
-	return map;
-    }
 }

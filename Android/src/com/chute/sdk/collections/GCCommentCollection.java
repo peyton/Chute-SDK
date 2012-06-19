@@ -31,11 +31,11 @@ import com.chute.sdk.model.GCCommentModel;
 
 public class GCCommentCollection extends GCCollection<GCCommentModel> {
 
-    public GCCommentCollection() {
-	super(new ArrayList<GCCommentModel>());
-    }
+	public GCCommentCollection() {
+		super(new ArrayList<GCCommentModel>());
+	}
 
-    private static final long serialVersionUID = 1L;
-    @SuppressWarnings("unused")
-    private static final String TAG = GCCommentCollection.class.getSimpleName();
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCCommentCollection.class.getSimpleName();
 }

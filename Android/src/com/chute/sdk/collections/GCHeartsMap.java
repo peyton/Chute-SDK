@@ -29,10 +29,10 @@ import android.util.SparseArray;
 
 public class GCHeartsMap extends SparseArray<Boolean> {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHeartsMap.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCHeartsMap.class.getSimpleName();
 
-    public GCHeartsMap() {
-    }
+	public GCHeartsMap() {
+	}
 
 }

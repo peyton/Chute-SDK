@@ -29,42 +29,49 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class ChutesCreateRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = ChutesCreateRequest.class.getSimpleName();
-    private final GCChuteModel model;
+class ChutesCreateRequest<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = ChutesCreateRequest.class.getSimpleName();
+	private final GCChuteModel model;
 
-    public ChutesCreateRequest(Context context, GCChuteModel model, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.POST, parser, callback);
-	if (model == null || TextUtils.isEmpty(model.getName())) {
-	    throw new NullPointerException("Need to provide a Name of the chute");
+	public ChutesCreateRequest(Context context, GCChuteModel model,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.POST, parser, callback);
+		if (model == null || TextUtils.isEmpty(model.getName())) {
+			throw new NullPointerException(
+					"Need to provide a Name of the chute");
+		}
+		this.model = model;
 	}
-	this.model = model;
-    }
 
-    @Override
-    protected void prepareParams() {
-	addParam("chute[name]", model.getName());
-	addParam("chute[password]", model.getPassword());
-	addParam("chute[permission_view]", String.valueOf(model.getPermissionView()));
-	addParam("chute[permission_add_members]", String.valueOf(model.getPermissionAddMembers()));
-	addParam("chute[permission_add_photos]", String.valueOf(model.getPermissionAddPhotos()));
-	addParam("chute[permission_add_comments]",
-		String.valueOf(model.getPermissionModerateComments()));
-	addParam("chute[moderate_members]", String.valueOf(model.getPermissionModerateMembers()));
-	addParam("chute[moderate_photos]", String.valueOf(model.getPermissionModeratePhotos()));
-	addParam("chute[moderate_comments]", String.valueOf(model.getPermissionModerateComments()));
-    }
+	@Override
+	protected void prepareParams() {
+		addParam("chute[name]", model.getName());
+		addParam("chute[password]", model.getPassword());
+		addParam("chute[permission_view]",
+				String.valueOf(model.getPermissionView()));
+		addParam("chute[permission_add_members]",
+				String.valueOf(model.getPermissionAddMembers()));
+		addParam("chute[permission_add_photos]",
+				String.valueOf(model.getPermissionAddPhotos()));
+		addParam("chute[permission_add_comments]",
+				String.valueOf(model.getPermissionModerateComments()));
+		addParam("chute[moderate_members]",
+				String.valueOf(model.getPermissionModerateMembers()));
+		addParam("chute[moderate_photos]",
+				String.valueOf(model.getPermissionModeratePhotos()));
+		addParam("chute[moderate_comments]",
+				String.valueOf(model.getPermissionModerateComments()));
+	}
 
-    @Override
-    public void execute() {
-	runRequest(GCRestConstants.URL_CHUTES_CREATE);
-    }
+	@Override
+	public void execute() {
+		runRequest(GCRestConstants.URL_CHUTES_CREATE);
+	}
 }

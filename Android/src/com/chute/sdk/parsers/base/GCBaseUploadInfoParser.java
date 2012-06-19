@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011, Chute Corporation. All rights reserved.
+// Copyright (c) 2011, Chute Corporation. All rights reserved.
 // 
 //  Redistribution and use in source and binary forms, with or without modification, 
 //  are permitted provided that the following conditions are met:
@@ -23,61 +23,29 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-package com.chute.sdk.api.asset;
+package com.chute.sdk.parsers.base;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import org.apache.http.entity.InputStreamEntity;
+import com.chute.sdk.model.inner.UploadInfo;
 
-class CountingInputStreamEntity extends InputStreamEntity {
+public class GCBaseUploadInfoParser {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseUploadInfoParser.class
+			.getSimpleName();
 
-    private UploadListener listener;
-    private final long length;
-
-    public CountingInputStreamEntity(InputStream instream, long length) {
-	super(instream, length);
-	this.length = length;
-    }
-
-    public void setUploadListener(UploadListener listener) {
-	this.listener = listener;
-    }
-
-    @Override
-    public void writeTo(OutputStream outstream) throws IOException {
-	super.writeTo(new CountingOutputStream(outstream));
-    }
-
-    class CountingOutputStream extends OutputStream {
-	private long counter = 0l;
-	private final OutputStream outputStream;
-
-	public CountingOutputStream(OutputStream outputStream) {
-	    this.outputStream = outputStream;
+	public static UploadInfo parse(final JSONObject info) throws JSONException {
+		if (info != null && info.length() > 0) {
+			UploadInfo uploadInfo = new UploadInfo();
+			uploadInfo.setSignature(info.getString("signature"));
+			uploadInfo.setDate(info.getString("date"));
+			uploadInfo.setUploadUrl(info.getString("upload_url"));
+			uploadInfo.setFilepath(info.getString("file_path"));
+			uploadInfo.setContentType(info.getString("content_type"));
+			uploadInfo.setType(info.getString("type"));
+			return uploadInfo;
+		}
+		return null;
 	}
-
-	@Override
-	public void write(byte[] buffer, int offset, int count) throws IOException {
-	    this.outputStream.write(buffer, offset, count);
-	    this.counter += count;
-	    listener.onChange(counter);
-	}
-
-	@Override
-	public void write(int oneByte) throws IOException {
-	    this.outputStream.write(oneByte);
-	    counter++;
-	    if (listener != null) {
-		// int percent = (int) ((counter * 100) / length);
-		listener.onChange(counter);
-	    }
-	}
-    }
-
-    public interface UploadListener {
-	public void onChange(long current);
-    }
-
 }

@@ -25,36 +25,64 @@
 // 
 package com.chute.sdk.api.asset;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
-import android.text.TextUtils;
+import android.util.Log;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCStringBodyHttpRequestImpl;
+import com.chute.sdk.collections.GCLocalAssetCollection;
+import com.chute.sdk.model.GCLocalAssetModel;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.Logger;
 
-public class AssetsTokenRequest<T> extends GCHttpRequestImpl<T> {
-    private final String assetId;
+public class AssetsTokenRequest<T> extends GCStringBodyHttpRequestImpl<T> {
+	private final GCLocalAssetCollection ac;
+	private final ArrayList<String> chuteIds;
 
-    public AssetsTokenRequest(Context context, String assetId, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	if (TextUtils.isEmpty(assetId)) {
-	    throw new NullPointerException("Need to provide an ID of the Asset");
+	public AssetsTokenRequest(final Context context, final GCLocalAssetCollection assetCollection, final ArrayList<String> chuteIds,
+			final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
+		super(context, parser, callback);
+		this.ac = assetCollection;
+		this.chuteIds = chuteIds;
 	}
-	this.assetId = assetId;
-    }
 
-    @SuppressWarnings("unused")
-    private static final String TAG = AssetsTokenRequest.class.getSimpleName();
+	public static final String TAG = AssetsTokenRequest.class.getSimpleName();
 
-    @Override
-    protected void prepareParams() {
-    }
+	@Override
+	protected void prepareParams() {
+		final JSONObject root = new JSONObject();
+		final JSONObject dataObject = new JSONObject();
+		final JSONArray filesArray = new JSONArray();
+		try {
+			final JSONObject obj = new JSONObject();
+			for (final GCLocalAssetModel asset : ac) {
+				obj.put("filename", asset.getFile().getPath());
+				obj.put("md5", asset.calculateFileMD5());
+				obj.put("size", asset.getSize());
+				Log.d(TAG, ac.toString());
+				filesArray.put(obj);
+			}
+			dataObject.put("files", filesArray);
+			// Add Chutes
+			final JSONArray chutesArray = new JSONArray(chuteIds);
+			dataObject.put("chutes", chutesArray);
+			root.put("data", dataObject);
+			setBody(root.toString());
+		} catch (final JSONException e) {
+			Logger.d(TAG, "",e);
+		}
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_UPLOADS_TOKEN, assetId));
-    }
+	@Override
+	public void execute() {
+		runRequest(GCRestConstants.URL_UPLOADS_TOKEN);
+	}
 }

@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import com.chute.sdk.model.GCLocalAssetModel;
 
 public class GCLocalAssetCollection extends GCCollection<GCLocalAssetModel> {
-    private static final long serialVersionUID = -6163300806572153709L;
-    @SuppressWarnings("unused")
-    private static final String TAG = GCLocalAssetCollection.class.getSimpleName();
+	private static final long serialVersionUID = -6163300806572153709L;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCLocalAssetCollection.class
+			.getSimpleName();
 
-    public GCLocalAssetCollection() {
-	super(new ArrayList<GCLocalAssetModel>());
-    }
+	public GCLocalAssetCollection() {
+		super(new ArrayList<GCLocalAssetModel>());
+	}
 
 }

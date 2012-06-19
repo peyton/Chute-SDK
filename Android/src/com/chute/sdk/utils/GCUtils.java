@@ -33,52 +33,52 @@ import android.util.Log;
 import android.util.TypedValue;
 
 public class GCUtils {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCUtils.class.getSimpleName();
+	public static final String TAG = GCUtils.class.getSimpleName();
 
-    private GCUtils() {
-	super();
-    }
-
-    public static Bundle decodeUrl(String s) {
-	Bundle params = new Bundle();
-	if (s != null) {
-	    s = s.substring(s.indexOf("?") + 1);
-	    Log.e(TAG, s);
-	    String array[] = s.split("&");
-	    for (String parameter : array) {
-		Log.e(TAG, parameter);
-		String v[] = parameter.split("=");
-		try {
-		    params.putString(URLDecoder.decode(v[0]), URLDecoder.decode(v[1]));
-		} catch (ArrayIndexOutOfBoundsException e) {
-		}
-	    }
+	private GCUtils() {
+		super();
 	}
-	return params;
-    }
 
-    /**
-     * This method is used to modify the media url to point to a path for a
-     * custom sized photo Create wrapper methods that will generate your
-     * predefined photo sizes ex. 100x100, 320x320
-     * 
-     * @param url
-     *            the url that is sent from chute
-     * @param height
-     *            the requred height
-     * @param width
-     *            the requred width
-     * @return a modified String for the custom size photo location
-     */
-    public static String getCustomSizePhotoURL(String url, int height, int width) {
-	StringBuilder sb = new StringBuilder(url);
-	sb.append("/" + height + "x" + width);
-	return sb.toString();
-    }
+	public static Bundle decodeUrl(String s) {
+		Bundle params = new Bundle();
+		if (s != null) {
+			s = s.substring(s.indexOf("?") + 1);
+			Log.e(TAG, s);
+			String array[] = s.split("&");
+			for (String parameter : array) {
+				Log.e(TAG, parameter);
+				String v[] = parameter.split("=");
+				try {
+					params.putString(URLDecoder.decode(v[0]),
+							URLDecoder.decode(v[1]));
+				} catch (ArrayIndexOutOfBoundsException e) {
+				}
+			}
+		}
+		return params;
+	}
 
-    public static int pixelsFromDp(Context context, int value) {
-	return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context
-		.getResources().getDisplayMetrics());
-    }
+	/**
+	 * This method is used to modify the media url to point to a path for a
+	 * custom sized photo Create wrapper methods that will generate your
+	 * predefined photo sizes ex. 100x100, 320x320
+	 * 
+	 * @param url
+	 *            the url that is sent from chute
+	 * @param height
+	 *            the requred height
+	 * @param width
+	 *            the requred width
+	 * @return a modified String for the custom size photo location
+	 */
+	public static String getCustomSizePhotoURL(String url, int height, int width) {
+		StringBuilder sb = new StringBuilder(url);
+		sb.append("/" + height + "x" + width);
+		return sb.toString();
+	}
+
+	public static int pixelsFromDp(Context context, int value) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+				value, context.getResources().getDisplayMetrics());
+	}
 }

@@ -29,36 +29,36 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 import com.chute.sdk.utils.GCConstants;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class HeartsGetRequest<T> extends GCHttpRequestImpl<T> {
+class HeartsGetRequest<T> extends GCParameterHttpRequestImpl<T> {
 
-    private final String id;
+	private final String id;
 
-    public HeartsGetRequest(Context context, String userId, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	if (TextUtils.isEmpty(userId)) {
-	    this.id = GCConstants.CURRENT_USER_ID;
-	} else {
-	    this.id = userId;
+	public HeartsGetRequest(Context context, String userId,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.GET, parser, callback);
+		if (TextUtils.isEmpty(userId)) {
+			this.id = GCConstants.CURRENT_USER_ID;
+		} else {
+			this.id = userId;
+		}
+
 	}
 
-    }
+	@SuppressWarnings("unused")
+	private static final String TAG = HeartsGetRequest.class.getSimpleName();
 
-    @SuppressWarnings("unused")
-    private static final String TAG = HeartsGetRequest.class.getSimpleName();
+	@Override
+	protected void prepareParams() {
+	}
 
-    @Override
-    protected void prepareParams() {
-    }
-
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_USER_HEARTS, id));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_USER_HEARTS, id));
+	}
 }

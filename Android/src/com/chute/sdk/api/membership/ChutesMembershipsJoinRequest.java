@@ -29,35 +29,38 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class ChutesMembershipsJoinRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = ChutesMembershipsJoinRequest.class.getSimpleName();
-    private final String chuteId;
-    private final String password;
+class ChutesMembershipsJoinRequest<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = ChutesMembershipsJoinRequest.class
+			.getSimpleName();
+	private final String chuteId;
+	private final String password;
 
-    public ChutesMembershipsJoinRequest(Context context, String chuteId, String password,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	this.password = password;
-	if (TextUtils.isEmpty(chuteId)) {
-	    throw new NullPointerException("Need to provide an ID of the chute");
+	public ChutesMembershipsJoinRequest(Context context, String chuteId,
+			String password, GCHttpResponseParser<T> parser,
+			GCHttpCallback<T> callback) {
+		super(context, RequestMethod.GET, parser, callback);
+		this.password = password;
+		if (TextUtils.isEmpty(chuteId)) {
+			throw new NullPointerException("Need to provide an ID of the chute");
+		}
+		this.chuteId = chuteId;
 	}
-	this.chuteId = chuteId;
-    }
 
-    @Override
-    protected void prepareParams() {
-	addParam("password", password);
+	@Override
+	protected void prepareParams() {
+		addParam("password", password);
 
-    }
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_CHUTE_MEMBERSHIPS_JOIN, chuteId));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_CHUTE_MEMBERSHIPS_JOIN,
+				chuteId));
+	}
 }

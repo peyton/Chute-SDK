@@ -29,40 +29,42 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class CommentsPostRequest<T> extends GCHttpRequestImpl<T> {
-    private final String chuteId;
-    private final String assetId;
-    private final String comment;
+class CommentsPostRequest<T> extends GCParameterHttpRequestImpl<T> {
+	private final String chuteId;
+	private final String assetId;
+	private final String comment;
 
-    public CommentsPostRequest(Context context, String chuteId, String assetId, String comment,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.POST, parser, callback);
-	if (TextUtils.isEmpty(chuteId) || TextUtils.isEmpty(assetId)) {
-	    throw new NullPointerException("Need to provide an ID");
+	public CommentsPostRequest(Context context, String chuteId, String assetId,
+			String comment, GCHttpResponseParser<T> parser,
+			GCHttpCallback<T> callback) {
+		super(context, RequestMethod.POST, parser, callback);
+		if (TextUtils.isEmpty(chuteId) || TextUtils.isEmpty(assetId)) {
+			throw new NullPointerException("Need to provide an ID");
+		}
+		if (TextUtils.isEmpty(comment)) {
+			throw new NullPointerException("Need to provide an Comment String");
+		}
+		this.chuteId = chuteId;
+		this.assetId = assetId;
+		this.comment = comment;
 	}
-	if (TextUtils.isEmpty(comment)) {
-	    throw new NullPointerException("Need to provide an Comment String");
+
+	@SuppressWarnings("unused")
+	private static final String TAG = CommentsPostRequest.class.getSimpleName();
+
+	@Override
+	protected void prepareParams() {
+		addParam("comment", comment);
 	}
-	this.chuteId = chuteId;
-	this.assetId = assetId;
-	this.comment = comment;
-    }
 
-    @SuppressWarnings("unused")
-    private static final String TAG = CommentsPostRequest.class.getSimpleName();
-
-    @Override
-    protected void prepareParams() {
-	addParam("comment", comment);
-    }
-
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_COMMENTS_POST, chuteId, assetId));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_COMMENTS_POST, chuteId,
+				assetId));
+	}
 }

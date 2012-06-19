@@ -28,26 +28,26 @@ package com.chute.sdk.api.chute;
 import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class ChutesListRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = ChutesListRequest.class.getSimpleName();
+class ChutesListRequest<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = ChutesListRequest.class.getSimpleName();
 
-    public ChutesListRequest(Context context, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-    }
+	public ChutesListRequest(Context context, GCHttpResponseParser<T> parser,
+			GCHttpCallback<T> callback) {
+		super(context, RequestMethod.GET, parser, callback);
+	}
 
-    @Override
-    protected void prepareParams() {
-    }
+	@Override
+	protected void prepareParams() {
+	}
 
-    @Override
-    public void execute() {
-	runRequest(GCRestConstants.URL_CHUTES_GET);
-    }
+	@Override
+	public void execute() {
+		runRequest(GCRestConstants.URL_CHUTES_GET);
+	}
 }

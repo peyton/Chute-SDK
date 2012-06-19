@@ -28,37 +28,39 @@ package com.chute.sdk.api.authentication;
 import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.model.GCAccountStore.GCAuthConstants;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-public class GCAuthenticationToken<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCAuthenticationToken.class.getSimpleName();
-    private final GCAuthConstants authConstants;
-    private final String code;
+public class GCAuthenticationToken<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCAuthenticationToken.class
+			.getSimpleName();
+	private final GCAuthConstants authConstants;
+	private final String code;
 
-    public GCAuthenticationToken(Context context, GCAuthConstants authConstants, String code,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.POST, parser, callback);
-	this.authConstants = authConstants;
-	this.code = code;
-    }
+	public GCAuthenticationToken(Context context,
+			GCAuthConstants authConstants, String code,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.POST, parser, callback);
+		this.authConstants = authConstants;
+		this.code = code;
+	}
 
-    @Override
-    public void prepareParams() {
-	addParam("code", code);
-	addParam("scope", authConstants.scope);
-	addParam("client_id", authConstants.clientId);
-	addParam("client_secret", authConstants.clientSecret);
-	addParam("grant_type", "authorization_code");
-	addParam("redirect_uri", authConstants.redirectUri);
-    }
+	@Override
+	public void prepareParams() {
+		addParam("code", code);
+		addParam("scope", authConstants.scope);
+		addParam("client_id", authConstants.clientId);
+		addParam("client_secret", authConstants.clientSecret);
+		addParam("grant_type", "authorization_code");
+		addParam("redirect_uri", authConstants.redirectUri);
+	}
 
-    @Override
-    public void execute() {
-	runRequest(GCRestConstants.URL_AUTHENTICATION_TOKEN);
-    }
+	@Override
+	public void execute() {
+		runRequest(GCRestConstants.URL_AUTHENTICATION_TOKEN);
+	}
 }

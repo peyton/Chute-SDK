@@ -29,40 +29,40 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class HeartsPostRequest<T> extends GCHttpRequestImpl<T> {
-    private final String assetId;
-    private final boolean isHeart;
+class HeartsPostRequest<T> extends GCParameterHttpRequestImpl<T> {
+	private final String assetId;
+	private final boolean isHeart;
 
-    public HeartsPostRequest(Context context, String assetId, boolean isHeart,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.POST, parser, callback);
-	this.isHeart = isHeart;
-	if (TextUtils.isEmpty(assetId)) {
-	    throw new NullPointerException("Need to provide an ID of the asset");
+	public HeartsPostRequest(Context context, String assetId, boolean isHeart,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.POST, parser, callback);
+		this.isHeart = isHeart;
+		if (TextUtils.isEmpty(assetId)) {
+			throw new NullPointerException("Need to provide an ID of the asset");
+		}
+		this.assetId = assetId;
 	}
-	this.assetId = assetId;
-    }
 
-    @SuppressWarnings("unused")
-    private static final String TAG = HeartsPostRequest.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = HeartsPostRequest.class.getSimpleName();
 
-    @Override
-    protected void prepareParams() {
-    }
-
-    @Override
-    public void execute() {
-	String url;
-	if (isHeart) {
-	    url = String.format(GCRestConstants.URL_ASSETS_HEART, assetId);
-	} else {
-	    url = String.format(GCRestConstants.URL_ASSETS_UNHEART, assetId);
+	@Override
+	protected void prepareParams() {
 	}
-	runRequest(url);
-    }
+
+	@Override
+	public void execute() {
+		String url;
+		if (isHeart) {
+			url = String.format(GCRestConstants.URL_ASSETS_HEART, assetId);
+		} else {
+			url = String.format(GCRestConstants.URL_ASSETS_UNHEART, assetId);
+		}
+		runRequest(url);
+	}
 }

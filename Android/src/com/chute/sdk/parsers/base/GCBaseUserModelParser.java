@@ -31,14 +31,16 @@ import org.json.JSONObject;
 import com.chute.sdk.model.GCUserModel;
 
 public class GCBaseUserModelParser {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBaseUserModelParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseUserModelParser.class
+			.getSimpleName();
 
-    public static GCUserModel parse(final JSONObject obj) throws JSONException {
-	final GCUserModel user = new GCUserModel();
-	user.setAvatarURL(obj.getString("avatar"));
-	user.setId(obj.getString("id"));
-	user.setName(obj.getString("name"));
-	return user;
-    }
+	public static GCUserModel parse(final JSONObject obj) throws JSONException {
+		final GCUserModel user = new GCUserModel();
+		user.setAvatarURL(obj.getString("avatar"));
+		user.setId(obj.getString("id"));
+		user.setName(obj.getString("name"));
+		user.setUsername(obj.optString("username"));
+		return user;
+	}
 }

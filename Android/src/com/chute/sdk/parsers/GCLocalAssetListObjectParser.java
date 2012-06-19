@@ -32,17 +32,21 @@ import com.chute.sdk.collections.GCLocalAssetCollection;
 import com.chute.sdk.parsers.base.GCBaseLocalAssetModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCLocalAssetListObjectParser implements GCHttpResponseParser<GCLocalAssetCollection> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCLocalAssetListObjectParser.class.getSimpleName();
+public class GCLocalAssetListObjectParser implements
+		GCHttpResponseParser<GCLocalAssetCollection> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCLocalAssetListObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCLocalAssetCollection parse(String responseBody) throws JSONException {
-	JSONArray data = new JSONArray(responseBody);
-	GCLocalAssetCollection assetCollection = new GCLocalAssetCollection();
-	for (int i = 0; i < data.length(); i++) {
-	    assetCollection.add(GCBaseLocalAssetModelParser.parse(data.getJSONObject(i)));
+	@Override
+	public GCLocalAssetCollection parse(String responseBody)
+			throws JSONException {
+		JSONArray data = new JSONArray(responseBody);
+		GCLocalAssetCollection assetCollection = new GCLocalAssetCollection();
+		for (int i = 0; i < data.length(); i++) {
+			assetCollection.add(GCBaseLocalAssetModelParser.parse(data
+					.getJSONObject(i)));
+		}
+		return assetCollection;
 	}
-	return assetCollection;
-    }
 }

@@ -33,58 +33,59 @@ import android.content.Context;
 import android.util.Log;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.collections.GCChuteCollection;
 import com.chute.sdk.collections.GCLocalAssetCollection;
 import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.model.GCLocalAssetModel;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class ParcelsCreateRequest<T> extends GCHttpRequestImpl<T> {
+class ParcelsCreateRequest<T> extends GCParameterHttpRequestImpl<T> {
 
-    private final GCChuteCollection chutes;
-    private final GCLocalAssetCollection assets;
+	private final GCChuteCollection chutes;
+	private final GCLocalAssetCollection assets;
 
-    public ParcelsCreateRequest(Context context, GCLocalAssetCollection assets,
-	    GCChuteCollection chutes, GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.POST, parser, callback);
-	this.assets = assets;
-	this.chutes = chutes;
-    }
-
-    public static final String TAG = ParcelsCreateRequest.class.getSimpleName();
-
-    @Override
-    protected void prepareParams() {
-	JSONArray array = new JSONArray();
-	for (GCChuteModel chute : chutes) {
-	    array.put(chute.getId());
+	public ParcelsCreateRequest(Context context, GCLocalAssetCollection assets,
+			GCChuteCollection chutes, GCHttpResponseParser<T> parser,
+			GCHttpCallback<T> callback) {
+		super(context, RequestMethod.POST, parser, callback);
+		this.assets = assets;
+		this.chutes = chutes;
 	}
-	addParam("chutes", array.toString());
-	array = new JSONArray();
-	JSONObject obj;
-	for (GCLocalAssetModel asset : assets) {
-	    obj = new JSONObject();
-	    if (asset.getFile().exists()) {
-		try {
-		    obj.put("filename", asset.getFile().getPath());
-		    obj.put("md5", asset.calculateFileMD5());
-		    obj.put("size", String.valueOf(asset.getFile().length()));
-		    array.put(obj);
-		} catch (JSONException e) {
-		    Log.d(TAG, "", e);
-		} catch (Exception e) {
-		    Log.d(TAG, "", e);
+
+	public static final String TAG = ParcelsCreateRequest.class.getSimpleName();
+
+	@Override
+	protected void prepareParams() {
+		JSONArray array = new JSONArray();
+		for (GCChuteModel chute : chutes) {
+			array.put(chute.getId());
 		}
-	    }
+		addParam("chutes", array.toString());
+		array = new JSONArray();
+		JSONObject obj;
+		for (GCLocalAssetModel asset : assets) {
+			obj = new JSONObject();
+			if (asset.getFile().exists()) {
+				try {
+					obj.put("filename", asset.getFile().getPath());
+					obj.put("md5", asset.calculateFileMD5());
+					obj.put("size", String.valueOf(asset.getFile().length()));
+					array.put(obj);
+				} catch (JSONException e) {
+					Log.d(TAG, "", e);
+				} catch (Exception e) {
+					Log.d(TAG, "", e);
+				}
+			}
+		}
+		addParam("files", array.toString());
 	}
-	addParam("files", array.toString());
-    }
 
-    @Override
-    public void execute() {
-	runRequest(GCRestConstants.URL_PARCELS_CREATE);
-    }
+	@Override
+	public void execute() {
+		runRequest(GCRestConstants.URL_PARCELS_CREATE);
+	}
 }

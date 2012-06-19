@@ -32,45 +32,49 @@ import java.util.TimeZone;
 
 public class GCDateUtil {
 
-    /** The date format in iso. */
-    public static String FORMAT_DATE_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	/** The date format in iso. */
+	public static String FORMAT_DATE_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-    /** Takes in an ISO date string of the following format:
-     * yyyy-mm-ddThh:mm:ss.ms+HoMo
-     * 
-     * @param isoDateString
-     *            the iso date string
-     * @return the date
-     * @throws Exception
-     *             the exception */
-    public static Date fromISODateString(String isoDateString) throws Exception {
-	DateFormat f = new SimpleDateFormat(FORMAT_DATE_ISO);
-	f.setTimeZone(TimeZone.getTimeZone("Zulu"));
-	return f.parse(isoDateString);
-    }
-
-    /** Render date
-     * 
-     * @param date
-     *            the date obj
-     * @param format
-     *            - if not specified, will use FORMAT_DATE_ISO
-     * @param tz
-     *            - tz to set to, if not specified uses local timezone
-     * @return the iso-formatted date string */
-    public static String toISOString(Date date, String format, TimeZone tz) {
-	if (format == null) {
-	    format = FORMAT_DATE_ISO;
+	/**
+	 * Takes in an ISO date string of the following format:
+	 * yyyy-mm-ddThh:mm:ss.ms+HoMo
+	 * 
+	 * @param isoDateString
+	 *            the iso date string
+	 * @return the date
+	 * @throws Exception
+	 *             the exception
+	 */
+	public static Date fromISODateString(String isoDateString) throws Exception {
+		DateFormat f = new SimpleDateFormat(FORMAT_DATE_ISO);
+		f.setTimeZone(TimeZone.getTimeZone("Zulu"));
+		return f.parse(isoDateString);
 	}
-	if (tz == null) {
-	    tz = TimeZone.getDefault();
-	}
-	DateFormat f = new SimpleDateFormat(format);
-	f.setTimeZone(tz);
-	return f.format(date);
-    }
 
-    public static String toISOString(Date date) {
-	return toISOString(date, FORMAT_DATE_ISO, TimeZone.getDefault());
-    }
+	/**
+	 * Render date
+	 * 
+	 * @param date
+	 *            the date obj
+	 * @param format
+	 *            - if not specified, will use FORMAT_DATE_ISO
+	 * @param tz
+	 *            - tz to set to, if not specified uses local timezone
+	 * @return the iso-formatted date string
+	 */
+	public static String toISOString(Date date, String format, TimeZone tz) {
+		if (format == null) {
+			format = FORMAT_DATE_ISO;
+		}
+		if (tz == null) {
+			tz = TimeZone.getDefault();
+		}
+		DateFormat f = new SimpleDateFormat(format);
+		f.setTimeZone(tz);
+		return f.format(date);
+	}
+
+	public static String toISOString(Date date) {
+		return toISOString(date, FORMAT_DATE_ISO, TimeZone.getDefault());
+	}
 }

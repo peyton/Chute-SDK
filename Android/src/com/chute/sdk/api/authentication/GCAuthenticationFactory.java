@@ -29,82 +29,92 @@ import com.chute.sdk.model.GCAccountStore.GCAuthConstants;
 import com.chute.sdk.utils.GCRestConstants;
 
 public class GCAuthenticationFactory {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCAuthenticationFactory.class.getSimpleName();
-    private final GCAuthConstants authConstants;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCAuthenticationFactory.class
+			.getSimpleName();
+	private final GCAuthConstants authConstants;
 
-    public enum AccountType {
-	FACEBOOK("facebook"), EVERNOTE("evernote"), CHUTE("chute"), TWITTER("twitter"), FOURSQUARE(
-		"foursquare"), PICASA("google"), FLICKR("flickr"), INSTAGRAM("instagram");
+	public enum AccountType {
+		FACEBOOK("facebook"), EVERNOTE("evernote"), CHUTE("chute"), TWITTER(
+				"twitter"), FOURSQUARE("foursquare"), PICASA("google"), FLICKR(
+				"flickr"), INSTAGRAM("instagram");
 
-	private final String name;
+		private final String name;
 
-	private AccountType(String name) {
-	    this.name = name;
+		private AccountType(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		};
+
+		public String getName() {
+			return name;
+		}
 	}
 
-	@Override
-	public String toString() {
-	    return name;
-	};
-
-	public String getName() {
-	    return name;
+	public GCAuthenticationFactory(GCAuthConstants authConstants) {
+		this.authConstants = authConstants;
 	}
-    }
 
-    public GCAuthenticationFactory(GCAuthConstants authConstants) {
-	this.authConstants = authConstants;
-    }
-
-    public String getAuthenticationURL() {
-	StringBuilder stringBuilder;
-	switch (authConstants.accountType) {
-	case FACEBOOK:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_FACEBOOK);
-	    break;
-	case EVERNOTE:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_EVERNOTE);
-	    break;
-	case CHUTE:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_CHUTE);
-	    break;
-	case TWITTER:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_TWITTER);
-	    break;
-	case FOURSQUARE:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_FOURSQUARE);
-	    break;
-	case PICASA:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_PICASA);
-	    break;
-	case FLICKR:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_FLICKR);
-	    break;
-	case INSTAGRAM:
-	    stringBuilder = new StringBuilder(GCRestConstants.URL_AUTHENTICATION_INSTAGRAM);
-	    break;
-	default:
-	    throw new RuntimeException("Not a valid account type");
+	public String getAuthenticationURL() {
+		StringBuilder stringBuilder;
+		switch (authConstants.accountType) {
+		case FACEBOOK:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_FACEBOOK);
+			break;
+		case EVERNOTE:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_EVERNOTE);
+			break;
+		case CHUTE:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_CHUTE);
+			break;
+		case TWITTER:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_TWITTER);
+			break;
+		case FOURSQUARE:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_FOURSQUARE);
+			break;
+		case PICASA:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_PICASA);
+			break;
+		case FLICKR:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_FLICKR);
+			break;
+		case INSTAGRAM:
+			stringBuilder = new StringBuilder(
+					GCRestConstants.URL_AUTHENTICATION_INSTAGRAM);
+			break;
+		default:
+			throw new RuntimeException("Not a valid account type");
+		}
+		stringBuilder.append("?");
+		stringBuilder.append("scope=" + authConstants.scope);
+		stringBuilder.append("&");
+		stringBuilder.append("type=web_server");
+		stringBuilder.append("&");
+		stringBuilder.append("response_type=code");
+		stringBuilder.append("&");
+		stringBuilder.append("client_id=" + authConstants.clientId);
+		stringBuilder.append("&");
+		stringBuilder.append("redirect_uri=" + authConstants.redirectUri);
+		return stringBuilder.toString();
 	}
-	stringBuilder.append("?");
-	stringBuilder.append("scope=" + authConstants.scope);
-	stringBuilder.append("&");
-	stringBuilder.append("type=web_server");
-	stringBuilder.append("&");
-	stringBuilder.append("response_type=code");
-	stringBuilder.append("&");
-	stringBuilder.append("client_id=" + authConstants.clientId);
-	stringBuilder.append("&");
-	stringBuilder.append("redirect_uri=" + authConstants.redirectUri);
-	return stringBuilder.toString();
-    }
 
-    public String getRedirectUri() {
-	return authConstants.redirectUri;
-    }
+	public String getRedirectUri() {
+		return authConstants.redirectUri;
+	}
 
-    public boolean isRedirectUri(String url) {
-	return url.startsWith(authConstants.redirectUri);
-    }
+	public boolean isRedirectUri(String url) {
+		return url.startsWith(authConstants.redirectUri);
+	}
 }

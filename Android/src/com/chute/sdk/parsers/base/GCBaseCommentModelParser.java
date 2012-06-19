@@ -31,16 +31,18 @@ import org.json.JSONObject;
 import com.chute.sdk.model.GCCommentModel;
 
 public class GCBaseCommentModelParser {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBaseCommentModelParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseCommentModelParser.class
+			.getSimpleName();
 
-    public static GCCommentModel parse(final JSONObject obj) throws JSONException {
-	final GCCommentModel model = new GCCommentModel();
-	model.setComment(obj.getString("comment"));
-	model.setCreatedAt(obj.getString("created_at"));
-	model.setId(obj.getString("id"));
-	model.setStatus(obj.getInt("status"));
-	model.user = GCBaseUserModelParser.parse(obj.getJSONObject("user"));
-	return model;
-    }
+	public static GCCommentModel parse(final JSONObject obj)
+			throws JSONException {
+		final GCCommentModel model = new GCCommentModel();
+		model.setComment(obj.getString("comment"));
+		model.setCreatedAt(obj.getString("created_at"));
+		model.setId(obj.getString("id"));
+		model.setStatus(obj.getInt("status"));
+		model.user = GCBaseUserModelParser.parse(obj.getJSONObject("user"));
+		return model;
+	}
 }

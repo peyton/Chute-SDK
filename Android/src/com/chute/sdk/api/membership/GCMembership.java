@@ -42,119 +42,125 @@ import com.chute.sdk.parsers.base.GCHttpResponseParser;
  */
 public class GCMembership {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = GCMembership.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCMembership.class.getSimpleName();
 
-    /**
-     * A private no-args default constructor.
-     */
-    private GCMembership() {
-    }
+	/**
+	 * A private no-args default constructor.
+	 */
+	private GCMembership() {
+	}
 
-    /**
+	/**
 	 * Method that defaults to the generic method {@see #join(Context, String,
 	 * String, GCHttpResponseParser, GCHttpCallback)}. This method uses
 	 * {@link GCMembershipJoinParser} which has String as a return type if the
 	 * callback is successful.
-     * 
-     * @param context
-     *            The application context.
-     * @param chuteId
-     *            {@link GCChuteModel} ID, representing the chute to be joined.
-     * @param password
-	 *            String variable representing the user password.
-     *            specific chute.
-     * @param callback
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute to be joined.
+	 * @param password
+	 *            String variable representing the user password. specific
+	 *            chute.
+	 * @param callback
 	 *            Instance of {@link GCHttpCallback} interface. If successful,
 	 *            the callback returns a String.
-     * @return {@link #join(Context, String, String, GCHttpResponseParser, GCHttpCallback)}
-     *         method.
-     */
-    public static GCHttpRequest join(final Context context, final String chuteId, String password,
-	    final GCHttpCallback<String> callback) {
-	return join(context, chuteId, password, new GCMembershipJoinParser(), callback);
-    }
+	 * @return {@link #join(Context, String, String, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static GCHttpRequest join(final Context context,
+			final String chuteId, String password,
+			final GCHttpCallback<String> callback) {
+		return join(context, chuteId, password, new GCMembershipJoinParser(),
+				callback);
+	}
 
-    /**
+	/**
 	 * Method used for joining a chute. It returns a JSON object containing a
 	 * String using the following parameters: context, string value representing
 	 * the chute ID, string value representing the password, and the given
 	 * callback and parser.
 	 * 
-     * 
-     * @param context
-     *            The application context.
-     * @param chuteId
-     *            {@link GCChuteModel} ID, representing the chute to be joined.
-     * @param password
-     *            String variable representing the user password.
-     * @param parser
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute to be joined.
+	 * @param password
+	 *            String variable representing the user password.
+	 * @param parser
 	 *            Instance of {@link GCHttpResponseParser} interface. You can
 	 *            add a custom parser or use the parser provided here {@see
 	 *            #join(Context, String, String, GCHttpCallback)}.
-     * @param callback
+	 * @param callback
 	 *            Instance of {@link GCHttpCallback} interface. According to the
 	 *            parser, the callback should have the same return type.
 	 * @return Instance of {@link ChutesMembershipsJoinRequest}, class that
-     *         implements {@link GCHttpRequest}.
-     */
-    public static <T> GCHttpRequest join(final Context context, String chuteId, String password,
-	    final GCHttpResponseParser<T> parser, final GCHttpCallback<T> callback) {
-	return new ChutesMembershipsJoinRequest<T>(context, chuteId, password, parser, callback);
-    }
+	 *         implements {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest join(final Context context, String chuteId,
+			String password, final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new ChutesMembershipsJoinRequest<T>(context, chuteId, password,
+				parser, callback);
+	}
 
-    /**
+	/**
 	 * Method that defaults to the generic method {@see #invite(Context, String,
 	 * ArrayList, ArrayList, ArrayList, GCHttpResponseParser, GCHttpCallback)}.
-     * 
-     * @param context
-     *            The application context.
-     * @param chuteId
-     *            {@link GCChuteModel} ID, representing the chute to be invited.
-     * @param emails
-     *            ArrayList of members emails.
-     * @param parser
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute to be invited.
+	 * @param emails
+	 *            ArrayList of members emails.
+	 * @param parser
 	 *            Instance of {@link GCHttpResponseParser} interface.
-     * @param callback
+	 * @param callback
 	 *            Instance of {@link GCHttpCallback} interface.
-     * @return {@link #invite(Context, String, ArrayList, ArrayList, ArrayList, GCHttpResponseParser, GCHttpCallback)}
-     *         method.
-     */
-    public static <T> GCHttpRequest invite(final Context context, String chuteId,
-	    ArrayList<String> emails, final GCHttpResponseParser<T> parser,
-	    final GCHttpCallback<T> callback) {
-	return invite(context, chuteId, emails, null, null, parser, callback);
-    }
+	 * @return {@link #invite(Context, String, ArrayList, ArrayList, ArrayList, GCHttpResponseParser, GCHttpCallback)}
+	 *         method.
+	 */
+	public static <T> GCHttpRequest invite(final Context context,
+			String chuteId, ArrayList<String> emails,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return invite(context, chuteId, emails, null, null, parser, callback);
+	}
 
-    /**
+	/**
 	 * Method used for chutes membership invitation. It returns a JSON object
 	 * using the following parameters: context, string value representing the
 	 * chute ID, array of member Emails, array of Facebook IDs, array of chute
 	 * user IDs, and the given callback and parser.
-     * 
-     * @param context
-     *            The application context.
-     * @param chuteId
-     *            {@link GCChuteModel} ID, representing the chute to be invited.
-     * @param emails
+	 * 
+	 * @param context
+	 *            The application context.
+	 * @param chuteId
+	 *            {@link GCChuteModel} ID, representing the chute to be invited.
+	 * @param emails
 	 *            ArrayList of members Emails.
-     * @param facebookIds
+	 * @param facebookIds
 	 *            ArrayList of members FacebookIds.
-     * @param chuteUserIds
-     *            ArrayList of chute user IDs.
-     * @param parser
+	 * @param chuteUserIds
+	 *            ArrayList of chute user IDs.
+	 * @param parser
 	 *            Instance of {@link GCHttpResponseParser} interface.
-     * @param callback
+	 * @param callback
 	 *            Instance of {@link GCHttpCallback} interface. According to the
 	 *            parser, the callback should have the same return type.
 	 * @return Instance of {@link ChutesMembershipsInviteRequest}, class that
-     *         implements {@link GCHttpRequest}.
-     */
-    public static <T> GCHttpRequest invite(final Context context, String chuteId,
-	    ArrayList<String> emails, ArrayList<String> facebookIds,
-	    ArrayList<String> chuteUserIds, final GCHttpResponseParser<T> parser,
-	    final GCHttpCallback<T> callback) {
-	return new ChutesMembershipsInviteRequest<T>(context, chuteId, emails, facebookIds,
-		chuteUserIds, parser, callback);
-    }
+	 *         implements {@link GCHttpRequest}.
+	 */
+	public static <T> GCHttpRequest invite(final Context context,
+			String chuteId, ArrayList<String> emails,
+			ArrayList<String> facebookIds, ArrayList<String> chuteUserIds,
+			final GCHttpResponseParser<T> parser,
+			final GCHttpCallback<T> callback) {
+		return new ChutesMembershipsInviteRequest<T>(context, chuteId, emails,
+				facebookIds, chuteUserIds, parser, callback);
+	}
 }

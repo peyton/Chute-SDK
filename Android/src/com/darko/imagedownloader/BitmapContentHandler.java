@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011, Chute Corporation. All rights reserved.
+// Copyright (c) 2011, Chute Corporation. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
 // are permitted provided that the following conditions are met:
@@ -41,70 +41,43 @@ import android.graphics.BitmapFactory.Options;
  **/
 public class BitmapContentHandler extends ContentHandler {
 
-    /** Default value */
-    private int defaultImageSize = 75;
+	/** Default value */
+	private int defaultImageSize = 75;
+	private final File tempFile;
 
-    public int getDefaultImageSize() {
-        return defaultImageSize;
-    }
+	public BitmapContentHandler(int defaultImageSize, File tempFile) {
+		super();
+		this.defaultImageSize = defaultImageSize;
+		this.tempFile = tempFile;
+	}
 
-    public void setDefaultImageSize(int defaultImageSize) {
-        this.defaultImageSize = defaultImageSize;
-    }
+	@Override
+	public Bitmap getContent(URLConnection connection) throws IOException {
+		//
+		InputStream input = connection.getInputStream();
+		input = new BlockingFilterInputStream(input);
 
-    @Override
-    public Bitmap getContent(URLConnection connection) throws IOException {
-        //
-        InputStream input = connection.getInputStream();
-        File tempFile = FileCache.getTempFile(connection.getURL().toString());
-        try {
-            input = new BlockingFilterInputStream(input);
+		final FileOutputStream fileOutput = new FileOutputStream(tempFile);
+		final byte[] buffer = new byte[512];
+		int bufferLength = 0; // used to store a temporary size of the
+		// buffer
+		while ((bufferLength = input.read(buffer)) > 0) {
+			// add the data in the buffer to the file in the file output
+			// stream (the file on the sd card
+			fileOutput.write(buffer, 0, bufferLength);
+		}
+		input.close();
+		fileOutput.flush();
+		fileOutput.close();
 
-            final FileOutputStream fileOutput = new FileOutputStream(tempFile);
-            final byte[] buffer = new byte[1024 * 512];
-            int bufferLength = 0; // used to store a temporary size of the
-            // buffer
-            while ((bufferLength = input.read(buffer)) > 0) {
-                // add the data in the buffer to the file in the file output
-                // stream (the file on the sd card
-                fileOutput.write(buffer, 0, bufferLength);
-            }
-            fileOutput.flush();
-            fileOutput.close();
-
-            Options decodeInBounds = decodeInBounds(tempFile);
-            Bitmap bitmap = BitmapFactory.decodeFile(tempFile.getPath(), decodeInBounds);
-            if (bitmap == null) {
-                throw new IOException("Image could not be decoded");
-            }
-            return bitmap;
-        } finally {
-            tempFile.delete();
-            input.close();
-        }
-    }
-
-    private BitmapFactory.Options decodeInBounds(File file) throws IOException {
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inJustDecodeBounds = true;
-        BitmapFactory.Options o2;
-        try {
-            BitmapFactory.decodeFile(file.getPath(), o);
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;
-            int scale = 1;
-            while (true) {
-                if (width_tmp / 2 < defaultImageSize || height_tmp / 2 < defaultImageSize) {
-                    break;
-                }
-                width_tmp /= 2;
-                height_tmp /= 2;
-                scale *= 2;
-            }
-            o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-        } finally {
-        }
-        return o2;
-    }
+		Options decodeInBounds = Utils.decodeInBounds(tempFile,
+				defaultImageSize);
+		Bitmap bitmap = BitmapFactory.decodeFile(tempFile.getPath(),
+				decodeInBounds);
+		if (bitmap == null) {
+			throw new IOException("Image could not be decoded");
+		}
+		return bitmap;
+	}
 
 }

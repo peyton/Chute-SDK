@@ -31,15 +31,18 @@ import org.json.JSONObject;
 import com.chute.sdk.model.GCLocalAssetModel;
 
 public class GCBaseLocalAssetModelParser {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBaseLocalAssetModelParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseLocalAssetModelParser.class
+			.getSimpleName();
 
-    public static GCLocalAssetModel parse(final JSONObject obj) throws JSONException {
-	final GCLocalAssetModel model = new GCLocalAssetModel();
-	model.setAssetId(obj.getString("asset_id"));
-	model.setAssetStatus(GCLocalAssetModel.resolveAssetStatus(obj.getString("status")));
-	model.setFile(obj.getString("file_path"));
-	model.setPriority(obj.getInt("priority"));
-	return model;
-    }
+	public static GCLocalAssetModel parse(final JSONObject obj)
+			throws JSONException {
+		final GCLocalAssetModel model = new GCLocalAssetModel();
+		model.setAssetId(obj.getString("asset_id"));
+		model.setAssetStatus(GCLocalAssetModel.resolveAssetStatus(obj
+				.getString("status")));
+		model.setFile(obj.getString("file_path"));
+		model.setPriority(obj.getInt("priority"));
+		return model;
+	}
 }

@@ -29,15 +29,14 @@ import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
+import com.chute.sdk.collections.GCAssetCollection;
+import com.chute.sdk.collections.GCChuteCollection;
 import com.chute.sdk.collections.GCLocalAssetCollection;
 import com.chute.sdk.model.GCAssetModel;
-import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.model.GCLocalAssetModel;
 import com.chute.sdk.parsers.GCAssetSingleObjectParser;
-import com.chute.sdk.parsers.GCChuteSingleObjectParser;
 import com.chute.sdk.parsers.GCLocalAssetListObjectParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.parsers.base.GCStringResponse;
 
 /**
  * The {@link GCAssets} class is a helper class which contains methods for
@@ -154,61 +153,29 @@ public class GCAssets {
 	}
 
 	/**
-	 * Method used for uploading assets. It returns a JSON object containing a
-	 * string using the following parameters: context,
-	 * {@link GCLocalAssetCollection}, {@link GCUploadProgressListener} and the
-	 * given callback and parser.
-	 * 
 	 * @param context
-	 *            The application context.
 	 * @param onProgressUpdate
-	 *            Instance of {@link GCUploadProgressListener} interface.
-	 * @param parser
-	 *            Instance of {@link GCHttpResponseParser} interface. You can
-	 *            add a custom parser or use the parser provided here {@see
-	 *            #upload(Context, GCUploadProgressListener, GCHttpCallback,
-	 *            GCLocalAssetCollection)}.
+	 *            progress tracking listener, calling this listener will happen
+	 *            in the background thread
 	 * @param callback
-	 *            Instance of {@link GCHttpCallback} interface. According to the
-	 *            parser, the callback should have the same return type.
+	 *            a callback where the result will be returned
 	 * @param assets
-	 *            Instance of {@link GCLocalAssetCollection} class.
-	 * @return Instance of {@link AssetsUploadRequest}, a class that implements
+	 *            represents a collection of assets to upload
+	 * @param chuteCollection
+	 *            it uses just the ID of the chute, so the collection can be
+	 *            initialized if just the ids are known, it is used to upload
+	 *            the specified assets to the specific chutes listed in this
+	 *            collection
+	 * @return Instance of {@link AssetsUploadRequest}, class that implements
 	 *         {@link GCHttpRequest}.
-	 */
-	public static <T> GCHttpRequest upload(final Context context,
-			GCUploadProgressListener onProgressUpdate,
-			final GCHttpResponseParser<T> parser,
-			final GCHttpCallback<T> callback,
-			final GCLocalAssetCollection assets) {
-
-		return new AssetsUploadRequest<T>(context, onProgressUpdate, parser,
-				callback, assets);
-	}
-
-	/**
-	 * Method that defaults to the generic method {@see #upload(Context,
-	 * GCUploadProgressListener, GCHttpResponseParser, GCHttpCallback,
-	 * GCLocalAssetCollection)}. This method uses {@link GCStringResponse} which
-	 * has String as a return type if the callback is successful.
-	 * 
-	 * @param context
-	 *            The application context.
-	 * @param onProgressUpdate
-	 *            Instance of {@link GCUploadProgressListener} interface.
-	 * @param callback
-	 *            Instance of {@link GCHttpCallback} interface. If successful,
-	 *            the callback returns String.
-	 * @param assets
-	 *            Instance of {@link GCLocalAssetCollection} class.
-	 * @return {@link #upload(Context, GCUploadProgressListener, GCHttpResponseParser, GCHttpCallback, GCLocalAssetCollection)}
-	 *         method.
 	 */
 	public static GCHttpRequest upload(final Context context,
 			GCUploadProgressListener onProgressUpdate,
-			final GCHttpCallback<String> callback,
-			final GCLocalAssetCollection assets) {
-		return upload(context, onProgressUpdate, new GCStringResponse(),
-				callback, assets);
+			final GCHttpCallback<GCAssetCollection> callback,
+			final GCLocalAssetCollection assets,
+			final GCChuteCollection chuteCollection) {
+		return new AssetsUploadRequest(context, onProgressUpdate, callback,
+				assets, chuteCollection);
 	}
+
 }

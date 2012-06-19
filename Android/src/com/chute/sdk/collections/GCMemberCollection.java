@@ -30,13 +30,13 @@ import java.util.ArrayList;
 import com.chute.sdk.model.GCMemberModel;
 
 public class GCMemberCollection extends GCCollection<GCMemberModel> {
-    private static final long serialVersionUID = 1712417813303643894L;
+	private static final long serialVersionUID = 1712417813303643894L;
 
-    @SuppressWarnings("unused")
-    private static final String TAG = GCMemberCollection.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCMemberCollection.class.getSimpleName();
 
-    public GCMemberCollection() {
-	super(new ArrayList<GCMemberModel>());
-    }
+	public GCMemberCollection() {
+		super(new ArrayList<GCMemberModel>());
+	}
 
 }

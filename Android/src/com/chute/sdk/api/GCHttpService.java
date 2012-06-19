@@ -39,101 +39,105 @@ import com.chute.sdk.utils.AsyncTaskEx;
 import com.chute.sdk.utils.GCConstants;
 
 public class GCHttpService extends Service {
-    public static final String TAG = GCHttpService.class.getSimpleName();
-    private GCHttpRequestStore instance;
-    private WakeLock wl;
+	public static final String TAG = GCHttpService.class.getSimpleName();
+	private GCHttpRequestStore instance;
+	private WakeLock wl;
 
-    public GCHttpService() {
-	super();
-    }
-
-    @Override
-    public void onCreate() {
-	try {
-	    PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-	    wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PartialWakeLock");
-	} catch (Exception e) {
-	    Log.w(TAG, "", e);
+	public GCHttpService() {
+		super();
 	}
-	super.onCreate();
-    }
 
-    @Override
-    public void onDestroy() {
-	super.onDestroy();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-	onHandleIntent(intent);
-	return START_REDELIVER_INTENT;
-    }
-
-    protected void onHandleIntent(Intent intent) {
-	final Integer id = intent.getExtras().getInt(GCHttpRequestStore.ID);
-	try {
-	    if (instance == null) {
-		instance = GCHttpRequestStore.getInstance(getApplicationContext());
-	    }
-	    GCHttpRequest block = instance.getBlock(id);
-	    if (block instanceof AssetsUploadRequest) {
-		new AsyncExecutorTask().execute(block);
-	    } else {
-		new AsyncRequestExecutorTask().execute(block);
-	    }
-	} catch (Exception e) {
-	    Log.w(TAG, "", e);
-	} finally {
-	    instance.removeBlock(id);
-	}
-    }
-
-    private class AsyncExecutorTask extends AsyncTask<GCHttpRequest, Void, Void> {
 	@Override
-	protected Void doInBackground(GCHttpRequest... params) {
-	    if (GCConstants.DEBUG) {
-		Log.d(TAG, "Seperate thread for uploading photos");
-	    }
-	    try {
-		wl.acquire();
-	    } catch (Exception e1) {
-		Log.d(TAG, "", e1);
-	    }
-	    for (GCHttpRequest gcHttpRequest : params) {
+	public void onCreate() {
 		try {
-		    gcHttpRequest.execute();
+			PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+			wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+					"PartialWakeLock");
 		} catch (Exception e) {
-		    Log.d(TAG, "", e);
+			Log.w(TAG, "", e);
 		}
-	    }
-	    try {
-		wl.release();
-	    } catch (Exception e) {
-		Log.d(TAG, "", e);
-	    }
-	    return null;
+		super.onCreate();
 	}
-    }
 
-    @Override
-    public IBinder onBind(Intent arg0) {
-	return null;
-    }
-
-    private class AsyncRequestExecutorTask extends AsyncTaskEx<GCHttpRequest, Void, Void> {
 	@Override
-	protected Void doInBackground(GCHttpRequest... params) {
-	    if (GCConstants.DEBUG) {
-		Log.d(TAG, "Async Task EX");
-	    }
-	    try {
-		params[0].execute();
-	    } catch (Exception e) {
-		if (GCConstants.DEBUG) {
-		    Log.d(TAG, "", e);
-		}
-	    }
-	    return null;
+	public void onDestroy() {
+		super.onDestroy();
 	}
-    }
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		onHandleIntent(intent);
+		return START_REDELIVER_INTENT;
+	}
+
+	protected void onHandleIntent(Intent intent) {
+		final Integer id = intent.getExtras().getInt(GCHttpRequestStore.ID);
+		try {
+			if (instance == null) {
+				instance = GCHttpRequestStore
+						.getInstance(getApplicationContext());
+			}
+			GCHttpRequest block = instance.getBlock(id);
+			if (block instanceof AssetsUploadRequest) {
+				new AsyncExecutorTask().execute(block);
+			} else {
+				new AsyncRequestExecutorTask().execute(block);
+			}
+		} catch (Exception e) {
+			Log.w(TAG, "", e);
+		} finally {
+			instance.removeBlock(id);
+		}
+	}
+
+	private class AsyncExecutorTask extends
+			AsyncTask<GCHttpRequest, Void, Void> {
+		@Override
+		protected Void doInBackground(GCHttpRequest... params) {
+			if (GCConstants.DEBUG) {
+				Log.d(TAG, "Seperate thread for uploading photos");
+			}
+			try {
+				wl.acquire();
+			} catch (Exception e1) {
+				Log.d(TAG, "", e1);
+			}
+			for (GCHttpRequest gcHttpRequest : params) {
+				try {
+					gcHttpRequest.execute();
+				} catch (Exception e) {
+					Log.d(TAG, "", e);
+				}
+			}
+			try {
+				wl.release();
+			} catch (Exception e) {
+				Log.d(TAG, "", e);
+			}
+			return null;
+		}
+	}
+
+	@Override
+	public IBinder onBind(Intent arg0) {
+		return null;
+	}
+
+	private class AsyncRequestExecutorTask extends
+			AsyncTaskEx<GCHttpRequest, Void, Void> {
+		@Override
+		protected Void doInBackground(GCHttpRequest... params) {
+			if (GCConstants.DEBUG) {
+				Log.d(TAG, "Async Task EX");
+			}
+			try {
+				params[0].execute();
+			} catch (Exception e) {
+				if (GCConstants.DEBUG) {
+					Log.d(TAG, "", e);
+				}
+			}
+			return null;
+		}
+	}
 }

@@ -26,88 +26,81 @@
 package com.chute.sdk.model;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 
 import android.util.Log;
 
-import com.chute.sdk.utils.GCRest.RequestMethod;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
+import com.chute.sdk.utils.rest.GCParametersRestClient;
 
 public class GCHttpRequestParameters {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHttpRequestParameters.class.getSimpleName();
 
-    private final String url;
-    private final ArrayList<NameValuePair> params;
-    private final ArrayList<NameValuePair> headers;
-    private final RequestMethod requestMethod;
+	public static final String TAG = GCHttpRequestParameters.class
+			.getSimpleName();
 
-    public GCHttpRequestParameters(final String url, RequestMethod requestMethod,
-	    final ArrayList<NameValuePair> params, final ArrayList<NameValuePair> headers) {
-	this.url = url;
-	this.requestMethod = requestMethod;
-	this.params = params;
-	this.headers = headers;
-    }
+	private final String url;
+	private final ArrayList<NameValuePair> params;
+	private final ArrayList<NameValuePair> headers;
+	private final RequestMethod requestMethod;
 
-    public String getUrl() {
-	return url;
-    }
-
-    public RequestMethod getRequestMethod() {
-	return requestMethod;
-    }
-
-    public ArrayList<NameValuePair> getParams() {
-	return params;
-    }
-
-    public ArrayList<NameValuePair> getHeaders() {
-	return headers;
-    }
-
-    public String generateRequestURL() {
-
-	StringBuilder sb = new StringBuilder();
-
-	sb.append(url);
-	try {
-	    String combinedParams = "";
-	    if (!params.isEmpty()) {
-		combinedParams += "?";
-		for (NameValuePair p : params) {
-		    String paramString;
-
-		    paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), "UTF-8");
-
-		    if (combinedParams.length() > 1) {
-			combinedParams += "&" + paramString;
-		    } else {
-			combinedParams += paramString;
-		    }
-		}
-		sb.append(combinedParams);
-	    }
-	} catch (UnsupportedEncodingException e) {
-	    Log.w(TAG, "", e);
+	public GCHttpRequestParameters(final String url,
+			RequestMethod requestMethod, final ArrayList<NameValuePair> params,
+			final ArrayList<NameValuePair> headers) {
+		this.url = url;
+		this.requestMethod = requestMethod;
+		this.params = params;
+		this.headers = headers;
 	}
 
-	return sb.toString();
-    }
+	public GCHttpRequestParameters(String url,
+			ArrayList<NameValuePair> headers, RequestMethod requestMethod) {
+		super();
+		this.url = url;
+		this.headers = headers;
+		this.params = null;
+		this.requestMethod = requestMethod;
+	}
 
-    @Override
-    public String toString() {
-	StringBuilder builder = new StringBuilder();
-	builder.append("GCRequestParameters [url=");
-	builder.append(url);
-	builder.append(", params=");
-	builder.append(params);
-	builder.append(", headers=");
-	builder.append(headers);
-	builder.append("]");
-	return builder.toString();
-    }
+	public String getUrl() {
+		return url;
+	}
+
+	public RequestMethod getRequestMethod() {
+		return requestMethod;
+	}
+
+	public ArrayList<NameValuePair> getParams() {
+		return params;
+	}
+
+	public ArrayList<NameValuePair> getHeaders() {
+		return headers;
+	}
+
+	public String generateRequestURL() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(url);
+		try {
+			sb.append(GCParametersRestClient.generateParametersString(params));
+		} catch (UnsupportedEncodingException e) {
+			Log.w(TAG, "", e);
+		}
+		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GCRequestParameters [url=");
+		builder.append(url);
+		builder.append(", params=");
+		builder.append(params);
+		builder.append(", headers=");
+		builder.append(headers);
+		builder.append("]");
+		return builder.toString();
+	}
 
 }

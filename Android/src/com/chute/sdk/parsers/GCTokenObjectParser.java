@@ -25,27 +25,64 @@
 // 
 package com.chute.sdk.parsers;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.chute.sdk.model.GCAssetModel;
 import com.chute.sdk.model.GCUploadToken;
+import com.chute.sdk.model.inner.Meta;
+import com.chute.sdk.model.response.GCUploadTokenResponse;
+import com.chute.sdk.parsers.base.GCBaseUploadInfoParser;
+import com.chute.sdk.parsers.base.GCBaseUserModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCTokenObjectParser implements GCHttpResponseParser<GCUploadToken> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCTokenObjectParser.class.getSimpleName();
+public class GCTokenObjectParser implements GCHttpResponseParser<GCUploadTokenResponse> {
 
-    @Override
-    public GCUploadToken parse(String responseBody) throws JSONException {
-	JSONObject obj = new JSONObject(responseBody);
-	GCUploadToken model = new GCUploadToken();
-	model.setAssetId(obj.getString("asset_id"));
-	model.setSignature(obj.getString("signature"));
-	model.setDate(obj.getString("date"));
-	model.setFilepath(obj.getString("file_path"));
-	model.setMd5(obj.getString("md5"));
-	model.setUploadUrl(obj.getString("upload_url"));
-	model.setContentType(obj.getString("content_type"));
-	return model;
-    }
+	@Override
+	public GCUploadTokenResponse parse(final String responseBody) throws JSONException {
+		final GCUploadTokenResponse response =new GCUploadTokenResponse();
+		
+		final Meta meta = new Meta();
+		JSONObject dataRoot = new JSONObject(responseBody);
+		meta.setVersion(dataRoot.getJSONObject("meta").getInt("version"));
+		meta.setCode(dataRoot.getJSONObject("meta").getInt("code"));
+		
+		dataRoot = dataRoot.getJSONObject("data");
+		
+		JSONArray assetsArray = dataRoot.getJSONArray("new_assets");
+		JSONObject obj;
+		for (int i = 0; i < assetsArray.length(); i++) {
+			obj = assetsArray.getJSONObject(i);
+			
+			final GCAssetModel assetModel = parseTokenAsset(obj);
+			response.getAssetCollection().add(assetModel);
+			
+			final GCUploadToken token = new GCUploadToken();
+			token.setMeta(meta);
+			token.setUploadInfo(GCBaseUploadInfoParser.parse(obj.optJSONObject("upload_info")));
+			token.setId(dataRoot.getString("id"));
+			response.getToken().add(token);
+		}
+		
+		assetsArray = dataRoot.getJSONArray("existing_assets");
+		for (int i = 0; i < assetsArray.length(); i++) {
+			obj = assetsArray.getJSONObject(i);
+			final GCAssetModel assetModel = parseTokenAsset(obj);
+			response.getAssetCollection().add(assetModel);
+		}
+		return response;
+	}
+
+	private GCAssetModel parseTokenAsset(final JSONObject obj) throws JSONException {
+		final GCAssetModel assetModel = new GCAssetModel();
+		assetModel.setId(obj.getString("id"));
+		assetModel.setUrl(obj.getString("url"));
+		assetModel.setPortrait(obj.getBoolean("is_portrait"));
+		
+		//	assetModel.setSourceUrl(dataRoot.getString("source_url"));
+		
+		assetModel.setUser(GCBaseUserModelParser.parse(obj.getJSONObject("user")));
+		return assetModel;
+	}
 }

@@ -29,11 +29,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class GCCollection<T> extends ArrayList<T> {
-    private static final long serialVersionUID = -7057732451356533464L;
-    @SuppressWarnings("unused")
-    private static final String TAG = GCCollection.class.getSimpleName();
+	private static final long serialVersionUID = -7057732451356533464L;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCCollection.class.getSimpleName();
 
-    public GCCollection(Collection<T> collection) {
-	super(collection);
-    }
+	public GCCollection(Collection<T> collection) {
+		super(collection);
+	}
 }

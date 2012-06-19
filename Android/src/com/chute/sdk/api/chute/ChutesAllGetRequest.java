@@ -4,12 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-public class ChutesAllGetRequest<T> extends GCHttpRequestImpl<T> {
+public class ChutesAllGetRequest<T> extends GCParameterHttpRequestImpl<T> {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = ChutesAllGetRequest.class.getSimpleName();

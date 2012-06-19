@@ -3,8 +3,6 @@ package com.chute.sdk.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.chute.sdk.model.GCUserModel;
-
 /**
  * The {@link GCAccountModel} class represents the concept of an account. Each
  * account contains type, name, user ID, status and which user it belongs to.

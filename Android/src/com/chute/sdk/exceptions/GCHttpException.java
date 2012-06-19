@@ -25,31 +25,33 @@
 // 
 package com.chute.sdk.exceptions;
 
-/** usually represents a general error for the whole api call, if you need to
+/**
+ * usually represents a general error for the whole api call, if you need to
  * know if the parsing failed check the status of the response and the error
  * message ( if status is SC_OK means the api call was successful and there was
  * a parsing error).
  * 
- * @author DArkO */
+ * @author DArkO
+ */
 public class GCHttpException extends Exception {
-    private static final long serialVersionUID = -120498658240098246L;
-    @SuppressWarnings("unused")
-    private static final String TAG = GCHttpException.class.getSimpleName();
+	private static final long serialVersionUID = -120498658240098246L;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCHttpException.class.getSimpleName();
 
-    public GCHttpException() {
-	super();
-    }
+	public GCHttpException() {
+		super();
+	}
 
-    public GCHttpException(String detailMessage, Throwable throwable) {
-	super(detailMessage, throwable);
-    }
+	public GCHttpException(String detailMessage, Throwable throwable) {
+		super(detailMessage, throwable);
+	}
 
-    public GCHttpException(String detailMessage) {
-	super(detailMessage);
-    }
+	public GCHttpException(String detailMessage) {
+		super(detailMessage);
+	}
 
-    public GCHttpException(Throwable throwable) {
-	super(throwable);
-    }
+	public GCHttpException(Throwable throwable) {
+		super(throwable);
+	}
 
 }

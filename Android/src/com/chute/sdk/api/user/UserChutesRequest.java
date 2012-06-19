@@ -28,28 +28,30 @@ package com.chute.sdk.api.user;
 import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
+import com.chute.sdk.utils.rest.GCRest;
 
-class UserChutesRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = UserChutesRequest.class.getSimpleName();
-    private final String userId;
+class UserChutesRequest<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = UserChutesRequest.class.getSimpleName();
+	private final String userId;
 
-    public UserChutesRequest(Context context, String userId, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	this.userId = userId;
-    }
+	public UserChutesRequest(Context context, String userId,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.GET, parser, callback);
+		this.userId = userId;
+	}
 
-    @Override
-    public void prepareParams() {
-    }
+	@Override
+	public void prepareParams() {
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_USER_CHUTES, userId));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_USER_CHUTES, userId));
+	}
+
 }

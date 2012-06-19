@@ -32,7 +32,7 @@ import android.os.Parcelable;
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
 import com.chute.sdk.api.asset.GCAssets;
-import com.chute.sdk.parsers.GCAssetSingleObjectParser;
+import com.chute.sdk.model.inner.UploadInfo;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 import com.chute.sdk.parsers.base.GCStringResponse;
 

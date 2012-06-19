@@ -26,9 +26,9 @@
 package com.chute.sdk.utils;
 
 public class GCConstants {
-    public static final String TAG = GCConstants.class.getSimpleName();
+	public static final String TAG = GCConstants.class.getSimpleName();
 
-    public static boolean DEBUG = true;
+	public static boolean DEBUG = true;
 
-    public static final String CURRENT_USER_ID = "me";
+	public static final String CURRENT_USER_ID = "me";
 }

@@ -7,51 +7,53 @@ import android.os.Parcelable;
 
 import com.chute.sdk.model.GCAccountMediaModel;
 
-public class GCAccountMediaCollection extends GCCollection<GCAccountMediaModel> implements Parcelable {
+public class GCAccountMediaCollection extends GCCollection<GCAccountMediaModel>
+		implements Parcelable {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = -7519081559627771803L;
+	private static final long serialVersionUID = -7519081559627771803L;
 
-    @SuppressWarnings("unused")
-    private static final String TAG = GCAccountMediaCollection.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCAccountMediaCollection.class
+			.getSimpleName();
 
-    private String id;
+	private String id;
 
-    public GCAccountMediaCollection() {
-        super(new ArrayList<GCAccountMediaModel>());
-    }
+	public GCAccountMediaCollection() {
+		super(new ArrayList<GCAccountMediaModel>());
+	}
 
-    public GCAccountMediaCollection(Parcel in) {
-        this();
-        id = in.readString();
-        this.clear();
-        in.readTypedList(this, GCAccountMediaModel.CREATOR);
-    }
+	public GCAccountMediaCollection(Parcel in) {
+		this();
+		id = in.readString();
+		this.clear();
+		in.readTypedList(this, GCAccountMediaModel.CREATOR);
+	}
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+	@Override
+	public int describeContents() {
+		return 0;
+	}
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeTypedList(this);
-    }
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(id);
+		dest.writeTypedList(this);
+	}
 
-    public static final Parcelable.Creator<GCAccountMediaCollection> CREATOR = new Parcelable.Creator<GCAccountMediaCollection>() {
+	public static final Parcelable.Creator<GCAccountMediaCollection> CREATOR = new Parcelable.Creator<GCAccountMediaCollection>() {
 
-        @Override
-        public GCAccountMediaCollection createFromParcel(Parcel in) {
-            return new GCAccountMediaCollection(in);
-        }
+		@Override
+		public GCAccountMediaCollection createFromParcel(Parcel in) {
+			return new GCAccountMediaCollection(in);
+		}
 
-        @Override
-        public GCAccountMediaCollection[] newArray(int size) {
-            return new GCAccountMediaCollection[size];
-        }
-    };
+		@Override
+		public GCAccountMediaCollection[] newArray(int size) {
+			return new GCAccountMediaCollection[size];
+		}
+	};
 
 }

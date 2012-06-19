@@ -32,12 +32,15 @@ import com.chute.sdk.model.GCAssetModel;
 import com.chute.sdk.parsers.base.GCBaseAssetModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCAssetSingleObjectParser implements GCHttpResponseParser<GCAssetModel> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCAssetSingleObjectParser.class.getSimpleName();
+public class GCAssetSingleObjectParser implements
+		GCHttpResponseParser<GCAssetModel> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCAssetSingleObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCAssetModel parse(String responseBody) throws JSONException {
-	return GCBaseAssetModelParser.parse(new JSONObject(responseBody).getJSONObject("data"));
-    }
+	@Override
+	public GCAssetModel parse(String responseBody) throws JSONException {
+		return GCBaseAssetModelParser.parse(new JSONObject(responseBody)
+				.getJSONObject("data"));
+	}
 }

@@ -97,8 +97,8 @@ public class GCChutes {
 	 *         method.
 	 */
 	public static GCHttpRequest delete(final Context context, final String id,
-			final GCHttpCallback<GCChuteModel> callback) {
-		return delete(context, id, new GCChuteSingleObjectParser(), callback);
+			final GCHttpCallback<GCChuteCollection> callback) {
+		return delete(context, id, new GCChuteListObjectParser(), callback);
 	}
 
 	/**

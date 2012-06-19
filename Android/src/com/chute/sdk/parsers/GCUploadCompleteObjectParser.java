@@ -26,18 +26,16 @@
 package com.chute.sdk.parsers;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.chute.sdk.model.GCAssetModel;
-import com.chute.sdk.parsers.base.GCBaseAssetModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCUploadCompleteObjectParser implements GCHttpResponseParser<GCAssetModel> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCUploadCompleteObjectParser.class.getSimpleName();
+public class GCUploadCompleteObjectParser implements GCHttpResponseParser<Void> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCUploadCompleteObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCAssetModel parse(String responseBody) throws JSONException {
-	return GCBaseAssetModelParser.parse(new JSONObject(responseBody).getJSONObject("asset"));
-    }
+	@Override
+	public Void parse(String responseBody) throws JSONException {
+		return null;
+	}
 }

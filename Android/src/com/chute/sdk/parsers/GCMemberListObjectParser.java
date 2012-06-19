@@ -33,17 +33,20 @@ import com.chute.sdk.collections.GCMemberCollection;
 import com.chute.sdk.parsers.base.GCBaseMemberModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCMemberListObjectParser implements GCHttpResponseParser<GCMemberCollection> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCMemberListObjectParser.class.getSimpleName();
+public class GCMemberListObjectParser implements
+		GCHttpResponseParser<GCMemberCollection> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCMemberListObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCMemberCollection parse(String responseBody) throws JSONException {
-	JSONArray data = new JSONObject(responseBody).getJSONArray("data");
-	GCMemberCollection collection = new GCMemberCollection();
-	for (int i = 0; i < data.length(); i++) {
-	    collection.add(GCBaseMemberModelParser.parse(data.getJSONObject(i)));
+	@Override
+	public GCMemberCollection parse(String responseBody) throws JSONException {
+		JSONArray data = new JSONObject(responseBody).getJSONArray("data");
+		GCMemberCollection collection = new GCMemberCollection();
+		for (int i = 0; i < data.length(); i++) {
+			collection
+					.add(GCBaseMemberModelParser.parse(data.getJSONObject(i)));
+		}
+		return collection;
 	}
-	return collection;
-    }
 }

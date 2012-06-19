@@ -32,16 +32,19 @@ import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.parsers.base.GCBaseChuteModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCChuteSingleObjectParser implements GCHttpResponseParser<GCChuteModel> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCChuteSingleObjectParser.class.getSimpleName();
+public class GCChuteSingleObjectParser implements
+		GCHttpResponseParser<GCChuteModel> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCChuteSingleObjectParser.class
+			.getSimpleName();
 
-    public GCChuteSingleObjectParser() {
-	super();
-    }
+	public GCChuteSingleObjectParser() {
+		super();
+	}
 
-    @Override
-    public GCChuteModel parse(String responseBody) throws JSONException {
-	return GCBaseChuteModelParser.parse(new JSONObject(responseBody).getJSONObject("data"));
-    }
+	@Override
+	public GCChuteModel parse(String responseBody) throws JSONException {
+		return GCBaseChuteModelParser.parse(new JSONObject(responseBody)
+				.getJSONObject("data"));
+	}
 }

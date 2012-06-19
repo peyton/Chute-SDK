@@ -29,32 +29,34 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-public class AssetsUploadCompleteRequest<T> extends GCHttpRequestImpl<T> {
-    private final String assetId;
+public class AssetsUploadCompleteRequest<T> extends
+		GCParameterHttpRequestImpl<T> {
+	private final String id;
 
-    public AssetsUploadCompleteRequest(Context context, String assetId,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	if (TextUtils.isEmpty(assetId)) {
-	    throw new NullPointerException("Need to provide an ID of the Asset");
+	public AssetsUploadCompleteRequest(Context context, String id,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.POST, parser, callback);
+		if (TextUtils.isEmpty(id)) {
+			throw new NullPointerException("Need to provide an ID");
+		}
+		this.id = id;
 	}
-	this.assetId = assetId;
-    }
 
-    @SuppressWarnings("unused")
-    private static final String TAG = AssetsUploadCompleteRequest.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = AssetsUploadCompleteRequest.class
+			.getSimpleName();
 
-    @Override
-    protected void prepareParams() {
-    }
+	@Override
+	protected void prepareParams() {
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_UPLOADS_COMPLETE, assetId));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_UPLOADS_COMPLETE, id));
+	}
 }

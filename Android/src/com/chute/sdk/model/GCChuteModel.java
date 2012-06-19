@@ -39,7 +39,6 @@ import com.chute.sdk.collections.GCMemberCollection;
 import com.chute.sdk.parsers.GCAssetListObjectParser;
 import com.chute.sdk.parsers.GCChuteSingleObjectParser;
 import com.chute.sdk.parsers.GCMemberListObjectParser;
-import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
 /**
  * The {@link GCChuteModel} class represents a concept of a chute. Each chute

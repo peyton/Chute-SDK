@@ -33,62 +33,62 @@ import android.content.Intent;
 
 public class GCHttpRequestStore {
 
-    public static final String ID = "id";
-    public static final String IS_SUCCESSFUL = "isSuccessful";
+	public static final String ID = "id";
+	public static final String IS_SUCCESSFUL = "isSuccessful";
 
-    public static final String TAG = GCHttpRequestStore.class.getSimpleName();
+	public static final String TAG = GCHttpRequestStore.class.getSimpleName();
 
-    private final Context context;
+	private final Context context;
 
-    private static GCHttpRequestStore instance;
+	private static GCHttpRequestStore instance;
 
-    private GCHttpRequestStore(Context context) {
-	this.context = context;
-    }
-
-    private final Random random = new Random(System.currentTimeMillis());
-
-    public static GCHttpRequestStore getInstance(Context context) {
-	if (instance == null) {
-	    instance = new GCHttpRequestStore(context.getApplicationContext());
+	private GCHttpRequestStore(Context context) {
+		this.context = context;
 	}
-	return instance;
-    }
 
-    private static final HashMap<Integer, GCHttpRequest> map = new HashMap<Integer, GCHttpRequest>();
+	private final Random random = new Random(System.currentTimeMillis());
 
-    public Integer addBlock(GCHttpRequest block) {
-	Integer id = random.nextInt();
-	while (map.containsKey(id)) {
-	    id = random.nextInt();
+	public static GCHttpRequestStore getInstance(Context context) {
+		if (instance == null) {
+			instance = new GCHttpRequestStore(context.getApplicationContext());
+		}
+		return instance;
 	}
-	return addBlock(id, block);
-    }
 
-    public Integer addBlock(Integer id, GCHttpRequest block) {
-	map.put(id, block);
-	return id;
-    }
+	private static final HashMap<Integer, GCHttpRequest> map = new HashMap<Integer, GCHttpRequest>();
 
-    public void removeBlock(Integer id) {
-	if (map.containsKey(id)) {
-	    map.remove(id);
+	public Integer addBlock(GCHttpRequest block) {
+		Integer id = random.nextInt();
+		while (map.containsKey(id)) {
+			id = random.nextInt();
+		}
+		return addBlock(id, block);
 	}
-    }
 
-    public GCHttpRequest getBlock(Integer id) {
-	if (map.containsKey(id)) {
-	    final GCHttpRequest httpRequestImpl = map.get(id);
-	    return httpRequestImpl;
+	public Integer addBlock(Integer id, GCHttpRequest block) {
+		map.put(id, block);
+		return id;
 	}
-	return null;
-    }
 
-    public Integer launchServiceIntent(GCHttpRequest block) {
-	Intent service = new Intent(context, GCHttpService.class);
-	final Integer addBlock = addBlock(block);
-	service.putExtra(ID, addBlock);
-	context.startService(service);
-	return addBlock;
-    }
+	public void removeBlock(Integer id) {
+		if (map.containsKey(id)) {
+			map.remove(id);
+		}
+	}
+
+	public GCHttpRequest getBlock(Integer id) {
+		if (map.containsKey(id)) {
+			final GCHttpRequest httpRequestImpl = map.get(id);
+			return httpRequestImpl;
+		}
+		return null;
+	}
+
+	public Integer launchServiceIntent(GCHttpRequest block) {
+		Intent service = new Intent(context, GCHttpService.class);
+		final Integer addBlock = addBlock(block);
+		service.putExtra(ID, addBlock);
+		context.startService(service);
+		return addBlock;
+	}
 }

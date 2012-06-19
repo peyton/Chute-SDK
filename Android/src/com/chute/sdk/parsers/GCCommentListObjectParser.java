@@ -33,17 +33,20 @@ import com.chute.sdk.collections.GCCommentCollection;
 import com.chute.sdk.parsers.base.GCBaseCommentModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCCommentListObjectParser implements GCHttpResponseParser<GCCommentCollection> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCCommentListObjectParser.class.getSimpleName();
+public class GCCommentListObjectParser implements
+		GCHttpResponseParser<GCCommentCollection> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCCommentListObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCCommentCollection parse(String responseBody) throws JSONException {
-	JSONArray array = new JSONObject(responseBody).getJSONArray("data");
-	GCCommentCollection collection = new GCCommentCollection();
-	for (int i = 0; i < array.length(); i++) {
-	    collection.add(GCBaseCommentModelParser.parse(array.getJSONObject(i)));
+	@Override
+	public GCCommentCollection parse(String responseBody) throws JSONException {
+		JSONArray array = new JSONObject(responseBody).getJSONArray("data");
+		GCCommentCollection collection = new GCCommentCollection();
+		for (int i = 0; i < array.length(); i++) {
+			collection.add(GCBaseCommentModelParser.parse(array
+					.getJSONObject(i)));
+		}
+		return collection;
 	}
-	return collection;
-    }
 }

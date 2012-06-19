@@ -29,32 +29,32 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class AssetsDeleteRequest<T> extends GCHttpRequestImpl<T> {
+class AssetsDeleteRequest<T> extends GCParameterHttpRequestImpl<T> {
 
-    @SuppressWarnings("unused")
-    private static final String TAG = AssetsDeleteRequest.class.getSimpleName();
-    private final String id;
+	@SuppressWarnings("unused")
+	private static final String TAG = AssetsDeleteRequest.class.getSimpleName();
+	private final String id;
 
-    public AssetsDeleteRequest(Context context, String id, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.DELETE, parser, callback);
-	if (TextUtils.isEmpty(id)) {
-	    throw new NullPointerException("Need to provide an ID of the Asset");
+	public AssetsDeleteRequest(Context context, String id,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.DELETE, parser, callback);
+		if (TextUtils.isEmpty(id)) {
+			throw new NullPointerException("Need to provide an ID of the Asset");
+		}
+		this.id = id;
 	}
-	this.id = id;
-    }
 
-    @Override
-    protected void prepareParams() {
-    }
+	@Override
+	protected void prepareParams() {
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_ASSET_REMOVE_MULTIPLE, id));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_ASSET_REMOVE_MULTIPLE, id));
+	}
 }

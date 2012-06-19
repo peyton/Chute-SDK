@@ -34,23 +34,23 @@ import android.content.ContentResolver;
 /**
  * @author Darko.Grozdanovski
  * 
- * {@link URLStreamHandler} for {@code content://}, {@code file://}, and {@code android.resource://}
- * URIs.
+ *         {@link URLStreamHandler} for {@code content://}, {@code file://}, and
+ *         {@code android.resource://} URIs.
  **/
-class ContentURLStreamHandler extends URLStreamHandler {
+public class ContentURLStreamHandler extends URLStreamHandler {
 
-    private final ContentResolver resolver;
+	private final ContentResolver resolver;
 
-    public ContentURLStreamHandler(ContentResolver resolver) {
-        if (resolver == null) {
-            throw new NullPointerException();
-        }
-        this.resolver = resolver;
-    }
+	public ContentURLStreamHandler(ContentResolver resolver) {
+		if (resolver == null) {
+			throw new NullPointerException();
+		}
+		this.resolver = resolver;
+	}
 
-    @Override
-    protected URLConnection openConnection(URL url) {
-        return new ContentURLConnection(resolver, url);
-    }
+	@Override
+	protected URLConnection openConnection(URL url) {
+		return new ContentURLConnection(resolver, url);
+	}
 
 }

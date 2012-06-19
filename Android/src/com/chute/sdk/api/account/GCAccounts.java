@@ -4,14 +4,15 @@ import android.content.Context;
 
 import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
-import com.chute.sdk.collections.GCAccountsCollection;
-import com.chute.sdk.collections.GCAccountObjectCollection;
 import com.chute.sdk.collections.GCAccountMediaCollection;
+import com.chute.sdk.collections.GCAccountObjectCollection;
+import com.chute.sdk.collections.GCAccountsCollection;
 import com.chute.sdk.model.GCAccountModel;
+import com.chute.sdk.model.GCAccountObjectModel;
 import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.parsers.GCAccountListParser;
-import com.chute.sdk.parsers.GCAccountObjectListParser;
 import com.chute.sdk.parsers.GCAccountMediaListParser;
+import com.chute.sdk.parsers.GCAccountObjectListParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
 /**

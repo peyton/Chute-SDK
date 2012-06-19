@@ -25,96 +25,80 @@
 // 
 package com.chute.sdk.model;
 
+import com.chute.sdk.model.inner.Meta;
+import com.chute.sdk.model.inner.UploadInfo;
+
 public class GCUploadToken {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCUploadToken.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCUploadToken.class.getSimpleName();
 
-    private String signature;
-    private String date;
-    private String filepath;
-    private String md5;
-    private String uploadUrl;
-    private String contentType;
-    private String assetId;
+	private Meta meta = new Meta();
+	private UploadInfo uploadInfo;
 
-    public GCUploadToken() {
-    }
+	private String id;
+	private String sourceUrl;
+	private String url;
 
-    public String getSignature() {
-	return signature;
-    }
+	public GCUploadToken() {
+	}
 
-    public void setSignature(String signature) {
-	this.signature = signature;
-    }
+	public Meta getMeta() {
+		return meta;
+	}
 
-    public String getDate() {
-	return date;
-    }
+	public void setMeta(Meta meta) {
+		this.meta = meta;
+	}
 
-    public void setDate(String date) {
-	this.date = date;
-    }
+	public UploadInfo getUploadInfo() {
+		return uploadInfo;
+	}
 
-    public String getFilepath() {
-	return filepath;
-    }
+	public void setUploadInfo(UploadInfo uploadInfo) {
+		this.uploadInfo = uploadInfo;
+	}
 
-    public void setFilepath(String filepath) {
-	this.filepath = filepath;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getMd5() {
-	return md5;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setMd5(String md5) {
-	this.md5 = md5;
-    }
+	public String getSourceUrl() {
+		return sourceUrl;
+	}
 
-    public String getUploadUrl() {
-	return uploadUrl;
-    }
+	public void setSourceUrl(String sourceUrl) {
+		this.sourceUrl = sourceUrl;
+	}
 
-    public void setUploadUrl(String uploadUrl) {
-	this.uploadUrl = uploadUrl;
-    }
+	public String getUrl() {
+		return url;
+	}
 
-    public String getContentType() {
-	return contentType;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public void setContentType(String contentType) {
-	this.contentType = contentType;
-    }
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GCUploadToken [meta=");
+		builder.append(meta);
+		builder.append(", uploadInfo=");
+		builder.append(uploadInfo);
+		builder.append(", id=");
+		builder.append(id);
+		builder.append(", sourceUrl=");
+		builder.append(sourceUrl);
+		builder.append(", url=");
+		builder.append(url);
+		builder.append("]");
+		return builder.toString();
+	}
 
-    public String getAssetId() {
-	return assetId;
-    }
-
-    public void setAssetId(String assetId) {
-	this.assetId = assetId;
-    }
-
-    @Override
-    public String toString() {
-	StringBuilder builder = new StringBuilder();
-	builder.append("GCUploadToken [signature=");
-	builder.append(signature);
-	builder.append(", date=");
-	builder.append(date);
-	builder.append(", filepath=");
-	builder.append(filepath);
-	builder.append(", md5=");
-	builder.append(md5);
-	builder.append(", uploadUrl=");
-	builder.append(uploadUrl);
-	builder.append(", contentType=");
-	builder.append(contentType);
-	builder.append(", assetId=");
-	builder.append(assetId);
-	builder.append("]");
-	return builder.toString();
-    }
-
+	
+	
 }

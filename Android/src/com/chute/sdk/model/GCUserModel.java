@@ -45,6 +45,9 @@ public class GCUserModel implements Parcelable {
 	 * User name.
 	 */
 	private String name;
+	
+	private String username;
+	
 	/**
 	 * The URL for fetching the user avatar.
 	 */
@@ -95,19 +98,23 @@ public class GCUserModel implements Parcelable {
 	public void setAvatarURL(String avatarURL) {
 		this.avatarURL = avatarURL;
 	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUsername() {
+		return username;
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("GCUser [id=");
+		builder.append("GCUserModel [id=");
 		builder.append(id);
 		builder.append(", name=");
 		builder.append(name);
+		builder.append(", username=");
+		builder.append(username);
 		builder.append(", avatarURL=");
 		builder.append(avatarURL);
 		builder.append("]");
@@ -118,6 +125,7 @@ public class GCUserModel implements Parcelable {
 		id = in.readString();
 		name = in.readString();
 		avatarURL = in.readString();
+		username = in.readString();
 	}
 
 	/*
@@ -140,6 +148,7 @@ public class GCUserModel implements Parcelable {
 		dest.writeString(id);
 		dest.writeString(name);
 		dest.writeString(avatarURL);
+		dest.writeString(username);
 	}
 
 	public static final Parcelable.Creator<GCUserModel> CREATOR = new Parcelable.Creator<GCUserModel>() {

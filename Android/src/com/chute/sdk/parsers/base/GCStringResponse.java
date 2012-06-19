@@ -26,11 +26,11 @@
 package com.chute.sdk.parsers.base;
 
 public class GCStringResponse implements GCHttpResponseParser<String> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCStringResponse.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCStringResponse.class.getSimpleName();
 
-    @Override
-    public String parse(String responseBody) {
-	return responseBody;
-    }
+	@Override
+	public String parse(String responseBody) {
+		return responseBody;
+	}
 }

@@ -32,12 +32,15 @@ import com.chute.sdk.model.GCCommentModel;
 import com.chute.sdk.parsers.base.GCBaseCommentModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCCommentSingleObjectParser implements GCHttpResponseParser<GCCommentModel> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCCommentSingleObjectParser.class.getSimpleName();
+public class GCCommentSingleObjectParser implements
+		GCHttpResponseParser<GCCommentModel> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCCommentSingleObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCCommentModel parse(String responseBody) throws JSONException {
-	return GCBaseCommentModelParser.parse(new JSONObject(responseBody).getJSONObject("data"));
-    }
+	@Override
+	public GCCommentModel parse(String responseBody) throws JSONException {
+		return GCBaseCommentModelParser.parse(new JSONObject(responseBody)
+				.getJSONObject("data"));
+	}
 }

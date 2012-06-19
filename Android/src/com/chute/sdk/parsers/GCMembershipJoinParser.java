@@ -31,11 +31,12 @@ import org.json.JSONObject;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
 public class GCMembershipJoinParser implements GCHttpResponseParser<String> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCMembershipJoinParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCMembershipJoinParser.class
+			.getSimpleName();
 
-    @Override
-    public String parse(String responseBody) throws JSONException {
-	return new JSONObject(responseBody).getString("status");
-    }
+	@Override
+	public String parse(String responseBody) throws JSONException {
+		return new JSONObject(responseBody).getString("status");
+	}
 }

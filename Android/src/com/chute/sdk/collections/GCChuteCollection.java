@@ -30,12 +30,12 @@ import java.util.ArrayList;
 import com.chute.sdk.model.GCChuteModel;
 
 public class GCChuteCollection extends GCCollection<GCChuteModel> {
-    public GCChuteCollection() {
-	super(new ArrayList<GCChuteModel>());
-    }
+	public GCChuteCollection() {
+		super(new ArrayList<GCChuteModel>());
+	}
 
-    private static final long serialVersionUID = -147143143964370766L;
-    @SuppressWarnings("unused")
-    private static final String TAG = GCChuteCollection.class.getSimpleName();
+	private static final long serialVersionUID = -147143143964370766L;
+	@SuppressWarnings("unused")
+	private static final String TAG = GCChuteCollection.class.getSimpleName();
 
 }

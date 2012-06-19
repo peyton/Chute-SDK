@@ -29,46 +29,49 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.api.GCParameterHttpRequestImpl;
 import com.chute.sdk.model.GCChuteModel;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
 import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.rest.GCBaseRestClient.RequestMethod;
 
-class ChutesUpdateRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = ChutesUpdateRequest.class.getSimpleName();
-    private final GCChuteModel model;
+class ChutesUpdateRequest<T> extends GCParameterHttpRequestImpl<T> {
+	@SuppressWarnings("unused")
+	private static final String TAG = ChutesUpdateRequest.class.getSimpleName();
+	private final GCChuteModel model;
 
-    public ChutesUpdateRequest(final Context context, final GCChuteModel model,
-	    GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
-	super(context, RequestMethod.PUT, parser, callback);
-	if (TextUtils.isEmpty(model.getId())) {
-	    throw new NullPointerException("Need to provide an ID of the chute to Update");
+	public ChutesUpdateRequest(final Context context, final GCChuteModel model,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, RequestMethod.PUT, parser, callback);
+		if (TextUtils.isEmpty(model.getId())) {
+			throw new NullPointerException(
+					"Need to provide an ID of the chute to Update");
+		}
+		this.model = model;
 	}
-	this.model = model;
-    }
 
-    @Override
-    protected void prepareParams() {
-	client.addParam("chute[name]", model.getName());
-	client.addParam("chute[permission_view]", String.valueOf(model.getPermissionView()));
-	client.addParam("chute[permission_add_members]",
-		String.valueOf(model.getPermissionAddMembers()));
-	client.addParam("chute[permission_add_photos]",
-		String.valueOf(model.getPermissionAddPhotos()));
-	client.addParam("chute[permission_add_comments]",
-		String.valueOf(model.getPermissionModerateComments()));
-	client.addParam("chute[moderate_members]",
-		String.valueOf(model.getPermissionModerateMembers()));
-	client.addParam("chute[moderate_photos]",
-		String.valueOf(model.getPermissionModeratePhotos()));
-	client.addParam("chute[moderate_comments]",
-		String.valueOf(model.getPermissionModerateComments()));
-    }
+	@Override
+	protected void prepareParams() {
+		client.addParam("chute[name]", model.getName());
+		client.addParam("chute[permission_view]",
+				String.valueOf(model.getPermissionView()));
+		client.addParam("chute[permission_add_members]",
+				String.valueOf(model.getPermissionAddMembers()));
+		client.addParam("chute[permission_add_photos]",
+				String.valueOf(model.getPermissionAddPhotos()));
+		client.addParam("chute[permission_add_comments]",
+				String.valueOf(model.getPermissionModerateComments()));
+		client.addParam("chute[moderate_members]",
+				String.valueOf(model.getPermissionModerateMembers()));
+		client.addParam("chute[moderate_photos]",
+				String.valueOf(model.getPermissionModeratePhotos()));
+		client.addParam("chute[moderate_comments]",
+				String.valueOf(model.getPermissionModerateComments()));
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_CHUTES_UPDATE, model.getId()));
-    }
+	@Override
+	public void execute() {
+		runRequest(String.format(GCRestConstants.URL_CHUTES_UPDATE,
+				model.getId()));
+	}
 }

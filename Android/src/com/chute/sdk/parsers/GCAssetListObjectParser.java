@@ -33,17 +33,20 @@ import com.chute.sdk.collections.GCAssetCollection;
 import com.chute.sdk.parsers.base.GCBaseAssetModelParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
-public class GCAssetListObjectParser implements GCHttpResponseParser<GCAssetCollection> {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCAssetListObjectParser.class.getSimpleName();
+public class GCAssetListObjectParser implements
+		GCHttpResponseParser<GCAssetCollection> {
+	@SuppressWarnings("unused")
+	private static final String TAG = GCAssetListObjectParser.class
+			.getSimpleName();
 
-    @Override
-    public GCAssetCollection parse(String responseBody) throws JSONException {
-	JSONArray data = new JSONObject(responseBody).getJSONArray("data");
-	GCAssetCollection assetCollection = new GCAssetCollection();
-	for (int i = 0; i < data.length(); i++) {
-	    assetCollection.add(GCBaseAssetModelParser.parse(data.getJSONObject(i)));
+	@Override
+	public GCAssetCollection parse(String responseBody) throws JSONException {
+		JSONArray data = new JSONObject(responseBody).getJSONArray("data");
+		GCAssetCollection assetCollection = new GCAssetCollection();
+		for (int i = 0; i < data.length(); i++) {
+			assetCollection.add(GCBaseAssetModelParser.parse(data
+					.getJSONObject(i)));
+		}
+		return assetCollection;
 	}
-	return assetCollection;
-    }
 }

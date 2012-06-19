@@ -2,17 +2,10 @@
 
 import java.io.File;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequest;
-import com.chute.sdk.api.asset.GCAssets;
-import com.chute.sdk.collections.GCLocalAssetCollection;
-import com.chute.sdk.parsers.GCLocalAssetListObjectParser;
-import com.chute.sdk.parsers.base.GCHttpResponseParser;
 import com.chute.sdk.utils.MD5;
 
 /**
@@ -21,7 +14,7 @@ import com.chute.sdk.utils.MD5;
  * 
  */
 public class GCLocalAssetModel implements Parcelable {
-	@SuppressWarnings("unused")
+
 	private static final String TAG = GCLocalAssetModel.class.getSimpleName();
 
 	/**
@@ -75,9 +68,11 @@ public class GCLocalAssetModel implements Parcelable {
 	 */
 	private AssetStatus assetStatus;
 	/**
-	 * The String that needs to be converted into MD5 hash.
+	 * The md5 of the file.
 	 */
 	private String fileMD5;
+
+	private String identifier;
 
 	/**
 	 * Constructor
@@ -135,6 +130,18 @@ public class GCLocalAssetModel implements Parcelable {
 		this.fileMD5 = fileMD5;
 	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public String getSize() {
+		return String.valueOf(file.length());
+	}
+
 	/**
 	 * Method used for getting MD5 checksum
 	 * 
@@ -150,43 +157,23 @@ public class GCLocalAssetModel implements Parcelable {
 		return "";
 	}
 
-	/**
-	 * Method used for verifying assets. It returns a JSON object containing
-	 * array of assets using the following parameters: context,
-	 * {@link GCLocalAssetModel} and the given callback and parser.
-	 * 
-	 * @param context
-	 *            The application context.
-	 * @param callback
-	 *            Instance of {@link GCHttpCallback} interface. If successful,
-	 *            the callback returns {@link GCLocalAssetCollection}.
-	 * @return {@link GCAssets#verify(Context, com.chute.sdk.parsers.base.GCHttpResponseParser, GCHttpCallback, GCLocalAssetModel...)}
-	 *         method.
-	 */
-	public GCHttpRequest verify(Context context,
-			GCHttpCallback<GCLocalAssetCollection> callback) {
-		return GCAssets.verify(context, new GCLocalAssetListObjectParser(),
-				callback, this);
+	public GCLocalAssetModel(Parcel in) {
+		assetId = in.readString();
+		file = (File) in.readSerializable();
+		priority = in.readInt();
+		assetStatus = AssetStatus.values()[in.readInt()];
+		fileMD5 = in.readString();
+		identifier = in.readString();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Object#toString()
+	 * @see android.os.Parcelable#describeContents()
 	 */
 	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("GCLocalAssetModel [assetId=");
-		builder.append(assetId);
-		builder.append(", localImageFile=");
-		builder.append(file.getPath());
-		builder.append(", priority=");
-		builder.append(priority);
-		builder.append(", assetStatus=");
-		builder.append(assetStatus);
-		builder.append("]");
-		return builder.toString();
+	public int describeContents() {
+		return 0;
 	}
 
 	/**
@@ -210,43 +197,6 @@ public class GCLocalAssetModel implements Parcelable {
 		return AssetStatus.UNVERIFIED;
 	}
 
-	/**
-	 * Constructor using fields.
-	 * 
-	 * @param assetId
-	 * @param file
-	 * @param priority
-	 * @param assetStatus
-	 * @param fileMD5
-	 */
-	public GCLocalAssetModel(String assetId, File file, int priority,
-			AssetStatus assetStatus, String fileMD5) {
-		super();
-		this.assetId = assetId;
-		this.file = file;
-		this.priority = priority;
-		this.assetStatus = assetStatus;
-		this.fileMD5 = fileMD5;
-	}
-
-	public GCLocalAssetModel(Parcel in) {
-		assetId = in.readString();
-		file = (File) in.readSerializable();
-		priority = in.readInt();
-		assetStatus = AssetStatus.values()[in.readInt()];
-		fileMD5 = in.readString();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.Parcelable#describeContents()
-	 */
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -259,6 +209,7 @@ public class GCLocalAssetModel implements Parcelable {
 		dest.writeInt(priority);
 		dest.writeInt(assetStatus.ordinal());
 		dest.writeString(fileMD5);
+		dest.writeString(identifier);
 
 	}
 
@@ -275,6 +226,25 @@ public class GCLocalAssetModel implements Parcelable {
 		}
 
 	};
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GCLocalAssetModel [assetId=");
+		builder.append(assetId);
+		builder.append(", file=");
+		builder.append(file);
+		builder.append(", priority=");
+		builder.append(priority);
+		builder.append(", assetStatus=");
+		builder.append(assetStatus);
+		builder.append(", fileMD5=");
+		builder.append(fileMD5);
+		builder.append(", identifier=");
+		builder.append(identifier);
+		builder.append("]");
+		return builder.toString();
+	}
 
 	/*
 	 * (non-Javadoc)

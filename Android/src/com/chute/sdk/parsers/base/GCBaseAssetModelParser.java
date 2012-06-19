@@ -31,17 +31,18 @@ import org.json.JSONObject;
 import com.chute.sdk.model.GCAssetModel;
 
 public class GCBaseAssetModelParser {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBaseAssetModelParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseAssetModelParser.class
+			.getSimpleName();
 
-    public static GCAssetModel parse(final JSONObject obj) throws JSONException {
-	final GCAssetModel model = new GCAssetModel();
-	model.setId(obj.getString("id"));
-	model.setCommentsCount(obj.optString("comments"));
-	model.setPortrait(obj.getBoolean("is_portrait"));
-	model.setShareUrl(obj.optString("share_url"));
-	model.setUrl(obj.getString("url"));
-	model.user = GCBaseUserModelParser.parse(obj.getJSONObject("user"));
-	return model;
-    }
+	public static GCAssetModel parse(final JSONObject obj) throws JSONException {
+		final GCAssetModel model = new GCAssetModel();
+		model.setId(obj.getString("id"));
+		model.setCommentsCount(obj.optString("comments"));
+		model.setPortrait(obj.getBoolean("is_portrait"));
+		model.setShareUrl(obj.optString("share_url"));
+		model.setUrl(obj.getString("url"));
+		model.user = GCBaseUserModelParser.parse(obj.getJSONObject("user"));
+		return model;
+	}
 }

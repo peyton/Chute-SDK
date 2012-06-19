@@ -31,6 +31,7 @@ import com.chute.sdk.api.GCHttpCallback;
 import com.chute.sdk.api.GCHttpRequest;
 import com.chute.sdk.collections.GCChuteCollection;
 import com.chute.sdk.collections.GCLocalAssetCollection;
+import com.chute.sdk.model.response.GCParcelCreateResponse;
 import com.chute.sdk.parsers.GCCreateParcelsUploadsListParser;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
 
@@ -104,7 +105,7 @@ public class GCParcel {
 	public static GCHttpRequest create(final Context context,
 			final GCLocalAssetCollection assets,
 			final GCChuteCollection chutes,
-			final GCHttpCallback<GCLocalAssetCollection> callback) {
+			final GCHttpCallback<GCParcelCreateResponse> callback) {
 		return create(context, assets, chutes,
 				new GCCreateParcelsUploadsListParser(), callback);
 	}

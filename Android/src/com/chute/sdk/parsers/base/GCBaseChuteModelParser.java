@@ -31,31 +31,34 @@ import org.json.JSONObject;
 import com.chute.sdk.model.GCChuteModel;
 
 public class GCBaseChuteModelParser {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBaseChuteModelParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseChuteModelParser.class
+			.getSimpleName();
 
-    public static GCChuteModel parse(final JSONObject obj) throws JSONException {
-	final GCChuteModel model = new GCChuteModel();
-	model.setId(obj.getString("id"));
-	model.setAssetsCount(obj.getString("assets_count"));
-	model.setContributorsCount(obj.getString("contributors_count"));
-	model.setCreatedAt(obj.getString("created_at"));
-	model.setMembersCount(obj.getString("members_count"));
-	model.setPermissionModerateComments(obj.getBoolean("moderate_comments") == true ? 1 : 0);
-	model.setPermissionModerateMembers(obj.getBoolean("moderate_members") == true ? 1 : 0);
-	model.setPermissionModeratePhotos(obj.getInt("moderate_photos"));
-	model.setName(obj.getString("name"));
-	model.setPermissionAddComments(obj.getInt("permission_add_comments"));
-	model.setPermissionAddMembers(obj.getInt("permission_add_members"));
-	model.setPermissionAddPhotos(obj.getInt("permission_add_photos"));
-	model.setPermissionView(obj.getInt("permission_view"));
-	model.setRecentCount(obj.getString("recent_count"));
-	model.setRecentParcelId(obj.getString("recent_parcel_id"));
-	model.setRecentThumbnailURL(obj.getString("recent_thumbnail"));
-	model.setRecentUserId(obj.getString("recent_user_id"));
-	model.setShortcut(obj.getString("shortcut"));
-	model.setUpdatedAt(obj.getString("updated_at"));
-	model.user = GCBaseUserModelParser.parse(obj.getJSONObject("user"));
-	return model;
-    }
+	public static GCChuteModel parse(final JSONObject obj) throws JSONException {
+		final GCChuteModel model = new GCChuteModel();
+		model.setId(obj.getString("id"));
+		model.setAssetsCount(obj.optString("assets_count"));
+		model.setContributorsCount(obj.optString("contributors_count"));
+		model.setCreatedAt(obj.getString("created_at"));
+		model.setMembersCount(obj.optString("members_count"));
+		model.setPermissionModerateComments(obj.optBoolean("moderate_comments") == true ? 1
+				: 0);
+		model.setPermissionModerateMembers(obj.optBoolean("moderate_members") == true ? 1
+				: 0);
+		model.setPermissionModeratePhotos(obj.optInt("moderate_photos"));
+		model.setName(obj.optString("name"));
+		model.setPermissionAddComments(obj.optInt("permission_add_comments"));
+		model.setPermissionAddMembers(obj.optInt("permission_add_members"));
+		model.setPermissionAddPhotos(obj.optInt("permission_add_photos"));
+		model.setPermissionView(obj.optInt("permission_view"));
+		model.setRecentCount(obj.optString("recent_count"));
+		model.setRecentParcelId(obj.optString("recent_parcel_id"));
+		model.setRecentThumbnailURL(obj.optString("recent_thumbnail"));
+		model.setRecentUserId(obj.optString("recent_user_id"));
+		model.setShortcut(obj.optString("shortcut"));
+		model.setUpdatedAt(obj.optString("updated_at"));
+		model.user = GCBaseUserModelParser.parse(obj.getJSONObject("user"));
+		return model;
+	}
 }

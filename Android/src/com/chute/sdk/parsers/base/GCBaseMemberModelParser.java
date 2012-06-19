@@ -31,22 +31,26 @@ import org.json.JSONObject;
 import com.chute.sdk.model.GCMemberModel;
 
 public class GCBaseMemberModelParser {
-    @SuppressWarnings("unused")
-    private static final String TAG = GCBaseMemberModelParser.class.getSimpleName();
+	@SuppressWarnings("unused")
+	private static final String TAG = GCBaseMemberModelParser.class
+			.getSimpleName();
 
-    public static GCMemberModel parse(final JSONObject obj) throws JSONException {
-	GCMemberModel model = new GCMemberModel();
-	model.setAssetCount(obj.optString("asset_count"));
-	model.setAssetsPending(obj.getJSONObject("assets").getString("pending"));
-	model.setAssetsPhotos(obj.getJSONObject("assets").getString("photos"));
-	model.setUser(GCBaseUserModelParser.parse(obj));
-	model.setEmail(obj.getString("email"));
-	model.setLogin(obj.getString("login"));
-	model.setNotificationComments(obj.getString("notification_comments"));
-	model.setNotificationInvites(obj.getString("notification_invites"));
-	model.setNotificationPhotos(obj.getString("notification_photos"));
-	model.setStorageAvailable(obj.getJSONObject("storage").getString("available"));
-	model.setStorageCurrent(obj.getJSONObject("storage").getString("current"));
-	return model;
-    }
+	public static GCMemberModel parse(final JSONObject obj)
+			throws JSONException {
+		GCMemberModel model = new GCMemberModel();
+		model.setAssetCount(obj.optString("asset_count"));
+		model.setAssetsPending(obj.getJSONObject("assets").getString("pending"));
+		model.setAssetsPhotos(obj.getJSONObject("assets").getString("photos"));
+		model.setUser(GCBaseUserModelParser.parse(obj));
+		model.setEmail(obj.getString("email"));
+		model.setLogin(obj.getString("login"));
+		model.setNotificationComments(obj.getString("notification_comments"));
+		model.setNotificationInvites(obj.getString("notification_invites"));
+		model.setNotificationPhotos(obj.getString("notification_photos"));
+		model.setStorageAvailable(obj.getJSONObject("storage").getString(
+				"available"));
+		model.setStorageCurrent(obj.getJSONObject("storage").getString(
+				"current"));
+		return model;
+	}
 }

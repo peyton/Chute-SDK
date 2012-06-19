@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2011, Chute Corporation. All rights reserved.
+// Copyright (c) 2011, Chute Corporation. All rights reserved.
 // 
 //  Redistribution and use in source and binary forms, with or without modification, 
 //  are permitted provided that the following conditions are met:
@@ -23,33 +23,42 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-package com.chute.sdk.api.bundle;
+package com.chute.sdk.api;
 
 import android.content.Context;
 
-import com.chute.sdk.api.GCHttpCallback;
-import com.chute.sdk.api.GCHttpRequestImpl;
+import com.chute.sdk.exceptions.GCHttpException;
 import com.chute.sdk.parsers.base.GCHttpResponseParser;
-import com.chute.sdk.utils.GCRest.RequestMethod;
-import com.chute.sdk.utils.GCRestConstants;
+import com.chute.sdk.utils.Logger;
+import com.chute.sdk.utils.rest.GCRest;
+import com.chute.sdk.utils.rest.GCStringBodyRestClient;
 
-class BundleGetRequest<T> extends GCHttpRequestImpl<T> {
-    @SuppressWarnings("unused")
-    private static final String TAG = BundleGetRequest.class.getSimpleName();
-    private final String id;
+public abstract class GCStringBodyHttpRequestImpl<T> extends
+		GCBaseHttpRequestImpl<T> {
 
-    public BundleGetRequest(Context context, String id, GCHttpResponseParser<T> parser,
-	    GCHttpCallback<T> callback) {
-	super(context, RequestMethod.GET, parser, callback);
-	this.id = id;
-    }
+	public static final String TAG = GCStringBodyHttpRequestImpl.class
+			.getSimpleName();
+	private GCStringBodyRestClient client;
 
-    @Override
-    public void prepareParams() {
-    }
+	public GCStringBodyHttpRequestImpl(Context context,
+			GCHttpResponseParser<T> parser, GCHttpCallback<T> callback) {
+		super(context, parser, callback);
+		client = new GCStringBodyRestClient();
+	}
 
-    @Override
-    public void execute() {
-	runRequest(String.format(GCRestConstants.URL_BUNDLES_GET, id));
-    }
+	@Override
+	protected void prepareAndExecuteRequest() throws GCHttpException {
+		prepareParams();
+		client.execute();
+	}
+
+	public void setBody(String body) {
+		Logger.d(TAG, "String body" + body);
+		client.setBody(body);
+	}
+
+	@Override
+	public GCRest getClient() {
+		return client;
+	}
 }
