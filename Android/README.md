@@ -25,7 +25,7 @@ Setup
 5. In your application use the following code to launch the Authentication screen
 
     <pre><code>
- GCAccount.getInstance(getApplicationContext()).startAuthenticationActivity(
+ GCAccountStore.getInstance(getApplicationContext()).startAuthenticationActivity(
 	this, // Activity context
 	AccountType.FACEBOOK, // TYPE of Account to authenticate
 	"all_resources manage_resources profile resources", // Chute Permissions
@@ -93,17 +93,17 @@ Basic Tasks
 
 ## Uploading Assets
 
-You can use the folowing code to execute an upload request. This method needs an asset collection that will contain the paths to the photos that you want to upload
+You can use the folowing code to execute an upload request. This method needs an asset collection that will contain the paths to the photos that you want to upload and a collection of chutes you want the assets to be linked to.
+
 
 <pre><code>
 GCAssets.upload(context, progressListener,
-			parser,callback, localAssetCollection)
+			callback, localAssetCollection, chuteCollection)
 			.executeAsync();
-			
 </code></pre>
 
 for progress updates you need to include a progressListener which is a class implementing the GCUploadProgressListener Interface. 
-Important note: the Callback runs in the thread that is executing the request
+Important note: the Callback runs in the thread that is executing the request.
 
 it has 3 callbacks:
 
@@ -133,18 +133,6 @@ public interface GCUploadProgressListener {
 }
 </code></pre>
 
-To place a photo in a chute you need to create a parcel with that photo or a collection of photos <code>GCLocalAsset</code>.
-It takes as an input a collection of local assets you want to create a parcel with and a collection of chutes you want the assets to be linked to.
-
-<pre><code>
-
-GCParcel.create(context, assets, chutes, new GCCreateParcelsUploadsListParser(),
-		new GCParcelCreateCallback()).executeAsync();
-
-</code></pre>
-
-Chute doesn't require you to upload the same photo multiple times, so in the parcel creation callback you will get a response with just the assets that you still haven't uploaded.
-		
 
 ## Displaying Assets
 
@@ -162,7 +150,7 @@ To use this you need to folow a couple of steps to include and configure the Ima
 		android:name=".app.MyExtendedApplicationClassName" >	
     ```
 	
-2. Use and modify the folowing code inside that class to create an instance of the ImageLoader, The Loader uses an sd card cache with a combination of an in-memory implementation
+2. Use and modify the folowing code inside that class to create an instance of the ImageLoader, The Loader uses an sd card cache with a combination of an in-memory implementation.
 
 <pre><code>
  private static ImageLoader createImageLoader(Context context) {
