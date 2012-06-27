@@ -32,38 +32,50 @@
 
 #import <Foundation/Foundation.h>
 
-@class SBJsonStreamWriter;
+#import "GCJsonTokeniser.h"
+#import "GCJsonStreamParser.h"
 
-@interface SBJsonStreamWriterState : NSObject
+@interface GCJsonStreamParserState : NSObject
 + (id)sharedInstance;
-- (BOOL)isInvalidState:(SBJsonStreamWriter*)writer;
-- (void)appendSeparator:(SBJsonStreamWriter*)writer;
-- (BOOL)expectingKey:(SBJsonStreamWriter*)writer;
-- (void)transitionState:(SBJsonStreamWriter*)writer;
-- (void)appendWhitespace:(SBJsonStreamWriter*)writer;
+- (BOOL)parser:(GCJsonStreamParser*)parser shouldAcceptToken:(GCJson_token_t)token;
+- (GCJsonStreamParserStatus)parserShouldReturn:(GCJsonStreamParser*)parser;
+- (void)parser:(GCJsonStreamParser*)parser shouldTransitionTo:(GCJson_token_t)tok;
+- (BOOL)needKey;
+
+- (NSString*)name;
+
 @end
 
-@interface SBJsonStreamWriterStateObjectStart : SBJsonStreamWriterState
+@interface GCJsonStreamParserStateStart : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateObjectKey : SBJsonStreamWriterStateObjectStart
+@interface GCJsonStreamParserStateComplete : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateObjectValue : SBJsonStreamWriterState
+@interface GCJsonStreamParserStateError : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateArrayStart : SBJsonStreamWriterState
+
+@interface GCJsonStreamParserStateObjectStart : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateArrayValue : SBJsonStreamWriterState
+@interface GCJsonStreamParserStateObjectGotKey : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateStart : SBJsonStreamWriterState
+@interface GCJsonStreamParserStateObjectSeparator : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateComplete : SBJsonStreamWriterState
+@interface GCJsonStreamParserStateObjectGotValue : GCJsonStreamParserState
 @end
 
-@interface SBJsonStreamWriterStateError : SBJsonStreamWriterState
+@interface GCJsonStreamParserStateObjectNeedKey : GCJsonStreamParserState
 @end
 
+@interface GCJsonStreamParserStateArrayStart : GCJsonStreamParserState
+@end
+
+@interface GCJsonStreamParserStateArrayGotValue : GCJsonStreamParserState
+@end
+
+@interface GCJsonStreamParserStateArrayNeedValue : GCJsonStreamParserState
+@end

@@ -6,7 +6,7 @@
 
 #import "GCUIBaseViewController.h"
 #import "MBProgressHUD.h"
-#import "SBJson.h"
+#import "GCJson.h"
 #import "GCConstants.h"
 #import "ASIHTTPRequest.h"
 #import "GCAccount.h"

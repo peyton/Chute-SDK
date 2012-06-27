@@ -27,13 +27,30 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamWriter.h"
+#import "GCJsonStreamWriterAccumulator.h"
 
-@interface SBJsonStreamWriterAccumulator : NSObject <SBJsonStreamWriterDelegate> {
-@private
-    NSMutableData *data;
+
+@implementation GCJsonStreamWriterAccumulator
+
+@synthesize data;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        data = [[NSMutableData alloc] initWithCapacity:8096u];
+    }
+    return self;
 }
 
-@property (readonly, copy) NSData* data;
+- (void)dealloc {
+    [data release];
+    [super dealloc];
+}
+
+#pragma mark GCJsonStreamWriterDelegate
+
+- (void)writer:(GCJsonStreamWriter *)writer appendBytes:(const void *)bytes length:(NSUInteger)length {
+    [data appendBytes:bytes length:length];
+}
 
 @end

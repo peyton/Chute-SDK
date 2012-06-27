@@ -27,14 +27,13 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "SBJsonStreamParserAdapter.h"
+#import "GCJsonStreamWriter.h"
 
-@interface SBJsonStreamParserAccumulator : NSObject <SBJsonStreamParserAdapterDelegate> {
+@interface GCJsonStreamWriterAccumulator : NSObject <GCJsonStreamWriterDelegate> {
 @private
-    id value;    
+    NSMutableData *data;
 }
 
-@property (readonly, copy) id value;
+@property (readonly, copy) NSData* data;
 
 @end

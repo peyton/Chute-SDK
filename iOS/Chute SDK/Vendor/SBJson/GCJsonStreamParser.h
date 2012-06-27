@@ -32,51 +32,51 @@
 
 #import <Foundation/Foundation.h>
 
-@class SBJsonTokeniser;
-@class SBJsonStreamParser;
-@class SBJsonStreamParserState;
+@class GCJsonTokeniser;
+@class GCJsonStreamParser;
+@class GCJsonStreamParserState;
 
 typedef enum {
-	SBJsonStreamParserComplete,
-	SBJsonStreamParserWaitingForData,
-	SBJsonStreamParserError,
-} SBJsonStreamParserStatus;
+	GCJsonStreamParserComplete,
+	GCJsonStreamParserWaitingForData,
+	GCJsonStreamParserError,
+} GCJsonStreamParserStatus;
 
 
 /**
  @brief Delegate for interacting directly with the stream parser
  
  You will most likely find it much more convenient to implement the
- SBJsonStreamParserAdapterDelegate protocol instead.
+ GCJsonStreamParserAdapterDelegate protocol instead.
  */
-@protocol SBJsonStreamParserDelegate
+@protocol GCJsonStreamParserDelegate
 
 /// Called when object start is found
-- (void)parserFoundObjectStart:(SBJsonStreamParser*)parser;
+- (void)parserFoundObjectStart:(GCJsonStreamParser*)parser;
 
 /// Called when object key is found
-- (void)parser:(SBJsonStreamParser*)parser foundObjectKey:(NSString*)key;
+- (void)parser:(GCJsonStreamParser*)parser foundObjectKey:(NSString*)key;
 
 /// Called when object end is found
-- (void)parserFoundObjectEnd:(SBJsonStreamParser*)parser;
+- (void)parserFoundObjectEnd:(GCJsonStreamParser*)parser;
 
 /// Called when array start is found
-- (void)parserFoundArrayStart:(SBJsonStreamParser*)parser;
+- (void)parserFoundArrayStart:(GCJsonStreamParser*)parser;
 
 /// Called when array end is found
-- (void)parserFoundArrayEnd:(SBJsonStreamParser*)parser;
+- (void)parserFoundArrayEnd:(GCJsonStreamParser*)parser;
 
 /// Called when a boolean value is found
-- (void)parser:(SBJsonStreamParser*)parser foundBoolean:(BOOL)x;
+- (void)parser:(GCJsonStreamParser*)parser foundBoolean:(BOOL)x;
 
 /// Called when a null value is found
-- (void)parserFoundNull:(SBJsonStreamParser*)parser;
+- (void)parserFoundNull:(GCJsonStreamParser*)parser;
 
 /// Called when a number is found
-- (void)parser:(SBJsonStreamParser*)parser foundNumber:(NSNumber*)num;
+- (void)parser:(GCJsonStreamParser*)parser foundNumber:(NSNumber*)num;
 
 /// Called when a string is found
-- (void)parser:(SBJsonStreamParser*)parser foundString:(NSString*)string;
+- (void)parser:(GCJsonStreamParser*)parser foundString:(NSString*)string;
 
 @end
 
@@ -92,32 +92,32 @@ typedef enum {
  Using this class is also useful to parse huge documents on disk
  bit by bit so you don't have to keep them all in memory. 
  
- @see SBJsonStreamParserAdapter for more information.
+ @see GCJsonStreamParserAdapter for more information.
  
  @see @ref objc2json
  
  */
-@interface SBJsonStreamParser : NSObject {
+@interface GCJsonStreamParser : NSObject {
 @private
 	BOOL supportMultipleDocuments;
-	id<SBJsonStreamParserDelegate> delegate;
-	SBJsonTokeniser *tokeniser;
+	id<GCJsonStreamParserDelegate> delegate;
+	GCJsonTokeniser *tokeniser;
     NSMutableArray *stateStack;
-	__weak SBJsonStreamParserState *state;
+	__weak GCJsonStreamParserState *state;
 	NSUInteger maxDepth;
 	NSString *error;
 }
 
-@property (nonatomic, assign) __weak SBJsonStreamParserState *state; // Private
+@property (nonatomic, assign) __weak GCJsonStreamParserState *state; // Private
 @property (nonatomic, readonly, retain) NSMutableArray *stateStack; // Private
 
 /**
  @brief Expect multiple documents separated by whitespace
 
- Normally the @p -parse: method returns SBJsonStreamParserComplete when it's found a complete JSON document.
+ Normally the @p -parse: method returns GCJsonStreamParserComplete when it's found a complete JSON document.
  Attempting to parse any more data at that point is considered an error. ("Garbage after JSON".)
  
- If you set this property to true the parser will never return SBJsonStreamParserComplete. Rather,
+ If you set this property to true the parser will never return GCJsonStreamParserComplete. Rather,
  once an object is completed it will expect another object to immediately follow, separated
  only by (optional) whitespace.
 
@@ -132,10 +132,10 @@ typedef enum {
  into valid tokens.
 
  @note
- Usually this should be an instance of SBJsonStreamParserAdapter, but you can
- substitute your own implementation of the SBJsonStreamParserDelegate protocol if you need to. 
+ Usually this should be an instance of GCJsonStreamParserAdapter, but you can
+ substitute your own implementation of the GCJsonStreamParserDelegate protocol if you need to. 
  */
-@property (assign) id<SBJsonStreamParserDelegate> delegate;
+@property (assign) id<GCJsonStreamParserDelegate> delegate;
 
 /**
  @brief The max parse depth
@@ -146,7 +146,7 @@ typedef enum {
  */
 @property NSUInteger maxDepth;
 
-/// Holds the error after SBJsonStreamParserError was returned
+/// Holds the error after GCJsonStreamParserError was returned
 @property (copy) NSString *error;
 
 /**
@@ -157,11 +157,11 @@ typedef enum {
  @param data An NSData object containing the next chunk of JSON
 
  @return 
- @li SBJsonStreamParserComplete if a full document was found
- @li SBJsonStreamParserWaitingForData if a partial document was found and more data is required to complete it
- @li SBJsonStreamParserError if an error occured. (See the error property for details in this case.)
+ @li GCJsonStreamParserComplete if a full document was found
+ @li GCJsonStreamParserWaitingForData if a partial document was found and more data is required to complete it
+ @li GCJsonStreamParserError if an error occured. (See the error property for details in this case.)
  
  */
-- (SBJsonStreamParserStatus)parse:(NSData*)data;
+- (GCJsonStreamParserStatus)parse:(NSData*)data;
 
 @end

@@ -30,14 +30,14 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamWriter.h"
-#import "SBJsonStreamWriterState.h"
+#import "GCJsonStreamWriter.h"
+#import "GCJsonStreamWriterState.h"
 
 static NSDecimalNumber *kNotANumber;
 static id kStaticStringCache;
 
 
-@implementation SBJsonStreamWriter
+@implementation GCJsonStreamWriter
 
 @synthesize error;
 @synthesize maxDepth;
@@ -69,7 +69,7 @@ static id kStaticStringCache;
 	if (self) {
 		maxDepth = 32u;
         stateStack = [[NSMutableArray alloc] initWithCapacity:maxDepth];
-        state = [[SBJsonStreamWriterStateStart alloc] init];
+        state = [[GCJsonStreamWriterStateStart alloc] init];
     }
 	return self;
 }
@@ -127,7 +127,7 @@ static id kStaticStringCache;
 	if (humanReadable && stateStack.count) [state appendWhitespace:self];
 
     [stateStack addObject:state];
-    self.state = [SBJsonStreamWriterStateObjectStart sharedInstance];
+    self.state = [GCJsonStreamWriterStateObjectStart sharedInstance];
 
 	if (maxDepth && stateStack.count > maxDepth) {
 		self.error = @"Nested too deep";
@@ -141,7 +141,7 @@ static id kStaticStringCache;
 - (BOOL)writeObjectClose {
 	if ([state isInvalidState:self]) return NO;
 
-    SBJsonStreamWriterState *prev = state;
+    GCJsonStreamWriterState *prev = state;
 
     self.state = [stateStack lastObject];
     [stateStack removeLastObject];
@@ -160,7 +160,7 @@ static id kStaticStringCache;
 	if (humanReadable && stateStack.count) [state appendWhitespace:self];
 
     [stateStack addObject:state];
-	self.state = [SBJsonStreamWriterStateArrayStart sharedInstance];
+	self.state = [GCJsonStreamWriterStateArrayStart sharedInstance];
 
 	if (maxDepth && stateStack.count > maxDepth) {
 		self.error = @"Nested too deep";
@@ -175,7 +175,7 @@ static id kStaticStringCache;
 	if ([state isInvalidState:self]) return NO;
 	if ([state expectingKey:self]) return NO;
 
-    SBJsonStreamWriterState *prev = state;
+    GCJsonStreamWriterState *prev = state;
 
     self.state = [stateStack lastObject];
     [stateStack removeLastObject];

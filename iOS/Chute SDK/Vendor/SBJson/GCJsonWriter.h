@@ -32,12 +32,12 @@
 /**
  @brief The JSON writer class.
  
- This uses SBJsonStreamWriter internally.
+ This uses GCJsonStreamWriter internally.
  
  @see @ref json2objc
  */
 
-@interface SBJsonWriter : NSObject {
+@interface GCJsonWriter : NSObject {
 @private
     NSString *error;
     NSUInteger maxDepth;

@@ -9,7 +9,7 @@
 #import "GCMacros.h"
 #import "GCConstants.h"
 #import "ASIHTTPRequest.h"
-#import "SBJson.h"
+#import "GCJson.h"
 #import "GCResponse.h"
 #import "GCError.h"
 

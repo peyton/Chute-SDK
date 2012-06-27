@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2009 Stig Brautaset. All rights reserved.
+ Copyright (C) 2011 Stig Brautaset. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -27,32 +27,14 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "NSObject+SBJson.h"
-#import "SBJsonWriter.h"
-#import "SBJsonParser.h"
+#import <Foundation/Foundation.h>
+#import "GCJsonStreamParserAdapter.h"
 
-@implementation NSObject (NSObject_SBJsonWriting)
-
-- (NSString *)JSONRepresentation {
-    SBJsonWriter *writer = [[[SBJsonWriter alloc] init] autorelease];    
-    NSString *json = [writer stringWithObject:self];
-    if (!json)
-        NSLog(@"-JSONRepresentation failed. Error is: %@", writer.error);
-    return json;
+@interface GCJsonStreamParserAccumulator : NSObject <GCJsonStreamParserAdapterDelegate> {
+@private
+    id value;    
 }
 
-@end
-
-
-
-@implementation NSString (NSString_SBJsonParsing)
-
-- (id)JSONValue {
-    SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
-    id repr = [parser objectWithString:self];
-    if (!repr)
-        NSLog(@"-JSONValue failed. Error is: %@", parser.error);
-    return repr;
-}
+@property (readonly, copy) id value;
 
 @end

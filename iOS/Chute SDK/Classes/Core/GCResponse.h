@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "GCError.h"
 #import "ASIHTTPRequest.h"
-#import "SBJson.h"
+#import "GCJson.h"
 #import "GCMacros.h"
 
 @interface GCResponse : NSObject

@@ -27,12 +27,12 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonParser.h"
-#import "SBJsonStreamParser.h"
-#import "SBJsonStreamParserAdapter.h"
-#import "SBJsonStreamParserAccumulator.h"
+#import "GCJsonParser.h"
+#import "GCJsonStreamParser.h"
+#import "GCJsonStreamParserAdapter.h"
+#import "GCJsonStreamParserAccumulator.h"
 
-@implementation SBJsonParser
+@implementation GCJsonParser
 
 @synthesize maxDepth;
 @synthesize error;
@@ -58,25 +58,25 @@
         return nil;
     }
 
-	SBJsonStreamParserAccumulator *accumulator = [[[SBJsonStreamParserAccumulator alloc] init] autorelease];
+	GCJsonStreamParserAccumulator *accumulator = [[[GCJsonStreamParserAccumulator alloc] init] autorelease];
     
-    SBJsonStreamParserAdapter *adapter = [[[SBJsonStreamParserAdapter alloc] init] autorelease];
+    GCJsonStreamParserAdapter *adapter = [[[GCJsonStreamParserAdapter alloc] init] autorelease];
     adapter.delegate = accumulator;
 	
-	SBJsonStreamParser *parser = [[[SBJsonStreamParser alloc] init] autorelease];
+	GCJsonStreamParser *parser = [[[GCJsonStreamParser alloc] init] autorelease];
 	parser.maxDepth = self.maxDepth;
 	parser.delegate = adapter;
 	
 	switch ([parser parse:data]) {
-		case SBJsonStreamParserComplete:
+		case GCJsonStreamParserComplete:
             return accumulator.value;
 			break;
 			
-		case SBJsonStreamParserWaitingForData:
+		case GCJsonStreamParserWaitingForData:
 		    self.error = @"Unexpected end of input";
 			break;
 
-		case SBJsonStreamParserError:
+		case GCJsonStreamParserError:
 		    self.error = parser.error;
 			break;
 	}
@@ -95,7 +95,7 @@
     
     if (error_) {
 		NSDictionary *ui = [NSDictionary dictionaryWithObjectsAndKeys:error, NSLocalizedDescriptionKey, nil];
-        *error_ = [NSError errorWithDomain:@"org.brautaset.SBJsonParser.ErrorDomain" code:0 userInfo:ui];
+        *error_ = [NSError errorWithDomain:@"org.brautaset.GCJsonParser.ErrorDomain" code:0 userInfo:ui];
 	}
 	
     return nil;

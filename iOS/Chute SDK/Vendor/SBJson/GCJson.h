@@ -75,10 +75,10 @@
 
  */
 
-#import "SBJsonParser.h"
-#import "SBJsonWriter.h"
-#import "SBJsonStreamParser.h"
-#import "SBJsonStreamParserAdapter.h"
-#import "SBJsonStreamWriter.h"
-#import "NSObject+SBJson.h"
+#import "GCJsonParser.h"
+#import "GCJsonWriter.h"
+#import "GCJsonStreamParser.h"
+#import "GCJsonStreamParserAdapter.h"
+#import "GCJsonStreamWriter.h"
+#import "NSObject+GCJson.h"
 

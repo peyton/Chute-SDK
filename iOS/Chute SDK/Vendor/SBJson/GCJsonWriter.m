@@ -27,16 +27,16 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonWriter.h"
-#import "SBJsonStreamWriter.h"
-#import "SBJsonStreamWriterAccumulator.h"
+#import "GCJsonWriter.h"
+#import "GCJsonStreamWriter.h"
+#import "GCJsonStreamWriterAccumulator.h"
 
 
-@interface SBJsonWriter ()
+@interface GCJsonWriter ()
 @property (copy) NSString *error;
 @end
 
-@implementation SBJsonWriter
+@implementation GCJsonWriter
 
 @synthesize sortKeys;
 @synthesize humanReadable;
@@ -71,7 +71,7 @@
     
     if (error_) {
 		NSDictionary *ui = [NSDictionary dictionaryWithObjectsAndKeys:error, NSLocalizedDescriptionKey, nil];
-        *error_ = [NSError errorWithDomain:@"org.brautaset.SBJsonWriter.ErrorDomain" code:0 userInfo:ui];
+        *error_ = [NSError errorWithDomain:@"org.brautaset.GCJsonWriter.ErrorDomain" code:0 userInfo:ui];
 	}
 	
     return nil;
@@ -80,9 +80,9 @@
 - (NSData*)dataWithObject:(id)object {	
     self.error = nil;
 
-    SBJsonStreamWriterAccumulator *accumulator = [[[SBJsonStreamWriterAccumulator alloc] init] autorelease];
+    GCJsonStreamWriterAccumulator *accumulator = [[[GCJsonStreamWriterAccumulator alloc] init] autorelease];
     
-	SBJsonStreamWriter *streamWriter = [[[SBJsonStreamWriter alloc] init] autorelease];
+	GCJsonStreamWriter *streamWriter = [[[GCJsonStreamWriter alloc] init] autorelease];
 	streamWriter.sortKeys = self.sortKeys;
 	streamWriter.maxDepth = self.maxDepth;
 	streamWriter.humanReadable = self.humanReadable;

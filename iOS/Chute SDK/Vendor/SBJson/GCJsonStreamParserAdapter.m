@@ -30,18 +30,18 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamParserAdapter.h"
+#import "GCJsonStreamParserAdapter.h"
 
-@interface SBJsonStreamParserAdapter ()
+@interface GCJsonStreamParserAdapter ()
 
 - (void)pop;
-- (void)parser:(SBJsonStreamParser*)parser found:(id)obj;
+- (void)parser:(GCJsonStreamParser*)parser found:(id)obj;
 
 @end
 
 
 
-@implementation SBJsonStreamParserAdapter
+@implementation GCJsonStreamParserAdapter
 
 @synthesize delegate;
 @synthesize levelsToSkip;
@@ -54,7 +54,7 @@
 		keyStack = [[NSMutableArray alloc] initWithCapacity:32];
 		stack = [[NSMutableArray alloc] initWithCapacity:32];
 		
-		currentType = SBJsonStreamParserAdapterNone;
+		currentType = GCJsonStreamParserAdapterNone;
 	}
 	return self;
 }	
@@ -71,34 +71,34 @@
 	[stack removeLastObject];
 	array = nil;
 	dict = nil;
-	currentType = SBJsonStreamParserAdapterNone;
+	currentType = GCJsonStreamParserAdapterNone;
 	
 	id value = [stack lastObject];
 	
 	if ([value isKindOfClass:[NSArray class]]) {
 		array = value;
-		currentType = SBJsonStreamParserAdapterArray;
+		currentType = GCJsonStreamParserAdapterArray;
 	} else if ([value isKindOfClass:[NSDictionary class]]) {
 		dict = value;
-		currentType = SBJsonStreamParserAdapterObject;
+		currentType = GCJsonStreamParserAdapterObject;
 	}
 }
 
-- (void)parser:(SBJsonStreamParser*)parser found:(id)obj {
+- (void)parser:(GCJsonStreamParser*)parser found:(id)obj {
 	NSParameterAssert(obj);
 	
 	switch (currentType) {
-		case SBJsonStreamParserAdapterArray:
+		case GCJsonStreamParserAdapterArray:
 			[array addObject:obj];
 			break;
 
-		case SBJsonStreamParserAdapterObject:
+		case GCJsonStreamParserAdapterObject:
 			NSParameterAssert(keyStack.count);
 			[dict setObject:obj forKey:[keyStack lastObject]];
 			[keyStack removeLastObject];
 			break;
 			
-		case SBJsonStreamParserAdapterNone:
+		case GCJsonStreamParserAdapterNone:
 			if ([obj isKindOfClass:[NSArray class]]) {
 				[delegate parser:parser foundArray:obj];
 			} else {
@@ -114,19 +114,19 @@
 
 #pragma mark Delegate methods
 
-- (void)parserFoundObjectStart:(SBJsonStreamParser*)parser {
+- (void)parserFoundObjectStart:(GCJsonStreamParser*)parser {
 	if (++depth > levelsToSkip) {
 		dict = [[NSMutableDictionary new] autorelease];
 		[stack addObject:dict];
-		currentType = SBJsonStreamParserAdapterObject;
+		currentType = GCJsonStreamParserAdapterObject;
 	}
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundObjectKey:(NSString*)key_ {
+- (void)parser:(GCJsonStreamParser*)parser foundObjectKey:(NSString*)key_ {
 	[keyStack addObject:key_];
 }
 
-- (void)parserFoundObjectEnd:(SBJsonStreamParser*)parser {
+- (void)parserFoundObjectEnd:(GCJsonStreamParser*)parser {
 	if (depth-- > levelsToSkip) {
 		id value = [dict retain];
 		[self pop];
@@ -135,15 +135,15 @@
 	}
 }
 
-- (void)parserFoundArrayStart:(SBJsonStreamParser*)parser {
+- (void)parserFoundArrayStart:(GCJsonStreamParser*)parser {
 	if (++depth > levelsToSkip) {
 		array = [[NSMutableArray new] autorelease];
 		[stack addObject:array];
-		currentType = SBJsonStreamParserAdapterArray;
+		currentType = GCJsonStreamParserAdapterArray;
 	}
 }
 
-- (void)parserFoundArrayEnd:(SBJsonStreamParser*)parser {
+- (void)parserFoundArrayEnd:(GCJsonStreamParser*)parser {
 	if (depth-- > levelsToSkip) {
 		id value = [array retain];
 		[self pop];
@@ -152,19 +152,19 @@
 	}
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundBoolean:(BOOL)x {
+- (void)parser:(GCJsonStreamParser*)parser foundBoolean:(BOOL)x {
 	[self parser:parser found:[NSNumber numberWithBool:x]];
 }
 
-- (void)parserFoundNull:(SBJsonStreamParser*)parser {
+- (void)parserFoundNull:(GCJsonStreamParser*)parser {
 	[self parser:parser found:[NSNull null]];
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundNumber:(NSNumber*)num {
+- (void)parser:(GCJsonStreamParser*)parser foundNumber:(NSNumber*)num {
 	[self parser:parser found:num];
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundString:(NSString*)string {
+- (void)parser:(GCJsonStreamParser*)parser foundString:(NSString*)string {
 	[self parser:parser found:string];
 }
 

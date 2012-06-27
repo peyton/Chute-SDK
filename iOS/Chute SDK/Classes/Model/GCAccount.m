@@ -7,7 +7,7 @@
 
 #import "GCAccount.h"
 #import "GCRequest.h"
-#import "SBJson.h"
+#import "GCJson.h"
 #import "GCConstants.h"
 #import "ASIHTTPRequest.h"
 #import "NSDictionary+QueryString.h"

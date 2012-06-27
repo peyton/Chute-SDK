@@ -29,20 +29,20 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonTokeniser.h"
-#import "SBJsonUTF8Stream.h"
+#import "GCJsonTokeniser.h"
+#import "GCJsonUTF8Stream.h"
 
 #define SBStringIsIllegalSurrogateHighCharacter(x) (((x) >= 0xd800) && ((x) <= 0xdfff))
 
 
-@implementation SBJsonTokeniser
+@implementation GCJsonTokeniser
 
 @synthesize error = _error;
 
 - (id)init {
     self = [super init];
     if (self) {
-        _stream = [[SBJsonUTF8Stream alloc] init];
+        _stream = [[GCJsonUTF8Stream alloc] init];
 
     }
 
@@ -59,15 +59,15 @@
 }
 
 
-- (sbjson_token_t)match:(const char *)pattern length:(NSUInteger)len retval:(sbjson_token_t)token {
+- (GCJson_token_t)match:(const char *)pattern length:(NSUInteger)len retval:(GCJson_token_t)token {
     if (![_stream haveRemainingCharacters:len])
-        return sbjson_token_eof;
+        return GCJson_token_eof;
 
     if ([_stream skipCharacters:pattern length:len])
         return token;
 
     self.error = [NSString stringWithFormat:@"Expected '%s' after initial '%.1s'", pattern, pattern];
-    return sbjson_token_error;
+    return GCJson_token_error;
 }
 
 - (BOOL)decodeEscape:(unichar)ch into:(unichar*)decoded {
@@ -133,7 +133,7 @@
     return YES;
 }
 
-- (sbjson_token_t)getStringToken:(NSObject**)token {
+- (GCJson_token_t)getStringToken:(NSObject**)token {
     NSMutableString *acc = nil;
 
     for (;;) {
@@ -143,16 +143,16 @@
         {
             NSMutableString *string = nil;
             if (![_stream getSimpleString:&string])
-                return sbjson_token_eof;
+                return GCJson_token_eof;
             
             if (!string) {
                 self.error = @"Broken Unicode encoding";
-                return sbjson_token_error;
+                return GCJson_token_error;
             }
                 
         
             if (![_stream getUnichar:&ch])
-                return sbjson_token_eof;
+                return GCJson_token_eof;
 
             if (acc) {
                 [acc appendString:string];
@@ -160,7 +160,7 @@
             } else if (ch == '"') {
                 *token = string;
                 [_stream skip];
-                return sbjson_token_string;
+                return GCJson_token_string;
 
             } else {
                 acc = [[string mutableCopy] autorelease];
@@ -170,52 +170,52 @@
         switch (ch) {
             case 0 ... 0x1F:
                 self.error = [NSString stringWithFormat:@"Unescaped control character [0x%0.2X]", (int)ch];
-                return sbjson_token_error;
+                return GCJson_token_error;
                 break;
 
             case '"':
                 *token = acc;
                 [_stream skip];
-                return sbjson_token_string;
+                return GCJson_token_string;
                 break;
 
             case '\\':
                 if (![_stream getNextUnichar:&ch])
-                    return sbjson_token_eof;
+                    return GCJson_token_eof;
 
                 if (ch == 'u') {
                     if (![_stream haveRemainingCharacters:5])
-                        return sbjson_token_eof;
+                        return GCJson_token_eof;
 
                     unichar hi;
                     if (![self decodeHexQuad:&hi]) {
                         self.error = @"Invalid hex quad";
-                        return sbjson_token_error;
+                        return GCJson_token_error;
                     }
 
                     if (CFStringIsSurrogateHighCharacter(hi)) {
                         unichar lo;
 
                         if (![_stream haveRemainingCharacters:6])
-                            return sbjson_token_eof;
+                            return GCJson_token_eof;
 
                         (void)[_stream getNextUnichar:&ch];
                         (void)[_stream getNextUnichar:&lo];
                         if (ch != '\\' || lo != 'u' || ![self decodeHexQuad:&lo]) {
                             self.error = @"Missing low character in surrogate pair";
-                            return sbjson_token_error;
+                            return GCJson_token_error;
                         }
 
                         if (!CFStringIsSurrogateLowCharacter(lo)) {
                             self.error = @"Invalid low character in surrogate pair";
-                            return sbjson_token_error;
+                            return GCJson_token_error;
                         }
 
                         unichar pair[2] = {hi, lo};
                         CFStringAppendCharacters((CFMutableStringRef)acc, pair, 2);
                     } else if (SBStringIsIllegalSurrogateHighCharacter(hi)) {
                         self.error = @"Invalid high character in surrogate pair";
-                        return sbjson_token_error;
+                        return GCJson_token_error;
                     } else {
                         CFStringAppendCharacters((CFMutableStringRef)acc, &hi, 1);
                     }
@@ -224,7 +224,7 @@
                 } else {
                     unichar decoded;
                     if (![self decodeEscape:ch into:&decoded])
-                        return sbjson_token_error;
+                        return GCJson_token_error;
                     CFStringAppendCharacters((CFMutableStringRef)acc, &decoded, 1);
                 }
 
@@ -232,37 +232,37 @@
 
             default: {
                 self.error = [NSString stringWithFormat:@"Invalid UTF-8: '%x'", (int)ch];
-                return sbjson_token_error;
+                return GCJson_token_error;
                 break;
             }
         }
     }
-    return sbjson_token_eof;
+    return GCJson_token_eof;
 }
 
-- (sbjson_token_t)getNumberToken:(NSObject**)token {
+- (GCJson_token_t)getNumberToken:(NSObject**)token {
 
     NSUInteger numberStart = _stream.index;
     NSCharacterSet *digits = [NSCharacterSet decimalDigitCharacterSet];
 
     unichar ch;
     if (![_stream getUnichar:&ch])
-        return sbjson_token_eof;
+        return GCJson_token_eof;
 
     BOOL isNegative = NO;
     if (ch == '-') {
         isNegative = YES;
         if (![_stream getNextUnichar:&ch])
-            return sbjson_token_eof;
+            return GCJson_token_eof;
     }
 
     if (ch == '0') {
         if (![_stream getNextUnichar:&ch])
-            return sbjson_token_eof;
+            return GCJson_token_eof;
 
         if ([digits characterIsMember:ch]) {
             self.error = @"Leading zero is illegal in number";
-            return sbjson_token_error;
+            return GCJson_token_error;
         }
     }
 
@@ -275,7 +275,7 @@
         mantissa_length++;
 
         if (![_stream getNextUnichar:&ch])
-            return sbjson_token_eof;
+            return GCJson_token_eof;
     }
 
     short exponent = 0;
@@ -284,7 +284,7 @@
     if (ch == '.') {
         isFloat = YES;
         if (![_stream getNextUnichar:&ch])
-            return sbjson_token_eof;
+            return GCJson_token_eof;
 
         while ([digits characterIsMember:ch]) {
             mantissa *= 10;
@@ -293,12 +293,12 @@
             exponent--;
 
             if (![_stream getNextUnichar:&ch])
-                return sbjson_token_eof;
+                return GCJson_token_eof;
         }
 
         if (!exponent) {
             self.error = @"No digits after decimal point";
-            return sbjson_token_error;
+            return GCJson_token_error;
         }
     }
 
@@ -307,17 +307,17 @@
         hasExponent = YES;
 
         if (![_stream getNextUnichar:&ch])
-            return sbjson_token_eof;
+            return GCJson_token_eof;
 
         BOOL expIsNegative = NO;
         if (ch == '-') {
             expIsNegative = YES;
             if (![_stream getNextUnichar:&ch])
-                return sbjson_token_eof;
+                return GCJson_token_eof;
 
         } else if (ch == '+') {
             if (![_stream getNextUnichar:&ch])
-                return sbjson_token_eof;
+                return GCJson_token_eof;
         }
 
         short exp = 0;
@@ -328,12 +328,12 @@
             exp_length++;
 
             if (![_stream getNextUnichar:&ch])
-                return sbjson_token_eof;
+                return GCJson_token_eof;
         }
 
         if (exp_length == 0) {
             self.error = @"No digits in exponent";
-            return sbjson_token_error;
+            return GCJson_token_error;
         }
 
         if (expIsNegative)
@@ -344,7 +344,7 @@
 
     if (!mantissa_length && isNegative) {
         self.error = @"No digits after initial minus";
-        return sbjson_token_error;
+        return GCJson_token_error;
 
     } else if (mantissa_length >= 19) {
         
@@ -362,61 +362,61 @@
                                                  isNegative:isNegative];
     }
 
-    return sbjson_token_number;
+    return GCJson_token_number;
 }
 
-- (sbjson_token_t)getToken:(NSObject **)token {
+- (GCJson_token_t)getToken:(NSObject **)token {
 
     [_stream skipWhitespace];
 
     unichar ch;
     if (![_stream getUnichar:&ch])
-        return sbjson_token_eof;
+        return GCJson_token_eof;
 
     NSUInteger oldIndexLocation = _stream.index;
-    sbjson_token_t tok;
+    GCJson_token_t tok;
 
     switch (ch) {
         case '[':
-            tok = sbjson_token_array_start;
+            tok = GCJson_token_array_start;
             [_stream skip];
             break;
 
         case ']':
-            tok = sbjson_token_array_end;
+            tok = GCJson_token_array_end;
             [_stream skip];
             break;
 
         case '{':
-            tok = sbjson_token_object_start;
+            tok = GCJson_token_object_start;
             [_stream skip];
             break;
 
         case ':':
-            tok = sbjson_token_keyval_separator;
+            tok = GCJson_token_keyval_separator;
             [_stream skip];
             break;
 
         case '}':
-            tok = sbjson_token_object_end;
+            tok = GCJson_token_object_end;
             [_stream skip];
             break;
 
         case ',':
-            tok = sbjson_token_separator;
+            tok = GCJson_token_separator;
             [_stream skip];
             break;
 
         case 'n':
-            tok = [self match:"null" length:4 retval:sbjson_token_null];
+            tok = [self match:"null" length:4 retval:GCJson_token_null];
             break;
 
         case 't':
-            tok = [self match:"true" length:4 retval:sbjson_token_true];
+            tok = [self match:"true" length:4 retval:GCJson_token_true];
             break;
 
         case 'f':
-            tok = [self match:"false" length:5 retval:sbjson_token_false];
+            tok = [self match:"false" length:5 retval:GCJson_token_false];
             break;
 
         case '"':
@@ -430,16 +430,16 @@
 
         case '+':
             self.error = @"Leading + is illegal in number";
-            tok = sbjson_token_error;
+            tok = GCJson_token_error;
             break;
 
         default:
             self.error = [NSString stringWithFormat:@"Illegal start of token [%c]", ch];
-            tok = sbjson_token_error;
+            tok = GCJson_token_error;
             break;
     }
 
-    if (tok == sbjson_token_eof) {
+    if (tok == GCJson_token_eof) {
         // We ran out of bytes in the middle of a token.
         // We don't know how to restart in mid-flight, so
         // rewind to the start of the token for next attempt.

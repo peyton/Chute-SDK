@@ -58,15 +58,15 @@
 
 @end
 
-@class SBJsonStreamWriter;
+@class GCJsonStreamWriter;
 
-@protocol SBJsonStreamWriterDelegate
+@protocol GCJsonStreamWriterDelegate
 
-- (void)writer:(SBJsonStreamWriter*)writer appendBytes:(const void *)bytes length:(NSUInteger)length;
+- (void)writer:(GCJsonStreamWriter*)writer appendBytes:(const void *)bytes length:(NSUInteger)length;
 
 @end
 
-@class SBJsonStreamWriterState;
+@class GCJsonStreamWriterState;
 
 /**
  @brief The Stream Writer class.
@@ -82,24 +82,24 @@
 
  */
 
-@interface SBJsonStreamWriter : NSObject {
+@interface GCJsonStreamWriter : NSObject {
 @private
 	NSString *error;
     NSMutableArray *stateStack;
-    __weak SBJsonStreamWriterState *state;
-    id<SBJsonStreamWriterDelegate> delegate;
+    __weak GCJsonStreamWriterState *state;
+    id<GCJsonStreamWriterDelegate> delegate;
 	NSUInteger maxDepth;
     BOOL sortKeys, humanReadable;
 }
 
-@property (nonatomic, assign) __weak SBJsonStreamWriterState *state; // Internal
+@property (nonatomic, assign) __weak GCJsonStreamWriterState *state; // Internal
 @property (nonatomic, readonly, retain) NSMutableArray *stateStack; // Internal 
 
 /**
  @brief delegate to receive JSON output
  Delegate that will receive messages with output.
  */
-@property (assign) id<SBJsonStreamWriterDelegate> delegate;
+@property (assign) id<GCJsonStreamWriterDelegate> delegate;
 
 /**
  @brief The maximum recursing depth.
@@ -187,7 +187,7 @@
 
 @end
 
-@interface SBJsonStreamWriter (Private)
+@interface GCJsonStreamWriter (Private)
 - (BOOL)writeValue:(id)v;
 - (void)appendBytes:(const void *)bytes length:(NSUInteger)length;
 @end
