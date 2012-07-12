@@ -22,13 +22,14 @@
     escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, originalAsCFString, leaveAlone, toEscape, kCFStringEncodingUTF8);
     
     if (escapedStr) {
-        NSMutableString *mutable = [[NSMutableString stringWithString:(NSString *)escapedStr] autorelease];
+        NSMutableString *mutable = [NSMutableString stringWithString:(NSString *)escapedStr];
         CFRelease(escapedStr);
         
         [mutable replaceOccurrencesOfString:@" " withString:@"+" options:0 range:NSMakeRange(0, [mutable length])];
         result = mutable;
     }
-    return result;  
+    NSLog(@"%@", result);
+    return result;
 }
 
 - (NSString*)stringByUnescapingFromURLQuery
