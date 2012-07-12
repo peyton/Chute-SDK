@@ -48,7 +48,7 @@
 
 -(NSArray*)sortArraybyDate:(NSArray*)_array{
     NSMutableArray *array = [NSMutableArray arrayWithArray:_array];
-    [array sortUsingComparator:(NSComparator)^(GCAsset *obj1, GCAsset *obj2){
+    [array sortUsingComparator:^NSComparisonResult(GCAsset *obj1, GCAsset *obj2){
         NSDate *d1 = [obj1 createdAt];
         NSDate *d2 = [obj2 createdAt];
         if(!d1 || !d2)

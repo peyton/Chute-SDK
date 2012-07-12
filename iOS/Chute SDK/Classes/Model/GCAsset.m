@@ -202,15 +202,15 @@ NSString * const GCAssetUploadComplete = @"GCAssetUploadComplete";
         ALAssetRepresentation *_representation = [[self alAsset] defaultRepresentation];
         if([self objectID]){
             return [NSDictionary dictionaryWithObjectsAndKeys:[[_representation url] absoluteString], @"filename", 
-                    [NSString stringWithFormat:@"%d", [_representation size]], @"size", 
-                    [NSString stringWithFormat:@"%d", [_representation size]], @"md5",
+                    [NSString stringWithFormat:@"%lld", [_representation size]], @"size", 
+                    [NSString stringWithFormat:@"%lld", [_representation size]], @"md5",
                     [self objectID], @"id",
                     [NSNumber numberWithInt:[self status]], @"status",
                     nil];
         }
         return [NSDictionary dictionaryWithObjectsAndKeys:[[_representation url] absoluteString], @"filename", 
-                [NSString stringWithFormat:@"%d", [_representation size]], @"size", 
-                [NSString stringWithFormat:@"%d", [_representation size]], @"md5", 
+                [NSString stringWithFormat:@"%lld", [_representation size]], @"size", 
+                [NSString stringWithFormat:@"%lld", [_representation size]], @"md5", 
                 nil];
     }
     return nil;

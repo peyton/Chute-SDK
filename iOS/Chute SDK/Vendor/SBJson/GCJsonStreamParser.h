@@ -108,7 +108,7 @@ typedef enum {
 	NSString *error;
 }
 
-@property (nonatomic, assign) __weak GCJsonStreamParserState *state; // Private
+@property (nonatomic, weak) __weak GCJsonStreamParserState *state; // Private
 @property (nonatomic, readonly, retain) NSMutableArray *stateStack; // Private
 
 /**
